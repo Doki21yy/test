@@ -3,172 +3,437 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>数字人视频不再僵硬，Comfyui-Dnode强化数字人临场感 - 视频学习笔记</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>数字人视频不再僵硬，Comfyui-Dnode强化数字人临场感 - Learning Archive</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --bg:#F6F5F0;--card:#FFFFFF;--border:#E2E0D8;--border-light:#EDEBE4;
-  --text:#1A1816;--text-2:#4A4640;--text-3:#8A857D;--text-4:#B5B0A6;
-  --ink:#6C63FF;--ink-light:#EEEDFF;--ink-mid:#C5C1FF;--ink-deep:#4F46E5;
-  --green:#16A34A;--green-bg:#F0FDF4;--amber:#D97706;--amber-bg:#FFFBEB;
-  --rose:#E11D48;--rose-bg:#FFF1F2;--teal:#0D9488;--teal-bg:#F0FDFA;
-  --serif:'Noto Serif SC',Georgia,serif;
-  --sans:'DM Sans',-apple-system,'Noto Sans SC',sans-serif;
-  --mono:'JetBrains Mono',monospace;
-  --r:14px;--r-sm:8px;
-  --sh:0 1px 2px rgba(26,24,22,.04),0 2px 8px rgba(26,24,22,.04);
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg-deep: #06060B;
+  --bg-surface: #0D0D14;
+  --bg-card: #12121C;
+  --bg-card-hover: #181826;
+  --border-subtle: rgba(99, 102, 241, 0.08);
+  --border-hover: rgba(99, 102, 241, 0.2);
+  --text-primary: #E8E8ED;
+  --text-secondary: #7A7A8E;
+  --text-muted: #4A4A5E;
+  --accent: #6366F1;
+  --accent-glow: rgba(99, 102, 241, 0.15);
+  --accent-soft: #818CF8;
+  --radius: 12px;
+  --font-heading: 'DM Sans', -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
 }
-html{scroll-behavior:smooth}
-body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.8;-webkit-font-smoothing:antialiased;font-size:15px}
-.page{max-width:860px;margin:0 auto;padding:32px 24px 80px}
-a{color:var(--ink)}
 
-/* Header */
-.badge-line{font-family:var(--mono);font-size:.72rem;color:var(--ink);letter-spacing:.06em;margin-bottom:12px}
-h1{font-family:var(--serif);font-size:clamp(1.4rem,3vw,2rem);font-weight:700;line-height:1.35;letter-spacing:-.01em;margin-bottom:16px}
-.meta-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:20px}
-.pill{display:inline-flex;align-items:center;padding:3px 12px;border-radius:14px;font-size:.78rem;font-weight:500;border:1px solid var(--border)}
-.pill-diff-b{background:var(--green-bg);color:var(--green);border-color:#BBF7D0}
-.pill-diff-i{background:var(--amber-bg);color:var(--amber);border-color:#FDE68A}
-.pill-diff-a{background:var(--rose-bg);color:var(--rose);border-color:#FECACA}
-.pill-cat{background:var(--ink-light);color:var(--ink-deep);border-color:var(--ink-mid)}
-.pill-mono{font-family:var(--mono);font-size:.72rem;color:var(--text-3)}
-.tag{display:inline-flex;padding:2px 10px;border-radius:10px;font-size:.72rem;background:var(--card);border:1px solid var(--border);color:var(--text-3);margin:2px}
-.yt-btn{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;background:var(--ink);color:#fff;text-decoration:none;font-size:.82rem;font-weight:500;transition:all .2s}
-.yt-btn:hover{background:var(--ink-deep)}
+html { scroll-behavior: smooth; }
 
-/* Overview */
-.overview{font-size:1rem;color:var(--text-2);line-height:1.9;margin-bottom:32px;padding:24px 28px;background:var(--card);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh)}
+body {
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: var(--font-heading);
+  font-weight: 400;
+  line-height: 1.7;
+  min-height: 100vh;
+}
 
-/* Module divider */
-.module{margin-bottom:40px}
-.module-title{font-family:var(--serif);font-size:1.2rem;font-weight:600;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--ink-mid);color:var(--text);display:flex;align-items:center;gap:8px}
-.module-icon{font-size:1rem}
+body::before {
+  content: '';
+  position: fixed;
+  top: -200px; left: 50%;
+  transform: translateX(-50%);
+  width: 800px; height: 600px;
+  background: radial-gradient(ellipse, rgba(99, 102, 241, 0.05) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
 
-/* Sections (main content) */
-.section-block{margin-bottom:32px;background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:28px 32px;box-shadow:var(--sh)}
-.sec-title{font-family:var(--serif);font-size:1.1rem;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:10px}
-.sec-num{font-family:var(--mono);font-size:.72rem;color:#fff;background:var(--ink);width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
-.sec-body{color:var(--text-2);line-height:1.9}
-.sec-body p{margin-bottom:12px}
-.sec-body strong{color:var(--text);font-weight:600}
-.subsection{margin-top:20px;padding-top:16px;border-top:1px solid var(--border-light)}
-.subsec-title{font-size:.95rem;font-weight:600;margin-bottom:10px;color:var(--text)}
-.subsec-body{color:var(--text-2)}
-.subsec-body p{margin-bottom:10px}
+.container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 24px;
+  position: relative;
+  z-index: 1;
+}
 
-/* Content elements */
-.content-list{margin:12px 0;padding-left:24px}
-.content-list li{margin-bottom:6px;line-height:1.7}
-.content-h4{font-size:1rem;font-weight:600;margin:16px 0 8px;color:var(--text)}
-.content-h5{font-size:.92rem;font-weight:600;margin:12px 0 6px;color:var(--text-2)}
-.code-block{background:#1E1E2E;color:#CDD6F4;padding:16px 20px;border-radius:var(--r-sm);overflow-x:auto;font-family:var(--mono);font-size:.82rem;line-height:1.6;margin:12px 0}
-.inline-code{background:var(--ink-light);color:var(--ink-deep);padding:1px 6px;border-radius:4px;font-family:var(--mono);font-size:.85em}
+a { color: var(--accent-soft); text-decoration: none; }
+a:hover { text-decoration: underline; }
 
-/* Resources table */
-.res-table{width:100%;border-collapse:collapse;margin:8px 0;font-size:.88rem}
-.res-table th{text-align:left;padding:10px 12px;border-bottom:2px solid var(--border);color:var(--text-3);font-weight:500;font-size:.78rem}
-.res-table td{padding:10px 12px;border-bottom:1px solid var(--border-light)}
-.res-name{font-weight:500;white-space:nowrap}
-.res-name a{text-decoration:none}
-.res-name a:hover{text-decoration:underline}
-.res-type{font-size:.65rem;padding:2px 6px;border-radius:6px;background:var(--ink-light);color:var(--ink);margin-left:6px;font-weight:500}
-.res-desc{color:var(--text-3)}
+/* Back Nav */
+.back-nav { padding: 24px 0; }
+.back-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--text-muted); text-decoration: none;
+  font-family: var(--font-mono); font-size: 0.78rem;
+  transition: color 0.2s;
+}
+.back-link:hover { color: var(--accent-soft); text-decoration: none; }
+.back-link svg { width: 16px; height: 16px; }
 
-/* Tips */
-.tips-list{list-style:none;padding:0}
-.tips-list li{padding:10px 16px 10px 40px;position:relative;border-bottom:1px solid var(--border-light);font-size:.92rem}
-.tips-list li::before{content:'\2713';position:absolute;left:12px;top:10px;color:var(--green);font-weight:700}
+/* Hero */
+.hero { padding-bottom: 40px; }
+
+.video-embed {
+  width: 100%; aspect-ratio: 16/9;
+  border-radius: var(--radius); overflow: hidden;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  margin-bottom: 28px;
+}
+.video-embed iframe { width: 100%; height: 100%; border: none; }
+.video-embed .video-link-fallback {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 12px;
+  color: var(--text-secondary); text-decoration: none;
+}
+.video-embed .video-link-fallback:hover { color: var(--accent-soft); }
+.video-embed .video-link-fallback svg { width: 48px; height: 48px; opacity: 0.5; }
+
+.hero-title {
+  font-family: var(--font-heading);
+  font-weight: 900;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  letter-spacing: -0.02em; line-height: 1.25;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+
+.hero-meta {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+}
+
+.meta-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 12px; border-radius: 6px;
+  font-family: var(--font-mono); font-size: 0.72rem;
+  font-weight: 500; letter-spacing: 0.03em;
+}
+.meta-badge.platform {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+}
+.meta-badge.platform .p-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+}
+.meta-badge.score {
+  background: var(--accent-glow);
+  border: 1px solid rgba(99, 102, 241, 0.15);
+  color: var(--accent-soft);
+}
+.meta-badge.duration, .meta-badge.date {
+  color: var(--text-muted);
+  font-family: var(--font-mono); font-size: 0.72rem;
+}
+
+/* Section Cards */
+.section-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  margin-bottom: 16px;
+}
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem; font-weight: 500;
+  color: var(--accent-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+}
+.section-heading {
+  font-family: var(--font-heading);
+  font-weight: 700; font-size: 1.15rem;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+.section-text {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+
+/* Tags */
+.tag-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.tag-pill {
+  padding: 3px 10px; border-radius: 4px;
+  font-family: var(--font-mono); font-size: 0.7rem; font-weight: 500;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+}
+.tag-pill.difficulty-beginner { border-color: rgba(34, 197, 94, 0.2); color: #4ADE80; }
+.tag-pill.difficulty-intermediate { border-color: rgba(250, 204, 21, 0.2); color: #FACC15; }
+.tag-pill.difficulty-advanced { border-color: rgba(239, 68, 68, 0.2); color: #F87171; }
+
+/* Knowledge Points */
+.knowledge-list { list-style: none; }
+.knowledge-item { padding: 14px 0; border-bottom: 1px solid var(--border-subtle); }
+.knowledge-item:last-child { border-bottom: none; }
+.knowledge-concept {
+  font-family: var(--font-heading); font-weight: 700;
+  font-size: 0.9rem; color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.knowledge-explain {
+  font-size: 0.84rem; color: var(--text-secondary); line-height: 1.65;
+}
+
+/* Chapters Accordion */
+.chapter-item { border-bottom: 1px solid var(--border-subtle); }
+.chapter-item:last-child { border-bottom: none; }
+.chapter-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 0; cursor: pointer; user-select: none;
+  transition: color 0.2s;
+}
+.chapter-header:hover { color: var(--accent-soft); }
+.chapter-header-left {
+  display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0;
+}
+.chapter-time {
+  font-family: var(--font-mono); font-size: 0.72rem;
+  color: var(--accent-soft); white-space: nowrap; flex-shrink: 0;
+}
+.chapter-title {
+  font-family: var(--font-heading); font-weight: 600;
+  font-size: 0.9rem; color: var(--text-primary);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.chapter-arrow {
+  color: var(--text-muted);
+  transition: transform 0.3s ease; flex-shrink: 0;
+}
+.chapter-item.open .chapter-arrow { transform: rotate(180deg); }
+.chapter-content { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+.chapter-item.open .chapter-content { max-height: 500px; }
+.chapter-inner { padding: 0 0 20px 0; }
+.chapter-summary {
+  font-size: 0.85rem; color: var(--text-secondary);
+  margin-bottom: 12px; line-height: 1.7;
+}
+.chapter-points { list-style: none; padding: 0; }
+.chapter-points li {
+  position: relative; padding-left: 16px;
+  margin-bottom: 6px; font-size: 0.82rem; color: var(--text-secondary);
+}
+.chapter-points li::before {
+  content: ''; position: absolute; left: 0; top: 9px;
+  width: 4px; height: 4px; border-radius: 50%; background: var(--accent);
+}
+
+/* Quotes */
+.quote-card {
+  position: relative; padding: 20px 24px;
+  margin-bottom: 12px;
+  border-left: 2px solid var(--accent);
+  background: rgba(99, 102, 241, 0.03);
+  border-radius: 0 8px 8px 0;
+}
+.quote-card:last-child { margin-bottom: 0; }
+.quote-text {
+  font-size: 0.9rem; color: var(--text-primary);
+  font-style: italic; line-height: 1.65; margin-bottom: 8px;
+}
+.quote-time {
+  font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent-soft);
+}
+
+/* Takeaways */
+.takeaway-list { list-style: none; }
+.takeaway-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 8px 0; font-size: 0.88rem; color: var(--text-secondary);
+}
+.takeaway-check {
+  width: 18px; height: 18px;
+  border: 1.5px solid var(--border-hover);
+  border-radius: 4px; flex-shrink: 0; margin-top: 2px;
+  display: flex; align-items: center; justify-content: center;
+}
+.takeaway-check svg {
+  width: 12px; height: 12px; color: var(--accent-soft);
+}
+
+/* Resources Table */
+.resource-table { width: 100%; border-collapse: collapse; }
+.resource-table th {
+  text-align: left; font-family: var(--font-mono);
+  font-size: 0.7rem; font-weight: 500; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.06em;
+  padding: 10px 0; border-bottom: 1px solid var(--border-subtle);
+}
+.resource-table td {
+  padding: 10px 0; font-size: 0.84rem;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.resource-table tr:last-child td { border-bottom: none; }
+.resource-table a { color: var(--accent-soft); text-decoration: none; }
+.resource-table a:hover { text-decoration: underline; }
+
+/* Detailed Content Sections */
+.section-block {
+  margin-bottom: 20px;
+  background: rgba(99, 102, 241, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+}
+.sec-title {
+  font-family: var(--font-heading);
+  font-size: 1rem; font-weight: 700;
+  margin-bottom: 14px; display: flex; align-items: center; gap: 10px;
+  color: var(--text-primary);
+}
+.sec-num {
+  font-family: var(--font-mono); font-size: 0.68rem;
+  color: #fff; background: var(--accent);
+  width: 24px; height: 24px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.sec-body { color: var(--text-secondary); line-height: 1.8; font-size: 0.88rem; }
+.sec-body p { margin-bottom: 10px; }
+.sec-body strong { color: var(--text-primary); font-weight: 600; }
+.subsection { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border-subtle); }
+.subsec-title { font-size: 0.92rem; font-weight: 600; margin-bottom: 8px; color: var(--text-primary); }
+.subsec-body { color: var(--text-secondary); font-size: 0.86rem; }
+.subsec-body p { margin-bottom: 8px; }
+.content-list { margin: 10px 0; padding-left: 22px; }
+.content-list li { margin-bottom: 5px; line-height: 1.65; }
+.content-h4 { font-size: 0.95rem; font-weight: 600; margin: 14px 0 8px; color: var(--text-primary); }
+.content-h5 { font-size: 0.88rem; font-weight: 600; margin: 10px 0 6px; color: var(--text-secondary); }
+.code-block {
+  background: #0D0D14; color: #CDD6F4;
+  padding: 14px 18px; border-radius: 8px;
+  overflow-x: auto; font-family: var(--font-mono);
+  font-size: 0.8rem; line-height: 1.6; margin: 10px 0;
+  border: 1px solid var(--border-subtle);
+}
+.inline-code {
+  background: var(--accent-glow); color: var(--accent-soft);
+  padding: 1px 6px; border-radius: 4px;
+  font-family: var(--font-mono); font-size: 0.85em;
+}
 
 /* FAQ */
-.faq-item{margin-bottom:16px;padding:16px 20px;background:var(--card);border:1px solid var(--border);border-radius:var(--r-sm)}
-.faq-q{font-weight:600;color:var(--ink-deep);margin-bottom:8px}
-.faq-a{color:var(--text-2);font-size:.92rem}
-.faq-a p{margin-bottom:6px}
+.faq-item {
+  margin-bottom: 14px; padding: 16px 20px;
+  background: rgba(99, 102, 241, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+}
+.faq-q { font-weight: 600; color: var(--accent-soft); margin-bottom: 8px; font-size: 0.9rem; }
+.faq-a { color: var(--text-secondary); font-size: 0.86rem; }
+.faq-a p { margin-bottom: 6px; }
 
-/* Audience */
-.audience-list{padding-left:24px}
-.audience-list li{margin-bottom:6px;font-size:.92rem}
-
-/* Links */
-.links-list{list-style:none;padding:0}
-.links-list li{padding:6px 0;border-bottom:1px solid var(--border-light);font-size:.88rem}
-
-/* Summary box */
-.summary-box{background:linear-gradient(135deg,var(--ink-light) 0%,#F5F3FF 100%);border:1px solid var(--ink-mid);border-radius:var(--r);padding:28px 32px;margin-top:16px}
-.summary-box p{color:var(--text);line-height:1.9;font-size:.95rem}
-
-/* HW requirements */
-.hw-box{background:var(--teal-bg);border:1px solid #99F6E4;border-radius:var(--r-sm);padding:16px 20px;font-size:.88rem;color:#0F766E}
-
-/* Video player */
-.player-grid{display:grid;grid-template-columns:1fr 340px;gap:16px;align-items:start;margin-bottom:8px}
-.player-grid video,.player-grid .embed-wrap{width:100%;border-radius:var(--r);background:#0a0a0f;aspect-ratio:16/9}
-.scene-scroll{max-height:400px;overflow-y:auto;display:flex;flex-direction:column;gap:6px;padding-right:4px}
-.scene-scroll::-webkit-scrollbar{width:3px}
-.scene-scroll::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
-.scene-label{font-size:.78rem;color:var(--text-3);margin-bottom:6px}
-.sc{background:var(--card);border:1px solid var(--border);border-left:3px solid transparent;border-radius:8px;padding:10px 12px;cursor:pointer;transition:all .2s;font-size:.82rem}
-.sc:hover{border-left-color:var(--ink-mid);background:#FEFDFB}
-.sc.active{border-left-color:var(--ink);background:var(--ink-light)}
-.sc-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:3px}
-.sc-id{font-weight:600;font-size:.72rem;color:var(--ink)}
-.sc-time{font-size:.68rem;color:var(--text-4)}
-.sc-concept{font-weight:600;font-size:.82rem;margin-bottom:2px}
-.sc-narr{font-size:.75rem;color:var(--text-3);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.sc-tags{display:flex;gap:4px;margin-top:4px}
-.sc-tag{font-size:.65rem;padding:1px 6px;border-radius:8px;background:#F5F5F4;color:var(--text-4)}
-.sc-tag.method{background:var(--ink-light);color:var(--ink)}
-.clarity-dot{width:6px;height:6px;border-radius:50%;display:inline-block;margin-left:2px}
-.clarity-high{background:var(--green)}.clarity-medium{background:var(--amber)}.clarity-low{background:var(--rose)}
-
-.empty-hint{color:var(--text-4);font-size:.88rem;font-style:italic}
+/* Summary Box */
+.summary-box {
+  background: rgba(99, 102, 241, 0.04);
+  border: 1px solid rgba(99, 102, 241, 0.1);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+}
+.summary-box p { color: var(--text-secondary); line-height: 1.85; font-size: 0.92rem; }
 
 /* Footer */
-.foot{text-align:center;padding:24px 0;color:var(--text-4);font-size:.78rem;border-top:1px solid var(--border-light);margin-top:40px}
-.foot a{color:var(--ink);text-decoration:none}
+.report-footer {
+  padding: 48px 0 32px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
 
-@media(max-width:768px){
-  .page{padding:20px 16px 60px}
-  .player-grid{grid-template-columns:1fr}
-  .scene-scroll{max-height:260px}
-  .section-block{padding:20px}
+/* Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.section-card { animation: fadeInUp 0.5s ease both; }
+.section-card:nth-child(1) { animation-delay: 0.1s; }
+.section-card:nth-child(2) { animation-delay: 0.15s; }
+.section-card:nth-child(3) { animation-delay: 0.2s; }
+.section-card:nth-child(4) { animation-delay: 0.25s; }
+.section-card:nth-child(5) { animation-delay: 0.3s; }
+.section-card:nth-child(6) { animation-delay: 0.35s; }
+
+/* Responsive */
+@media (max-width: 640px) {
+  .container { padding: 0 16px; }
+  .section-card { padding: 20px 18px; }
+  .hero-title { font-size: 1.4rem; }
+  .section-block { padding: 18px 16px; }
 }
 </style>
 </head>
 <body>
-<div class="page">
 
-<!-- Header -->
-<div class="badge-line">VIDEO LEARNING NOTES</div>
-<h1>数字人视频不再僵硬，Comfyui-Dnode强化数字人临场感</h1>
-<div class="meta-row">
-  <span class="pill pill-diff-b">初级</span>
-  <span class="pill pill-cat">AI工具</span>
-  <span class="pill pill-mono">Alwood爱屋研究室</span>
-  <span class="pill pill-mono">3:54</span>
-  <span class="pill pill-mono">2026-03-08</span>
-  <a href="https://www.bilibili.com/video/BV1pLPgzoEu1/?spm_id_from=333.1007.tianma.1-2-2.click" target="_blank" class="yt-btn">在原平台观看</a>
-</div>
-<div style="margin-bottom:16px"><span class="tag">ComfyUI</span><span class="tag">数字人</span><span class="tag">AI视频处理</span><span class="tag">Lissajous曲线</span><span class="tag">镜头呼吸感</span><span class="tag">视频后处理</span></div>
+<div class="container">
+  <nav class="back-nav">
+    <a href="../../../" class="back-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Archive
+    </a>
+  </nav>
 
-<!-- Overview -->
-<div class="overview">本视频介绍了一款轻量实用的ComfyUI插件ComfyUI-Dnode，核心功能是为已生成的数字人视频添加类似真实手持拍摄的自然镜头呼吸感，解决传统数字人视频镜头固定、观感生硬、缺乏临场感的痛点。该插件基于利萨茹（Lissajous）曲线实现平滑的镜头运动模拟，属于纯后处理工具，不需要在视频生成前做任何前置调整，任意成品视频都可以直接导入处理。视频详细讲解了插件唯一核心节点Lissajous Camera Shake（V1）的参数含义、不同参数组合的效果差异，还展示了完整的实操配置流程，用户仅需调整运动强度、缩放系数两个核心参数，就可以快速获得从轻微自然呼吸感到大幅度镜头晃动的不同效果。同时插件通过自动缩放机制实现边缘保护，避免镜头移动时出现画面边缘拉伸、黑边等问题，运行速度极快，配置门槛极低，能以极低的成本大幅提升数字人视频的真实感。</div>
+  <section class="hero">
+    <div class="video-embed">
+      <iframe src="//player.bilibili.com/player.html?bvid=BV1pLPgzoEu1&high_quality=1&danmaku=0" allowfullscreen="true" frameborder="0"></iframe>
+    </div>
 
-<!-- Video Embed -->
-<div class="module"><div class="module-title">视频播放</div><div class="embed-wrap">
-  <iframe src="//player.bilibili.com/player.html?bvid=BV1pLPgzoEu1&high_quality=1&danmaku=0"
-    allowfullscreen="true" frameborder="0"
-    style="width:100%;aspect-ratio:16/9;border-radius:var(--r)"></iframe>
-</div>
-<a href="https://www.bilibili.com/video/BV1pLPgzoEu1/?spm_id_from=333.1007.tianma.1-2-2.click" target="_blank" class="yt-btn" style="display:inline-block;margin-top:10px">在 B 站观看</a></div>
+    <h1 class="hero-title">数字人视频不再僵硬，Comfyui-Dnode强化数字人临场感</h1>
 
-<!-- Main Content Sections -->
-<div class="module">
-  <div class="module-title">详细内容</div>
-  <div class="section-block">
+    <div class="hero-meta">
+      <span class="meta-badge platform"><span class="p-dot" style="background:#00A1D6"></span>Bilibili</span>
+      <span class="meta-badge score">8.0/10</span>
+      <span class="meta-badge duration">3:54</span>
+      <span class="meta-badge date">2026-03-08</span>
+    </div>
+  </section>
+
+  <!-- Overview -->
+  <div class="section-card">
+    <div class="section-label">Overview</div>
+    <div class="tag-row">
+      <span class="tag-pill difficulty-beginner">Beginner</span>
+      <span class="tag-pill">AI工具</span>
+      <span class="tag-pill">Alwood爱屋研究室</span>
+    </div>
+    <div class="section-text">本视频介绍了一款轻量实用的ComfyUI插件ComfyUI-Dnode，核心功能是为已生成的数字人视频添加类似真实手持拍摄的自然镜头呼吸感，解决传统数字人视频镜头固定、观感生硬、缺乏临场感的痛点。该插件基于利萨茹（Lissajous）曲线实现平滑的镜头运动模拟，属于纯后处理工具，不需要在视频生成前做任何前置调整，任意成品视频都可以直接导入处理。视频详细讲解了插件唯一核心节点Lissajous Camera Shake（V1）的参数含义、不同参数组合的效果差异，还展示了完整的实操配置流程，用户仅需调整运动强度、缩放系数两个核心参数，就可以快速获得从轻微自然呼吸感到大幅度镜头晃动的不同效果。同时插件通过自动缩放机制实现边缘保护，避免镜头移动时出现画面边缘拉伸、黑边等问题，运行速度极快，配置门槛极低，能以极低的成本大幅提升数字人视频的真实感。</div>
+  </div>
+
+  <!-- Key Knowledge Points -->
+  <div class="section-card">
+    <div class="section-label">Key Knowledge</div>
+    <ul class="knowledge-list">
+      <li class="knowledge-item">
+            <div class="knowledge-concept">插件核心原理与特性</div>
+            <div class="knowledge-explain">插件的核心算法基于**利萨茹（Lissajous）曲线**，该曲线是两个相互垂直的简谐运动合成的连续平滑轨迹，没有突变和生硬的拐点，完美匹配真实人类手持拍摄时的微小晃动规律，生成的运动效果自然不刻意。</div>
+        </li>
+<li class="knowledge-item">
+            <div class="knowledge-concept">核心节点参数详解</div>
+            <div class="knowledge-explain">Lissajous Camera Shake（V1）是插件唯一的核心节点，仅需配置少数参数即可获得理想效果，参数含义如下：</div>
+        </li>
+<li class="knowledge-item">
+            <div class="knowledge-concept">实操流程与参数配置方案</div>
+            <div class="knowledge-explain">插件使用流程非常简单，无需改动原有视频生成工作流，仅需几个步骤即可完成处理：</div>
+        </li>
+<li class="knowledge-item">
+            <div class="knowledge-concept">常见问题与注意事项</div>
+            <div class="knowledge-explain">插件使用过程中最常见的问题是边缘拉伸，因为插件属于纯后处理工具，不会生成新的像素填充画面移动后露出的边缘区域，如果缩放系数不足，画面边缘就会出现拉伸横纹、黑边等问题，只需要对应调高`zoom_factor`参数即可解决。</div>
+        </li>
+    </ul>
+  </div>
+
+  <!-- Detailed Content -->
+  <div class="section-card">
+    <div class="section-label">Detailed Content</div>
+    <div class="section-block">
             <h3 class="sec-title"><span class="sec-num">01</span>插件核心原理与特性</h3>
             <div class="sec-body"><p>插件的核心算法基于<strong>利萨茹（Lissajous）曲线</strong>，该曲线是两个相互垂直的简谐运动合成的连续平滑轨迹，没有突变和生硬的拐点，完美匹配真实人类手持拍摄时的微小晃动规律，生成的运动效果自然不刻意。</p>
 <p>插件的核心特性如下：</p>
@@ -212,82 +477,202 @@ h1{font-family:var(--serif);font-size:clamp(1.4rem,3vw,2rem);font-weight:700;lin
 <p>另外需要注意：插件的运动效果是叠加在原视频已有运镜之上的，如果原视频已经有明显的运镜效果，建议把<code class="inline-code">intensity</code>调低到1以下，避免运镜过于杂乱影响观看体验。插件不会修改视频原有内容，仅做画面的平移和缩放，不会改变人物动作、口型，画质损失也非常小。</p></div>
             
         </div>
-</div>
+  </div>
 
-<!-- Resources -->
-<div class="module">
-  <div class="module-title">工具与资源</div>
-  <div class="section-block" style="padding:20px 24px">
-    <table class="res-table">
-        <thead><tr><th>名称</th><th>说明</th></tr></thead>
-        <tbody><tr>
-            <td class="res-name"><a href="https://github.com/Derryyy/ComfyUI-Dnode" target="_blank" rel="noopener">ComfyUI-Dnode: Lissajous Camera Shake (V1)</a> <span class="res-type">tool</span></td>
-            <td class="res-desc">基于利萨茹曲线为视频添加自然镜头呼吸感的ComfyUI插件</td>
-        </tr><tr>
-            <td class="res-name">UP主交流QQ群 <span class="res-type">other</span></td>
-            <td class="res-desc">Alwood爱屋研究室的交流群，可获取插件相关支持与工作流</td>
-        </tr></tbody>
+  <!-- Chapters -->
+  <div class="section-card">
+    <div class="section-label">Chapters</div>
+    <div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">0</span>
+                    <span class="chapter-title">插件效果展示与基础介绍</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">开场打招呼，介绍本次要讲的Comfyui-Dnode插件，说明它能解决数字人视频运镜僵硬的问题，给视频添加类似手持拍摄的自然呼吸感</div>
+                    <ul class="chapter-points"><li>Dnode插件的核心作用是为数字人视频添加自然的镜头呼吸感</li></ul>
+                </div>
+            </div>
+        </div>
+<div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">38</span>
+                    <span class="chapter-title">插件基础信息与核心原理</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">介绍插件由国内开发者开发，核心仅一个Lissajous Camera Shake节点，基于利萨如曲线实现平滑镜头运动，属于后处理工具，任意现有视频都可直接处理</div>
+                    <ul class="chapter-points"><li>插件基于利萨如曲线实现平滑镜头运动，属于无需前置处理的后处理工具</li></ul>
+                </div>
+            </div>
+        </div>
+<div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">76</span>
+                    <span class="chapter-title">核心参数详解</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">讲解节点三个核心参数：intensity是运动强度最大可到5，zoom_factor是缩放参数用于边缘保护，fps对应原视频帧率；如果没有足够缩放，视频移动时边缘会出现拉伸瑕疵</div>
+                    <ul class="chapter-points"><li>节点核心参数的定义，以及缩放参数做边缘保护的必要性</li></ul>
+                </div>
+            </div>
+        </div>
+<div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">114</span>
+                    <span class="chapter-title">低强度参数效果对比</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">演示不同强度参数的效果：默认1.5强度+1.05缩放时运镜动态很弱，强度调到3后运镜动态明显提升，但1.05的缩放已经不足以掩盖边缘瑕疵</div>
+                    <ul class="chapter-points"><li>intensity取值和运镜动态幅度正相关，强度越高需要的缩放值越高</li></ul>
+                </div>
+            </div>
+        </div>
+<div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">154</span>
+                    <span class="chapter-title">高强度参数效果对比</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">演示强度拉到5时的效果，此时运镜晃动非常剧烈；缩放从1.05逐步调到1.2，1.05时边缘拉伸明显，1.1仍有轻微瑕疵，调到1.2后边缘瑕疵基本消失，运镜效果自然</div>
+                    <ul class="chapter-points"><li>zoom_factor取值需要和intensity匹配，强度越高对应的合理缩放值越大</li></ul>
+                </div>
+            </div>
+        </div>
+<div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">196</span>
+                    <span class="chapter-title">总结与使用推荐</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">总结ComfyUI的优势在于有很多小巧实用的节点，推荐大家试用这个Dnode插件，去GitHub给作者点星，最后呼吁观众三连</div>
+                    <ul class="chapter-points"><li>该插件轻量易用效果好，适合用于数字人视频的运镜优化</li></ul>
+                </div>
+            </div>
+        </div>
+  </div>
+
+  <!-- Quotes -->
+  <div class="section-card">
+    <div class="section-label">Notable Quotes</div>
+    <div class="quote-card">
+            <div class="quote-text">Dnode插件可通过后处理为数字人视频添加类似手持拍摄的自然运镜呼吸感</div>
+            <div class="quote-time">0</div>
+        </div>
+<div class="quote-card">
+            <div class="quote-text">插件仅需一个核心节点即可生效，属于后处理工具，无需在视频生成前做预处理</div>
+            <div class="quote-time">38</div>
+        </div>
+<div class="quote-card">
+            <div class="quote-text">intensity控制运镜幅度，zoom_factor通过放大视频避免镜头移动时边缘出现拉伸瑕疵</div>
+            <div class="quote-time">76</div>
+        </div>
+<div class="quote-card">
+            <div class="quote-text">intensity值越高，运镜晃动幅度越大，需要匹配更高的zoom_factor来消除边缘瑕疵</div>
+            <div class="quote-time">114</div>
+        </div>
+<div class="quote-card">
+            <div class="quote-text">intensity为5时，zoom_factor建议调到1.2即可获得自然无瑕疵的运镜效果</div>
+            <div class="quote-time">154</div>
+        </div>
+  </div>
+
+  <!-- Takeaways -->
+  <div class="section-card">
+    <div class="section-label">Takeaways</div>
+    <ul class="takeaway-list">
+      <li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            缩放系数需要和运动强度匹配：运动强度1-2时用1.05，3-4时用1.1，5时用1.2，既不会过度放大损失画质，也能完全避免边缘拉伸问题
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            处理数字人口播类视频时建议强度用1.5-2，既增加自然感，又不会让观众注意到镜头晃动，避免分散观众对内容的注意力
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            如果需要多段视频保持相同的晃动风格，固定seed参数即可复现完全一致的运动轨迹，保证系列视频风格统一
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            为什么处理后的视频边缘出现拉伸的横纹或者黑边？
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            这个插件会不会影响视频中人物的动作、口型或者画质？
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            能不能给已经有运镜的视频再次添加效果？
+        </li>
+    </ul>
+  </div>
+
+  <!-- Resources -->
+  <div class="section-card">
+    <div class="section-label">Tools & Resources</div>
+    <table class="resource-table">
+      <thead><tr><th>Name</th><th>Description</th><th>Link</th></tr></thead>
+      <tbody>
+        <tr><td>ComfyUI-Dnode: Lissajous Camera Shake (V1)</td><td>基于利萨茹曲线为视频添加自然镜头呼吸感的ComfyUI插件</td><td><a href="https://github.com/Derryyy/ComfyUI-Dnode" target="_blank" rel="noopener">Link</a></td></tr>
+<tr><td>UP主交流QQ群</td><td>Alwood爱屋研究室的交流群，可获取插件相关支持与工作流</td><td><span style="color:var(--text-muted)">--</span></td></tr>
+      </tbody>
     </table>
   </div>
-</div>
 
-<!-- Key Tips -->
-<div class="module">
-  <div class="module-title">实用技巧与最佳实践</div>
-  <div class="section-block" style="padding:16px 20px">
-    <ul class="tips-list"><li>缩放系数需要和运动强度匹配：运动强度1-2时用1.05，3-4时用1.1，5时用1.2，既不会过度放大损失画质，也能完全避免边缘拉伸问题</li><li>处理数字人口播类视频时建议强度用1.5-2，既增加自然感，又不会让观众注意到镜头晃动，避免分散观众对内容的注意力</li><li>如果需要多段视频保持相同的晃动风格，固定seed参数即可复现完全一致的运动轨迹，保证系列视频风格统一</li></ul>
-  </div>
-</div>
-
-<!-- Hardware Requirements -->
-<div class="module">
-  <div class="module-title">硬件要求</div>
-  <div class="hw-box">普通CPU即可流畅运行，支持GPU加速，无额外显存要求</div>
-</div>
-
-<!-- FAQ -->
-<div class="module">
-  <div class="module-title">常见问题</div>
-  <div class="faq-item">
-            <div class="faq-q">Q: 为什么处理后的视频边缘出现拉伸的横纹或者黑边？</div>
-            <div class="faq-a"><p>这是因为运动强度设置过高但缩放系数不足导致的，插件不会生成新的像素填充画面移动后露出的边缘区域，需要适当调大<code class="inline-code">zoom_factor</code>参数，强度越高缩放系数也需要对应提高，就能解决这个问题。</p></div>
-        </div><div class="faq-item">
-            <div class="faq-q">Q: 这个插件会不会影响视频中人物的动作、口型或者画质？</div>
-            <div class="faq-a"><p>不会，插件只是对现有画面做平移和缩放的几何变换，没有做任何内容生成或者修改，不会改变人物动作、口型，画质损失只有缩放带来的微小损失，几乎可以忽略。</p></div>
-        </div><div class="faq-item">
-            <div class="faq-q">Q: 能不能给已经有运镜的视频再次添加效果？</div>
-            <div class="faq-a"><p>可以，插件会在原有运镜的基础上叠加新的平滑晃动效果，如果想要叠加自然的呼吸感，建议把强度调低到1以下，避免运镜过于杂乱。</p></div>
+  <div class="section-card">
+            <div class="section-label">FAQ</div>
+            <div class="faq-item">
+                <div class="faq-q">Q: 为什么处理后的视频边缘出现拉伸的横纹或者黑边？</div>
+                <div class="faq-a"><p>这是因为运动强度设置过高但缩放系数不足导致的，插件不会生成新的像素填充画面移动后露出的边缘区域，需要适当调大<code class="inline-code">zoom_factor</code>参数，强度越高缩放系数也需要对应提高，就能解决这个问题。</p></div>
+            </div><div class="faq-item">
+                <div class="faq-q">Q: 这个插件会不会影响视频中人物的动作、口型或者画质？</div>
+                <div class="faq-a"><p>不会，插件只是对现有画面做平移和缩放的几何变换，没有做任何内容生成或者修改，不会改变人物动作、口型，画质损失只有缩放带来的微小损失，几乎可以忽略。</p></div>
+            </div><div class="faq-item">
+                <div class="faq-q">Q: 能不能给已经有运镜的视频再次添加效果？</div>
+                <div class="faq-a"><p>可以，插件会在原有运镜的基础上叠加新的平滑晃动效果，如果想要叠加自然的呼吸感，建议把强度调低到1以下，避免运镜过于杂乱。</p></div>
+            </div>
         </div>
+
+  <div class="section-card">
+            <div class="section-label">Summary</div>
+            <div class="summary-box"><p>本视频介绍的ComfyUI-Dnode是一款轻量且实用性极强的ComfyUI插件，仅通过单个节点就可以为任意成品视频添加基于利萨茹曲线的平滑自然镜头晃动效果，完美解决数字人视频镜头固定、观感生硬的痛点，大幅提升视频的真实临场感。插件属于后处理工具，不需要改动原有视频生成流程，核心参数仅有3个，上手门槛极低，运行速度快，用户可以通过调整强度和缩放系数快速获得从轻微呼吸感到大幅度手持运镜的不同效果，是数字人内容创作者提升视频质感的高效工具，也充分体现了ComfyUI生态中轻量插件精准解决具体痛点的优势。</p></div>
+        </div>
+
+  <footer class="report-footer">
+    powered by video-learn
+  </footer>
 </div>
 
-<!-- Target Audience -->
-<div class="module">
-  <div class="module-title">适用人群</div>
-  <div class="section-block" style="padding:16px 24px">
-    <ol class="audience-list"><li>ComfyUI使用者</li><li>数字人内容创作者</li><li>AI视频制作从业者</li><li>短视频创作者</li></ol>
-  </div>
-</div>
-
-<!-- Summary -->
-<div class="module">
-  <div class="module-title">总结</div>
-  <div class="summary-box"><p>本视频介绍的ComfyUI-Dnode是一款轻量且实用性极强的ComfyUI插件，仅通过单个节点就可以为任意成品视频添加基于利萨茹曲线的平滑自然镜头晃动效果，完美解决数字人视频镜头固定、观感生硬的痛点，大幅提升视频的真实临场感。插件属于后处理工具，不需要改动原有视频生成流程，核心参数仅有3个，上手门槛极低，运行速度快，用户可以通过调整强度和缩放系数快速获得从轻微呼吸感到大幅度手持运镜的不同效果，是数字人内容创作者提升视频质感的高效工具，也充分体现了ComfyUI生态中轻量插件精准解决具体痛点的优势。</p></div>
-</div>
-
-<!-- Related Links -->
-<div class="module">
-  <div class="module-title">相关链接</div>
-  <div class="section-block" style="padding:16px 24px">
-    <ul class="links-list"><li><a href="https://github.com/Derryyy/ComfyUI-Dnode" target="_blank" rel="noopener">插件官方GitHub仓库</a></li></ul>
-  </div>
-</div>
-
-<div class="foot">
-  Powered by <a href="https://github.com/anthropics/claude-code" target="_blank">Claude Code</a> video-learn skill
-</div>
-
-</div>
-
-<script>/* video-learn report */</script>
+<script>
+// Chapter accordion
+document.querySelectorAll('.chapter-header').forEach(header => {
+  header.addEventListener('click', () => {
+    header.parentElement.classList.toggle('open');
+  });
+});
+</script>
 </body>
 </html>
