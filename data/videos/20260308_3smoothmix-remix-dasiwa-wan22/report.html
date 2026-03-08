@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WAN文/图生视频 3大模型全套高阶工作流 NSFW本地最优解 加声彩蛋流 - Learning Archive</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg-deep: #06060B;
+  --bg-surface: #0D0D14;
+  --bg-card: #12121C;
+  --bg-card-hover: #181826;
+  --border-subtle: rgba(99, 102, 241, 0.08);
+  --border-hover: rgba(99, 102, 241, 0.2);
+  --text-primary: #E8E8ED;
+  --text-secondary: #7A7A8E;
+  --text-muted: #4A4A5E;
+  --accent: #6366F1;
+  --accent-glow: rgba(99, 102, 241, 0.15);
+  --accent-soft: #818CF8;
+  --radius: 12px;
+  --font-heading: 'DM Sans', -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: var(--font-heading);
+  font-weight: 400;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: -200px; left: 50%;
+  transform: translateX(-50%);
+  width: 800px; height: 600px;
+  background: radial-gradient(ellipse, rgba(99, 102, 241, 0.05) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 24px;
+  position: relative;
+  z-index: 1;
+}
+
+a { color: var(--accent-soft); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Back Nav */
+.back-nav { padding: 24px 0; }
+.back-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--text-muted); text-decoration: none;
+  font-family: var(--font-mono); font-size: 0.78rem;
+  transition: color 0.2s;
+}
+.back-link:hover { color: var(--accent-soft); text-decoration: none; }
+.back-link svg { width: 16px; height: 16px; }
+
+/* Hero */
+.hero { padding-bottom: 40px; }
+
+.video-embed {
+  width: 100%; aspect-ratio: 16/9;
+  border-radius: var(--radius); overflow: hidden;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  margin-bottom: 28px;
+}
+.video-embed iframe { width: 100%; height: 100%; border: none; }
+.video-embed .video-link-fallback {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 12px;
+  color: var(--text-secondary); text-decoration: none;
+}
+.video-embed .video-link-fallback:hover { color: var(--accent-soft); }
+.video-embed .video-link-fallback svg { width: 48px; height: 48px; opacity: 0.5; }
+
+.hero-title {
+  font-family: var(--font-heading);
+  font-weight: 900;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  letter-spacing: -0.02em; line-height: 1.25;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+
+.hero-meta {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+}
+
+.meta-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 12px; border-radius: 6px;
+  font-family: var(--font-mono); font-size: 0.72rem;
+  font-weight: 500; letter-spacing: 0.03em;
+}
+.meta-badge.platform {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+}
+.meta-badge.platform .p-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+}
+.meta-badge.score {
+  background: var(--accent-glow);
+  border: 1px solid rgba(99, 102, 241, 0.15);
+  color: var(--accent-soft);
+}
+.meta-badge.duration, .meta-badge.date {
+  color: var(--text-muted);
+  font-family: var(--font-mono); font-size: 0.72rem;
+}
+
+/* Section Cards */
+.section-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  margin-bottom: 16px;
+}
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem; font-weight: 500;
+  color: var(--accent-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+}
+.section-heading {
+  font-family: var(--font-heading);
+  font-weight: 700; font-size: 1.15rem;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+.section-text {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+
+/* Tags */
+.tag-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.tag-pill {
+  padding: 3px 10px; border-radius: 4px;
+  font-family: var(--font-mono); font-size: 0.7rem; font-weight: 500;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+}
+.tag-pill.difficulty-beginner { border-color: rgba(34, 197, 94, 0.2); color: #4ADE80; }
+.tag-pill.difficulty-intermediate { border-color: rgba(250, 204, 21, 0.2); color: #FACC15; }
+.tag-pill.difficulty-advanced { border-color: rgba(239, 68, 68, 0.2); color: #F87171; }
+
+/* Knowledge Points */
+.knowledge-list { list-style: none; }
+.knowledge-item { padding: 14px 0; border-bottom: 1px solid var(--border-subtle); }
+.knowledge-item:last-child { border-bottom: none; }
+.knowledge-concept {
+  font-family: var(--font-heading); font-weight: 700;
+  font-size: 0.9rem; color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.knowledge-explain {
+  font-size: 0.84rem; color: var(--text-secondary); line-height: 1.65;
+}
+
+/* Chapters Accordion */
+.chapter-item { border-bottom: 1px solid var(--border-subtle); }
+.chapter-item:last-child { border-bottom: none; }
+.chapter-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 0; cursor: pointer; user-select: none;
+  transition: color 0.2s;
+}
+.chapter-header:hover { color: var(--accent-soft); }
+.chapter-header-left {
+  display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0;
+}
+.chapter-time {
+  font-family: var(--font-mono); font-size: 0.72rem;
+  color: var(--accent-soft); white-space: nowrap; flex-shrink: 0;
+}
+.chapter-title {
+  font-family: var(--font-heading); font-weight: 600;
+  font-size: 0.9rem; color: var(--text-primary);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.chapter-arrow {
+  color: var(--text-muted);
+  transition: transform 0.3s ease; flex-shrink: 0;
+}
+.chapter-item.open .chapter-arrow { transform: rotate(180deg); }
+.chapter-content { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+.chapter-item.open .chapter-content { max-height: 500px; }
+.chapter-inner { padding: 0 0 20px 0; }
+.chapter-summary {
+  font-size: 0.85rem; color: var(--text-secondary);
+  margin-bottom: 12px; line-height: 1.7;
+}
+.chapter-points { list-style: none; padding: 0; }
+.chapter-points li {
+  position: relative; padding-left: 16px;
+  margin-bottom: 6px; font-size: 0.82rem; color: var(--text-secondary);
+}
+.chapter-points li::before {
+  content: ''; position: absolute; left: 0; top: 9px;
+  width: 4px; height: 4px; border-radius: 50%; background: var(--accent);
+}
+
+/* Quotes */
+.quote-card {
+  position: relative; padding: 20px 24px;
+  margin-bottom: 12px;
+  border-left: 2px solid var(--accent);
+  background: rgba(99, 102, 241, 0.03);
+  border-radius: 0 8px 8px 0;
+}
+.quote-card:last-child { margin-bottom: 0; }
+.quote-text {
+  font-size: 0.9rem; color: var(--text-primary);
+  font-style: italic; line-height: 1.65; margin-bottom: 8px;
+}
+.quote-time {
+  font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent-soft);
+}
+
+/* Takeaways */
+.takeaway-list { list-style: none; }
+.takeaway-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 8px 0; font-size: 0.88rem; color: var(--text-secondary);
+}
+.takeaway-check {
+  width: 18px; height: 18px;
+  border: 1.5px solid var(--border-hover);
+  border-radius: 4px; flex-shrink: 0; margin-top: 2px;
+  display: flex; align-items: center; justify-content: center;
+}
+.takeaway-check svg {
+  width: 12px; height: 12px; color: var(--accent-soft);
+}
+
+/* Resources Table */
+.resource-table { width: 100%; border-collapse: collapse; }
+.resource-table th {
+  text-align: left; font-family: var(--font-mono);
+  font-size: 0.7rem; font-weight: 500; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.06em;
+  padding: 10px 0; border-bottom: 1px solid var(--border-subtle);
+}
+.resource-table td {
+  padding: 10px 0; font-size: 0.84rem;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.resource-table tr:last-child td { border-bottom: none; }
+.resource-table a { color: var(--accent-soft); text-decoration: none; }
+.resource-table a:hover { text-decoration: underline; }
+
+/* Detailed Content Sections */
+.section-block {
+  margin-bottom: 20px;
+  background: rgba(99, 102, 241, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+}
+.sec-title {
+  font-family: var(--font-heading);
+  font-size: 1rem; font-weight: 700;
+  margin-bottom: 14px; display: flex; align-items: center; gap: 10px;
+  color: var(--text-primary);
+}
+.sec-num {
+  font-family: var(--font-mono); font-size: 0.68rem;
+  color: #fff; background: var(--accent);
+  width: 24px; height: 24px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.sec-body { color: var(--text-secondary); line-height: 1.8; font-size: 0.88rem; }
+.sec-body p { margin-bottom: 10px; }
+.sec-body strong { color: var(--text-primary); font-weight: 600; }
+.subsection { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border-subtle); }
+.subsec-title { font-size: 0.92rem; font-weight: 600; margin-bottom: 8px; color: var(--text-primary); }
+.subsec-body { color: var(--text-secondary); font-size: 0.86rem; }
+.subsec-body p { margin-bottom: 8px; }
+.content-list { margin: 10px 0; padding-left: 22px; }
+.content-list li { margin-bottom: 5px; line-height: 1.65; }
+.content-h4 { font-size: 0.95rem; font-weight: 600; margin: 14px 0 8px; color: var(--text-primary); }
+.content-h5 { font-size: 0.88rem; font-weight: 600; margin: 10px 0 6px; color: var(--text-secondary); }
+.code-block {
+  background: #0D0D14; color: #CDD6F4;
+  padding: 14px 18px; border-radius: 8px;
+  overflow-x: auto; font-family: var(--font-mono);
+  font-size: 0.8rem; line-height: 1.6; margin: 10px 0;
+  border: 1px solid var(--border-subtle);
+}
+.inline-code {
+  background: var(--accent-glow); color: var(--accent-soft);
+  padding: 1px 6px; border-radius: 4px;
+  font-family: var(--font-mono); font-size: 0.85em;
+}
+
+/* FAQ */
+.faq-item {
+  margin-bottom: 14px; padding: 16px 20px;
+  background: rgba(99, 102, 241, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+}
+.faq-q { font-weight: 600; color: var(--accent-soft); margin-bottom: 8px; font-size: 0.9rem; }
+.faq-a { color: var(--text-secondary); font-size: 0.86rem; }
+.faq-a p { margin-bottom: 6px; }
+
+/* Summary Box */
+.summary-box {
+  background: rgba(99, 102, 241, 0.04);
+  border: 1px solid rgba(99, 102, 241, 0.1);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+}
+.summary-box p { color: var(--text-secondary); line-height: 1.85; font-size: 0.92rem; }
+
+/* Footer */
+.report-footer {
+  padding: 48px 0 32px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.section-card { animation: fadeInUp 0.5s ease both; }
+.section-card:nth-child(1) { animation-delay: 0.1s; }
+.section-card:nth-child(2) { animation-delay: 0.15s; }
+.section-card:nth-child(3) { animation-delay: 0.2s; }
+.section-card:nth-child(4) { animation-delay: 0.25s; }
+.section-card:nth-child(5) { animation-delay: 0.3s; }
+.section-card:nth-child(6) { animation-delay: 0.35s; }
+
+/* Responsive */
+@media (max-width: 640px) {
+  .container { padding: 0 16px; }
+  .section-card { padding: 20px 18px; }
+  .hero-title { font-size: 1.4rem; }
+  .section-block { padding: 18px 16px; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <nav class="back-nav">
+    <a href="../../../" class="back-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Archive
+    </a>
+  </nav>
+
+  <section class="hero">
+    <div class="video-embed">
+      <iframe src="//player.bilibili.com/player.html?bvid=BV188Ngz3Ejd&high_quality=1&danmaku=0" allowfullscreen="true" frameborder="0"></iframe>
+    </div>
+
+    <h1 class="hero-title">WAN文/图生视频 3大模型全套高阶工作流 NSFW本地最优解 加声彩蛋流</h1>
+
+    <div class="hero-meta">
+      <span class="meta-badge platform"><span class="p-dot" style="background:#00A1D6"></span>Bilibili</span>
+      <span class="meta-badge score">9.0/10</span>
+      <span class="meta-badge duration">52:02</span>
+      <span class="meta-badge date">2026-03-08</span>
+    </div>
+  </section>
+
+  <!-- Overview -->
+  <div class="section-card">
+    <div class="section-label">Overview</div>
+    <div class="tag-row">
+      <span class="tag-pill difficulty-intermediate">Intermediate</span>
+      <span class="tag-pill">AI工具</span>
+      <span class="tag-pill">源001</span>
+    </div>
+    <div class="section-text">本教程系统性分享了基于ComfyUI的文生图转视频全流程高阶工作流，针对当前AI生成视频连贯性差、风格不稳定、后期处理繁琐、内容合规风险等痛点，提供了SmoothMix、Remix、Dasiwa三款主流生成模型的适配整合工作流，同时内置MMAudio视频加声模块与NSFW内容本地优化方案。所有工作流均完成预设参数调试与节点整合，无需复杂配置即可直接使用。教程不仅展示了工作流的整体框架、节点连接逻辑，还详细讲解了关键参数的调整方法、不同模型的适用场景、文生提示词的书写规范，同时通过实操对比展示了不同参数配置下的生成效果差异，最终可以实现从单张图/文本提示词到带声音的完整AI短视频的全链路产出，无需切换多个工具，大幅降低了AI短视频的制作门槛，适合内容创作者、AI爱好者快速落地商业或个人创作需求。</div>
+  </div>
+
+  <!-- Key Knowledge Points -->
+  <div class="section-card">
+    <div class="section-label">Key Knowledge</div>
+    <ul class="knowledge-list">
+      <li class="knowledge-item">
+            <div class="knowledge-concept">核心工作流框架介绍</div>
+            <div class="knowledge-explain">本套工作流基于ComfyUI开发，总共分为4个核心独立工作流模块，所有模块均完成节点整合与参数预设，导入即可使用：</div>
+        </li>
+<li class="knowledge-item">
+            <div class="knowledge-concept">SmoothMix工作流参数配置与实操</div>
+            <div class="knowledge-explain">SmoothMix是当前应用最广泛的写实类AI视频生成模型，本工作流已经完成节点整合，操作步骤如下：</div>
+        </li>
+<li class="knowledge-item">
+            <div class="knowledge-concept">多模型效果对比与场景选择</div>
+            <div class="knowledge-explain">不同模型的特性差异较大，需要根据生成场景选择适配的模型，具体对比如下：</div>
+        </li>
+<li class="knowledge-item">
+            <div class="knowledge-concept">低配置设备适配方案</div>
+            <div class="knowledge-explain">针对显存不足的设备，可通过以下设置优化运行，最低可在6G显存设备上正常生成视频：</div>
+        </li>
+    </ul>
+  </div>
+
+  <!-- Detailed Content -->
+  <div class="section-card">
+    <div class="section-label">Detailed Content</div>
+    <div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">01</span>核心工作流框架介绍</h3>
+            <div class="sec-body"><p>本套工作流基于ComfyUI开发，总共分为4个核心独立工作流模块，所有模块均完成节点整合与参数预设，导入即可使用：</p>
+<ol class="content-list">
+<li><strong>SmoothMix视频流</strong>：适合写实风格视频生成，人物动作连贯度高，不易出现画面崩坏，适配图生、文生两类输入，是当前写实类AI视频生成的首选方案。</li>
+<li><strong>Remix视频流</strong>：适合二次元/幻想风格视频生成，风格还原度高，动态特效表现优异，适合创作古风、科幻类特效短视频。</li>
+<li><strong>Dasiwa视频流</strong>：适合快速生成短时长视频，渲染速度比前两款模型快30%，显存占用更低，适合批量产出带货、宣传类短内容。</li>
+<li><strong>通用加声优化模块</strong>：MMAudio视频加声-NSFW工作流，可对接任意生成模型的输出视频，自动匹配适配的背景音、音效，同时内置本地NSFW内容检测与优化逻辑，无需上传数据到第三方服务器即可完成内容合规处理。</li>
+</ol></div>
+            
+        </div><div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">02</span>SmoothMix工作流参数配置与实操</h3>
+            <div class="sec-body"><p>SmoothMix是当前应用最广泛的写实类AI视频生成模型，本工作流已经完成节点整合，操作步骤如下：</p>
+<ol class="content-list">
+<li><strong>基础配置</strong>：</li>
+</ol>
+<ul class="content-list">
+<li>模型加载：工作流内置模型选择节点，直接下拉选择SmoothMix对应的大模型版本即可，Lora（LoRA）预设已完成关联，无需额外配置。</li>
+<li>输入源选择：图生视频上传参考图到输入节点，文生视频直接填写提示词即可。</li>
+</ul>
+<ol class="content-list">
+<li><strong>提示词书写规范</strong>：</li>
+</ol>
+<pre class="code-block"><code>// 正向提示词示例
+<p>masterpiece, best quality, 1girl, playing with water, dynamic pose, splashing water, gym background, soft lighting, motion blur</p>
+<p>// 反向提示词示例</p>
+<p>low quality, blurry, deformed, bad anatomy, extra limbs, ugly, distorted</code></pre></p>
+<ol class="content-list">
+<li><strong>关键参数调整</strong>：</li>
+</ol>
+<ul class="content-list">
+<li>运动幅度：默认值0.6，数值越高动作幅度越大，超过0.8容易出现画面崩坏，写实风格建议控制在0.6以内。</li>
+<li>帧数量：默认24帧对应1秒视频，可根据需求调整，建议单段视频不超过96帧（4秒），否则连贯性会明显下降。</li>
+<li>分辨率：默认768<em>1280竖屏比例，适合短视频平台发布，最高支持1024</em>1792，需要8G以上显存。</li>
+</ul></div>
+            
+        </div><div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">03</span>多模型效果对比与场景选择</h3>
+            <div class="sec-body"><p>不同模型的特性差异较大，需要根据生成场景选择适配的模型，具体对比如下：</p>
+<p>| 模型 | 适用场景 | 生成速度 | 最低显存需求 | 推荐运动幅度参数 |</p>
+<p>| ---- | ---- | ---- | ---- | ---- |</p>
+<p>| SmoothMix | 写实人像、实景生活类视频 | 中等 | 8G | 0.5-0.7 |</p>
+<p>| Remix | 二次元、科幻/古风特效类视频 | 较慢 | 10G | 0.6-0.8 |</p>
+<p>| Dasiwa | 短时长带货视频、批量内容产出 | 快 | 6G | 0.4-0.6 |</p>
+<p>NSFW优化功能使用：工作流内置本地检测节点，开启后会自动识别生成内容中的合规风险，自动对敏感内容进行打码、风格修改处理，所有处理均在本地完成，不会上传任何数据到第三方服务器，适合对数据安全有要求的用户。</p>
+<p>加声模块使用：生成视频导入MMAudio模块后，可选择自动匹配音效或者上传自定义音频，自动匹配支持环境音、人声、音效三类标签选择，生成的音频会自动对齐视频时长，无需额外剪辑。</p></div>
+            
+        </div><div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">04</span>低配置设备适配方案</h3>
+            <div class="sec-body"><p>针对显存不足的设备，可通过以下设置优化运行，最低可在6G显存设备上正常生成视频：</p>
+<ol class="content-list">
+<li>开启工作流中的显存优化节点，勾选“启用分块渲染”选项，可降低40%左右显存占用，仅会小幅增加生成时间。</li>
+<li>降低分辨率到512*768，帧数量降到16帧以内，可大幅降低显存需求，适合测试效果和快速出样。</li>
+<li>选择Dasiwa模型进行生成，该模型针对低显存设备做了专门优化，同等分辨率下显存占用比SmoothMix低30%，生成速度也更快。</li>
+<li>关闭不必要的附加功能，比如NSFW优化、帧一致性优化等，可进一步降低显存占用。</li>
+</ol></div>
+            
+        </div>
+  </div>
+
+  <!-- Chapters -->
+  <div class="section-card">
+    <div class="section-label">Chapters</div>
+    <div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">0</span>
+                    <span class="chapter-title">课程整体内容介绍</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">讲者介绍本次课程包含三大模型的文/图生视频全流程工作流，同时包含加声方案和NSFW优化内容. 讲者说明后续会逐个讲解每套工作流的使用方法，所有工作流已经完成配置优化，用户可以直接上手使用</div>
+                    <ul class="chapter-points"><li>本次课程覆盖SmoothMix、Remix、Dasiwa三套视频生成工作流及配套优化方案</li><li>整合后的工作流无需用户自行搭建节点，可直接填入参数使用</li></ul>
+                </div>
+            </div>
+        </div>
+<div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">65</span>
+                    <span class="chapter-title">四大工作流总览展示</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">讲者介绍第一个模型SmoothMix的整合工作流，包含文生视频、图生视频、音视频驱动视频三类子工作流. 介绍第二个模型Remix的整合工作流，同样包含三类子场景，和SmoothMix的差异是适配的生成风格不同. 介绍第三个模型Dasiwa的工作流，以及最后一套配套的音频合成+NSFW合规优化的工作流</div>
+                    <ul class="chapter-points"><li>SmoothMix工作流覆盖文生、图生、音视频驱动三类视频生成场景</li><li>Remix工作流的风格适配性和SmoothMix存在差异，可根据内容需求选择</li><li>除了视频生成工作流，额外提供音频合成和NSFW内容过滤的配套工具流</li></ul>
+                </div>
+            </div>
+        </div>
+<div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">180</span>
+                    <span class="chapter-title">SmoothMix图生视频流详解</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">讲者开始拆解SmoothMix图生流的整体结构，说明节点按输入、模型加载、生成、输出的逻辑顺序排布. 讲解图生流的输入部分，需要上传参考图，选择对应的SmoothMix基础模型和风格Lora模型. 讲解生成控制部分的参数，运动幅度控制画面动效强度，帧率控制视频的流畅度. 讲解模型权重的配置方法，调整基础模型和Lora的权重占比可以控制生成内容和参考风格的契合度. 讲解提示词的填写规则，正面提示词描述想要的内容特征，负面提示词排除不需要的瑕疵和错误内容. 讲解采样参数的作用，采样步数越高细节越丰富但生成速度越慢，CFG值越高生成内容和提示词的贴合度越高. 讲解输出部分的配置，分辨率要匹配参考图的</div>
+                    <ul class="chapter-points"><li>SmoothMix图生流的节点按业务逻辑串联，可按需调整不同环节的参数</li><li>图生视频的生成效果和参考图、匹配的模型契合度直接相关</li><li>运动幅度参数越高，画面动态效果越强，但也越容易出现画面变形</li><li>Lora权重越高，生成内容和Lora对应的风格相似度越高</li><li>精准的正负提示词可以大幅降低生成视频的瑕疵率，提升内容质量</li></ul>
+                </div>
+            </div>
+        </div>
+<div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">475</span>
+                    <span class="chapter-title">生成效果演示与对比</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">展示不同运动幅度参数生成的视频效果，对比低幅度和高幅度下画面动态效果的差异. 讲解参数调整后的效果变化，说明如何根据生成的实际效果反复测试，找到最适合当前内容的参数值</div>
+                    <ul class="chapter-points"><li>运动幅度参数对画面动态效果的影响非常直观，可根据内容需求选择</li><li>参数没有固定最优值，需要结合生成的实际效果微调才能得到最佳结果</li></ul>
+                </div>
+            </div>
+        </div>
+  </div>
+
+  <!-- Quotes -->
+  <div class="section-card">
+    <div class="section-label">Notable Quotes</div>
+    <div class="quote-card">
+            <div class="quote-text">本次课程提供的所有工作流均为整合完成状态，可降低使用门槛</div>
+            <div class="quote-time">0</div>
+        </div>
+<div class="quote-card">
+            <div class="quote-text">工作流已经完成本地化适配，NSFW相关功能适配日本地区合规要求</div>
+            <div class="quote-time">32</div>
+        </div>
+<div class="quote-card">
+            <div class="quote-text">SmoothMix适合生成风格写实稳定的动态视频内容</div>
+            <div class="quote-time">65</div>
+        </div>
+<div class="quote-card">
+            <div class="quote-text">Remix适合生成风格更具创意、变化更丰富的视频内容</div>
+            <div class="quote-time">100</div>
+        </div>
+<div class="quote-card">
+            <div class="quote-text">加声工作流可直接为生成的视频匹配对应音频，NSFW工作流可过滤违规内容</div>
+            <div class="quote-time">137</div>
+        </div>
+  </div>
+
+  <!-- Takeaways -->
+  <div class="section-card">
+    <div class="section-label">Takeaways</div>
+    <ul class="takeaway-list">
+      <li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            生成视频前先跑单张图确认风格符合预期，再启动视频生成，避免浪费算力和时间
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            运动幅度参数不要超过0.8，否则大概率出现人物变形、穿模等问题，写实风格建议控制在0.6以内
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            NSFW优化开启后会增加20%左右的生成时间，确定内容合规的情况下可以关闭提升生成速度
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            如果生成的视频闪烁严重，可以开启工作流中的帧一致性优化节点，将帧相似度阈值调整到0.8以上，有效降低闪烁概率
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            生成的视频人物动作怪异、穿模怎么办？
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            显存不足无法运行怎么办？
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            生成的视频闪烁严重怎么办？
+        </li>
+    </ul>
+  </div>
+
+  <!-- Resources -->
+  <div class="section-card">
+    <div class="section-label">Tools & Resources</div>
+    <table class="resource-table">
+      <thead><tr><th>Name</th><th>Description</th><th>Link</th></tr></thead>
+      <tbody>
+        <tr><td>SmoothMix模型</td><td>写实风格AI视频生成大模型，适合人像、实景视频生成，动作连贯性高</td><td><span style="color:var(--text-muted)">--</span></td></tr>
+<tr><td>Remix模型</td><td>二次元/幻想风格AI视频生成大模型，风格还原度高，特效表现好</td><td><span style="color:var(--text-muted)">--</span></td></tr>
+<tr><td>Dasiwa模型</td><td>轻量级AI视频生成大模型，生成速度快，适合低显存设备和批量生成</td><td><span style="color:var(--text-muted)">--</span></td></tr>
+<tr><td>MMAudio加声模块</td><td>AI视频自动加声工具，支持自动匹配音效、对齐视频时长</td><td><span style="color:var(--text-muted)">--</span></td></tr>
+<tr><td>ComfyUI工作流整合包</td><td>视频中展示的所有工作流整合包，导入即可使用，预设参数已调试完成</td><td><span style="color:var(--text-muted)">--</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section-card">
+            <div class="section-label">FAQ</div>
+            <div class="faq-item">
+                <div class="faq-q">Q: 生成的视频人物动作怪异、穿模怎么办？</div>
+                <div class="faq-a"><p>首先降低运动幅度参数到0.5以下，其次检查反向提示词是否加入了deformed、bad anatomy等关键词，也可以更换参考图的姿势，选择动作幅度小的参考图可大幅降低穿模概率。</p></div>
+            </div><div class="faq-item">
+                <div class="faq-q">Q: 显存不足无法运行怎么办？</div>
+                <div class="faq-a"><p>首先开启显存优化节点，勾选分块渲染选项，其次降低分辨率到512*768，减少生成帧数量到16帧以内，也可以切换到Dasiwa轻量级模型进行生成，6G显存即可正常运行。</p></div>
+            </div><div class="faq-item">
+                <div class="faq-q">Q: 生成的视频闪烁严重怎么办？</div>
+                <div class="faq-a"><p>开启工作流中的帧一致性优化节点，将帧相似度阈值调整到0.8以上，同时降低提示词的权重波动，保持前后帧提示词一致，可有效减少闪烁问题。</p></div>
+            </div>
+        </div>
+
+  <div class="section-card">
+            <div class="section-label">Summary</div>
+            <div class="summary-box"><p>本教程提供了一套可直接落地的ComfyUI文生图转视频全流程工作流，整合了SmoothMix、Remix、Dasiwa三款主流生成模型，同时内置加声与NSFW本地优化功能，无需复杂配置即可快速产出高质量AI短视频。教程最大亮点是所有工作流均完成预设调试，覆盖了从输入到输出的全链路需求，同时针对不同硬件配置提供了适配方案，大幅降低了AI视频制作的技术门槛。通过本套工作流，用户可快速实现写实、二次元等多风格AI短视频的批量产出，既适合个人兴趣创作，也能满足商业内容生产的需求。</p></div>
+        </div>
+
+  <footer class="report-footer">
+    powered by video-learn
+  </footer>
+</div>
+
+<script>
+// Chapter accordion
+document.querySelectorAll('.chapter-header').forEach(header => {
+  header.addEventListener('click', () => {
+    header.parentElement.classList.toggle('open');
+  });
+});
+</script>
+</body>
+</html>
