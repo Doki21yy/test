@@ -1,0 +1,21 @@
+{
+  "title": "BV1pLPgzoEu1",
+  "type": "learning",
+  "topic": "介绍ComfyUI的Dnode插件，为数字人等视频添加自然镜头呼吸感，解决视频镜头僵硬问题",
+  "category": "AI工具",
+  "difficulty": "beginner",
+  "learning_rating": 8.0,
+  "summary": "本视频介绍了一款轻量实用的ComfyUI插件ComfyUI-Dnode，核心功能是为已生成的数字人视频添加类似真实手持拍摄的自然镜头呼吸感，解决传统数字人视频镜头固定、观感生硬、缺乏临场感的痛点。该插件基于利萨茹（Lissajous）曲线实现平滑的镜头运动模拟，属于纯后处理工具，不需要在视频生成前做任何前置调整，任意成品视频都可以直接导入处理。视频详细讲解了插件唯一核心节点Lissajous Camera Shake（V1）的参数含义、不同参数组合的效果差异，还展示了完整的实操配置流程，用户仅需调整运动强度、缩放系数两个核心参数，就可以快速获得从轻微自然呼吸感到大幅度镜头晃动的不同效果。同时插件通过自动缩放机制实现边缘保护，避免镜头移动时出现画面边缘拉伸、黑边等问题，运行速度极快，配置门槛极低，能以极低的成本大幅提升数字人视频的真实感。",
+  "speaker": "Alwood爱屋研究室",
+  "tags": [
+    "ComfyUI",
+    "数字人",
+    "AI视频处理",
+    "Lissajous曲线",
+    "镜头呼吸感",
+    "视频后处理"
+  ],
+  "source_url": "https://www.bilibili.com/video/BV1pLPgzoEu1/?spm_id_from=333.1007.tianma.1-2-2.click",
+  "duration": 234.12,
+  "generated_at": "2026-03-08T16:53:36.490701"
+}
