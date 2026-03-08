@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LTX 2.3 官方示例流程更新与优化实操全指南 - Learning Archive</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg-deep: #06060B;
+  --bg-surface: #0D0D14;
+  --bg-card: #12121C;
+  --bg-card-hover: #181826;
+  --border-subtle: rgba(99, 102, 241, 0.08);
+  --border-hover: rgba(99, 102, 241, 0.2);
+  --text-primary: #E8E8ED;
+  --text-secondary: #7A7A8E;
+  --text-muted: #4A4A5E;
+  --accent: #6366F1;
+  --accent-glow: rgba(99, 102, 241, 0.15);
+  --accent-soft: #818CF8;
+  --radius: 12px;
+  --font-heading: 'DM Sans', -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: var(--font-heading);
+  font-weight: 400;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: -200px; left: 50%;
+  transform: translateX(-50%);
+  width: 800px; height: 600px;
+  background: radial-gradient(ellipse, rgba(99, 102, 241, 0.05) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 24px;
+  position: relative;
+  z-index: 1;
+}
+
+a { color: var(--accent-soft); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Back Nav */
+.back-nav { padding: 24px 0; }
+.back-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--text-muted); text-decoration: none;
+  font-family: var(--font-mono); font-size: 0.78rem;
+  transition: color 0.2s;
+}
+.back-link:hover { color: var(--accent-soft); text-decoration: none; }
+.back-link svg { width: 16px; height: 16px; }
+
+/* Hero */
+.hero { padding-bottom: 40px; }
+
+.video-embed {
+  width: 100%; aspect-ratio: 16/9;
+  border-radius: var(--radius); overflow: hidden;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  margin-bottom: 28px;
+}
+.video-embed iframe { width: 100%; height: 100%; border: none; }
+.video-embed .video-link-fallback {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 12px;
+  color: var(--text-secondary); text-decoration: none;
+}
+.video-embed .video-link-fallback:hover { color: var(--accent-soft); }
+.video-embed .video-link-fallback svg { width: 48px; height: 48px; opacity: 0.5; }
+
+.hero-title {
+  font-family: var(--font-heading);
+  font-weight: 900;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  letter-spacing: -0.02em; line-height: 1.25;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+
+.hero-meta {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+}
+
+.meta-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 12px; border-radius: 6px;
+  font-family: var(--font-mono); font-size: 0.72rem;
+  font-weight: 500; letter-spacing: 0.03em;
+}
+.meta-badge.platform {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+}
+.meta-badge.platform .p-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+}
+.meta-badge.score {
+  background: var(--accent-glow);
+  border: 1px solid rgba(99, 102, 241, 0.15);
+  color: var(--accent-soft);
+}
+.meta-badge.duration, .meta-badge.date {
+  color: var(--text-muted);
+  font-family: var(--font-mono); font-size: 0.72rem;
+}
+
+/* Section Cards */
+.section-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  margin-bottom: 16px;
+}
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem; font-weight: 500;
+  color: var(--accent-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+}
+.section-heading {
+  font-family: var(--font-heading);
+  font-weight: 700; font-size: 1.15rem;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+.section-text {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+
+/* Tags */
+.tag-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.tag-pill {
+  padding: 3px 10px; border-radius: 4px;
+  font-family: var(--font-mono); font-size: 0.7rem; font-weight: 500;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+}
+.tag-pill.difficulty-beginner { border-color: rgba(34, 197, 94, 0.2); color: #4ADE80; }
+.tag-pill.difficulty-intermediate { border-color: rgba(250, 204, 21, 0.2); color: #FACC15; }
+.tag-pill.difficulty-advanced { border-color: rgba(239, 68, 68, 0.2); color: #F87171; }
+
+/* Knowledge Points */
+.knowledge-list { list-style: none; }
+.knowledge-item { padding: 14px 0; border-bottom: 1px solid var(--border-subtle); }
+.knowledge-item:last-child { border-bottom: none; }
+.knowledge-concept {
+  font-family: var(--font-heading); font-weight: 700;
+  font-size: 0.9rem; color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.knowledge-explain {
+  font-size: 0.84rem; color: var(--text-secondary); line-height: 1.65;
+}
+
+/* Chapters Accordion */
+.chapter-item { border-bottom: 1px solid var(--border-subtle); }
+.chapter-item:last-child { border-bottom: none; }
+.chapter-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 0; cursor: pointer; user-select: none;
+  transition: color 0.2s;
+}
+.chapter-header:hover { color: var(--accent-soft); }
+.chapter-header-left {
+  display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0;
+}
+.chapter-time {
+  font-family: var(--font-mono); font-size: 0.72rem;
+  color: var(--accent-soft); white-space: nowrap; flex-shrink: 0;
+}
+.chapter-title {
+  font-family: var(--font-heading); font-weight: 600;
+  font-size: 0.9rem; color: var(--text-primary);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.chapter-arrow {
+  color: var(--text-muted);
+  transition: transform 0.3s ease; flex-shrink: 0;
+}
+.chapter-item.open .chapter-arrow { transform: rotate(180deg); }
+.chapter-content { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+.chapter-item.open .chapter-content { max-height: 500px; }
+.chapter-inner { padding: 0 0 20px 0; }
+.chapter-summary {
+  font-size: 0.85rem; color: var(--text-secondary);
+  margin-bottom: 12px; line-height: 1.7;
+}
+.chapter-points { list-style: none; padding: 0; }
+.chapter-points li {
+  position: relative; padding-left: 16px;
+  margin-bottom: 6px; font-size: 0.82rem; color: var(--text-secondary);
+}
+.chapter-points li::before {
+  content: ''; position: absolute; left: 0; top: 9px;
+  width: 4px; height: 4px; border-radius: 50%; background: var(--accent);
+}
+
+/* Quotes */
+.quote-card {
+  position: relative; padding: 20px 24px;
+  margin-bottom: 12px;
+  border-left: 2px solid var(--accent);
+  background: rgba(99, 102, 241, 0.03);
+  border-radius: 0 8px 8px 0;
+}
+.quote-card:last-child { margin-bottom: 0; }
+.quote-text {
+  font-size: 0.9rem; color: var(--text-primary);
+  font-style: italic; line-height: 1.65; margin-bottom: 8px;
+}
+.quote-time {
+  font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent-soft);
+}
+
+/* Takeaways */
+.takeaway-list { list-style: none; }
+.takeaway-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 8px 0; font-size: 0.88rem; color: var(--text-secondary);
+}
+.takeaway-check {
+  width: 18px; height: 18px;
+  border: 1.5px solid var(--border-hover);
+  border-radius: 4px; flex-shrink: 0; margin-top: 2px;
+  display: flex; align-items: center; justify-content: center;
+}
+.takeaway-check svg {
+  width: 12px; height: 12px; color: var(--accent-soft);
+}
+
+/* Resources Table */
+.resource-table { width: 100%; border-collapse: collapse; }
+.resource-table th {
+  text-align: left; font-family: var(--font-mono);
+  font-size: 0.7rem; font-weight: 500; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.06em;
+  padding: 10px 0; border-bottom: 1px solid var(--border-subtle);
+}
+.resource-table td {
+  padding: 10px 0; font-size: 0.84rem;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.resource-table tr:last-child td { border-bottom: none; }
+.resource-table a { color: var(--accent-soft); text-decoration: none; }
+.resource-table a:hover { text-decoration: underline; }
+
+/* Detailed Content Sections */
+.section-block {
+  margin-bottom: 20px;
+  background: rgba(99, 102, 241, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+}
+.sec-title {
+  font-family: var(--font-heading);
+  font-size: 1rem; font-weight: 700;
+  margin-bottom: 14px; display: flex; align-items: center; gap: 10px;
+  color: var(--text-primary);
+}
+.sec-num {
+  font-family: var(--font-mono); font-size: 0.68rem;
+  color: #fff; background: var(--accent);
+  width: 24px; height: 24px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.sec-body { color: var(--text-secondary); line-height: 1.8; font-size: 0.88rem; }
+.sec-body p { margin-bottom: 10px; }
+.sec-body strong { color: var(--text-primary); font-weight: 600; }
+.subsection { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border-subtle); }
+.subsec-title { font-size: 0.92rem; font-weight: 600; margin-bottom: 8px; color: var(--text-primary); }
+.subsec-body { color: var(--text-secondary); font-size: 0.86rem; }
+.subsec-body p { margin-bottom: 8px; }
+.content-list { margin: 10px 0; padding-left: 22px; }
+.content-list li { margin-bottom: 5px; line-height: 1.65; }
+.content-h4 { font-size: 0.95rem; font-weight: 600; margin: 14px 0 8px; color: var(--text-primary); }
+.content-h5 { font-size: 0.88rem; font-weight: 600; margin: 10px 0 6px; color: var(--text-secondary); }
+.code-block {
+  background: #0D0D14; color: #CDD6F4;
+  padding: 14px 18px; border-radius: 8px;
+  overflow-x: auto; font-family: var(--font-mono);
+  font-size: 0.8rem; line-height: 1.6; margin: 10px 0;
+  border: 1px solid var(--border-subtle);
+}
+.inline-code {
+  background: var(--accent-glow); color: var(--accent-soft);
+  padding: 1px 6px; border-radius: 4px;
+  font-family: var(--font-mono); font-size: 0.85em;
+}
+
+/* FAQ */
+.faq-item {
+  margin-bottom: 14px; padding: 16px 20px;
+  background: rgba(99, 102, 241, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+}
+.faq-q { font-weight: 600; color: var(--accent-soft); margin-bottom: 8px; font-size: 0.9rem; }
+.faq-a { color: var(--text-secondary); font-size: 0.86rem; }
+.faq-a p { margin-bottom: 6px; }
+
+/* Summary Box */
+.summary-box {
+  background: rgba(99, 102, 241, 0.04);
+  border: 1px solid rgba(99, 102, 241, 0.1);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+}
+.summary-box p { color: var(--text-secondary); line-height: 1.85; font-size: 0.92rem; }
+
+/* Footer */
+.report-footer {
+  padding: 48px 0 32px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.section-card { animation: fadeInUp 0.5s ease both; }
+.section-card:nth-child(1) { animation-delay: 0.1s; }
+.section-card:nth-child(2) { animation-delay: 0.15s; }
+.section-card:nth-child(3) { animation-delay: 0.2s; }
+.section-card:nth-child(4) { animation-delay: 0.25s; }
+.section-card:nth-child(5) { animation-delay: 0.3s; }
+.section-card:nth-child(6) { animation-delay: 0.35s; }
+
+/* Responsive */
+@media (max-width: 640px) {
+  .container { padding: 0 16px; }
+  .section-card { padding: 20px 18px; }
+  .hero-title { font-size: 1.4rem; }
+  .section-block { padding: 18px 16px; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <nav class="back-nav">
+    <a href="../../../" class="back-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Archive
+    </a>
+  </nav>
+
+  <section class="hero">
+    <div class="video-embed">
+      <iframe src="//player.bilibili.com/player.html?bvid=BV18NNuzqEix&high_quality=1&danmaku=0" allowfullscreen="true" frameborder="0"></iframe>
+    </div>
+
+    <h1 class="hero-title">LTX 2.3 官方示例流程更新与优化实操全指南</h1>
+
+    <div class="hero-meta">
+      <span class="meta-badge platform"><span class="p-dot" style="background:#00A1D6"></span>Bilibili</span>
+      <span class="meta-badge score">8.5/10</span>
+      <span class="meta-badge duration">5:30</span>
+      <span class="meta-badge date">2026-03-08</span>
+    </div>
+  </section>
+
+  <!-- Overview -->
+  <div class="section-card">
+    <div class="section-label">Overview</div>
+    <div class="tag-row">
+      <span class="tag-pill difficulty-intermediate">Intermediate</span>
+      <span class="tag-pill">AI视频生成</span>
+      <span class="tag-pill">AI-KSK</span>
+    </div>
+    <div class="section-text">本视频围绕最新发布的LTX 2.3视频生成模型的官方示例流程展开，系统解读了文生视频、图生视频两类核心场景的单阶段（直接生成）、二阶段（带放大）生成逻辑，针对本地用户显存不足的痛点，提供了GGUF量化、NVFP4版本Gemma 3的低显存配置方案。视频实测了加速LoRA、官方放大组的实际效果，对比了不同步数生成的质量差异，指出了当前版本肢体生成的不足和优化方向。所有流程已同步部署到RunningHub平台可在线运行，也提供了本地可用的预配置流程文件，帮助用户快速上手LTX 2.3，避开官方流程的冗余和问题，得到更高质量的视频生成结果。</div>
+  </div>
+
+  <!-- Key Knowledge Points -->
+  <div class="section-card">
+    <div class="section-label">Key Knowledge</div>
+    <ul class="knowledge-list">
+      <li class="knowledge-item">
+            <div class="knowledge-concept">LTX 2.3 流程体系基础认知</div>
+            <div class="knowledge-explain">LTX 2.3的官方实现基于ComfyUI的**LTX Video插件**，流程体系分为两类核心生成场景，每类场景下又对应两种生成模式，可根据需求灵活选择：</div>
+        </li>
+<li class="knowledge-item">
+            <div class="knowledge-concept">核心配置与参数说明</div>
+            <div class="knowledge-explain"></div>
+        </li>
+<li class="knowledge-item">
+            <div class="knowledge-concept">不同场景实操指南</div>
+            <div class="knowledge-explain"></div>
+        </li>
+<li class="knowledge-item">
+            <div class="knowledge-concept">效果对比与版本优劣</div>
+            <div class="knowledge-explain">| 对比维度 | 8步加速版本 | 15步全量版本 |</div>
+        </li>
+    </ul>
+  </div>
+
+  <!-- Detailed Content -->
+  <div class="section-card">
+    <div class="section-label">Detailed Content</div>
+    <div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">01</span>LTX 2.3 流程体系基础认知</h3>
+            <div class="sec-body"><p>LTX 2.3的官方实现基于ComfyUI的<strong>LTX Video插件</strong>，流程体系分为两类核心生成场景，每类场景下又对应两种生成模式，可根据需求灵活选择：</p>
+<ol class="content-list">
+<li><strong>单阶段模式</strong>：无后续放大组，生成视频的分辨率和输入参数/参考图完全一致，生成速度快，对提示词、参考图的还原一致性更高</li>
+<li><strong>二阶段模式</strong>：在单阶段生成结果的基础上新增官方放大组，通过注入噪声后重新降噪的方式补全高清细节，实现视频分辨率放大，生成速度更慢，对原始内容的改动更大</li>
+</ol>
+<p>所有流程已同步部署至RunningHub平台可直接在线运行，无需本地部署；本地用户可使用视频简介网盘提供的预配置流程，内置量化模型适配低显存消费级显卡。</p></div>
+            
+        </div><div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">02</span>核心配置与参数说明</h3>
+            <div class="sec-body"></div>
+            <div class="subsection">
+                    <h4 class="subsec-title">基础生成配置</h4>
+                    <div class="subsec-body"><h5 class="content-h5">基础参数设置</h5>
+<ul class="content-list">
+<li>视频参数：可自定义设置帧率、帧数、输出分辨率，单阶段模式下输出分辨率和此处设置完全一致</li>
+<li>模型选择：</li>
+<li>低显存用户：使用<strong>GGUF Q4KS</strong>版本的主模型，搭配NVFP4/GGUF版本的Gemma 3文本编码器，可在8G以上显存显卡运行</li>
+<li>高显存追求质量用户：使用FP8版本的全量模型，生成质量最优</li>
+<li>加速LoRA配置：官方流程内置384加速LoRA，权重推荐设置为<code class="inline-code">0.5</code>，可将生成步数从15步压缩到8步，但可能出现内容怪异、恐怖谷效应，不建议正式生成时开启</li>
+<li>降噪步数配置：通过手动Sigma（噪声强度）参数指定降噪层级，蒸馏版本8步即可出预览结果，全量版本推荐15步，15步版本对提示词内涵、风格化的还原度远高于8步版本。</li>
+</ul></div>
+                </div><div class="subsection">
+                    <h4 class="subsec-title">官方放大组工作原理</h4>
+                    <div class="subsec-body"><p>二阶段的放大组本质是类图生图流程：</p>
+<ol class="content-list">
+<li>接收一阶段生成的潜空间（latent）结果</li>
+<li>注入<code class="inline-code">0.85</code>强度的噪声打破原始模糊纹理</li>
+<li>通过4步降噪过程脑补原本不存在的高清细节</li>
+<li>最终实现2倍左右的分辨率放大</li>
+</ol>
+<p>放大组的生成质量较好，但会一定程度改动原始内容的一致性，仅在需要超高清输出时使用即可。</p></div>
+                </div>
+        </div><div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">03</span>不同场景实操指南</h3>
+            <div class="sec-body"></div>
+            <div class="subsection">
+                    <h4 class="subsec-title">文生视频实操</h4>
+                    <div class="subsec-body"><p>操作步骤：</p>
+<ol class="content-list">
+<li>设置基础视频参数：帧率、帧数、输出分辨率</li>
+<li>填写正负向提示词，明确描述视频内容、风格、动态效果</li>
+<li>选择模型版本：低显存选择量化版，高显存选择全量版</li>
+<li>选择生成模式：快速预览选8步加速蒸馏版本，正式生成选15步非加速全量版本</li>
+<li>若需要更高分辨率输出，添加二阶段放大组，放大组参数保持默认即可</li>
+</ol>
+<strong>注意</strong>：加速LoRA版本容易出现人物怪异、恐怖谷效应，对质量要求高的场景推荐关闭加速LoRA，使用非加速15步流程。</div>
+                </div><div class="subsection">
+                    <h4 class="subsec-title">图生视频实操</h4>
+                    <div class="subsec-body"><p>操作步骤：</p>
+<ol class="content-list">
+<li>上传参考图像，系统会自动适配尺寸约束，无需手动裁剪</li>
+<li>填写正负向提示词，重点描述想要的动态效果、场景变化</li>
+<li>动态强度（image to video adapter LoRA权重）官方推荐为<code class="inline-code">0.7</code>，数值越高动态幅度越大，和参考图的一致性越低</li>
+<li>优先选择单阶段非加速流程，可保证人物和参考图的一致性最高，二阶段放大组会降低参考图一致性</li>
+</ol>
+<strong>注意</strong>：LTX 2.3兼容部分LTX 2的LoRA，但不是完全兼容，image to video adapter LoRA可生效但效果不一定是正向增益，建议作为可选项保留，根据实际生成效果决定是否开启。</div>
+                </div>
+        </div><div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">04</span>效果对比与版本优劣</h3>
+            <div class="sec-body"><p>| 对比维度 | 8步加速版本 | 15步全量版本 |</p>
+<p>| --- | --- | --- |</p>
+<p>| 生成速度 | 快 | 慢 |</p>
+<p>| 提示词还原度 | 低 | 高 |</p>
+<p>| 风格化表现 | 差 | 优秀 |</p>
+<p>| 内容出错概率 | 高 | 低 |</p>
+<p>| 适用场景 | 快速预览 | 正式生成 |</p>
+<p>| 对比维度 | 单阶段流程 | 二阶段流程 |</p>
+<p>| --- | --- | --- |</p>
+<p>| 生成速度 | 快 | 慢 |</p>
+<p>| 内容一致性 | 高 | 低 |</p>
+<p>| 输出分辨率 | 和输入一致 | 放大2倍左右 |</p>
+<p>| 适用场景 | 常规输出 | 超高清输出 |</p>
+<p>当前版本不足：LTX 2.3的肢体表现弱于Wan 2.2，容易出现肢体崩坏问题，后续可通过社区LoRA优化解决；强项是风格化表现、渲染质感优秀，对非人物场景的生成效果非常出色。</p></div>
+            
+        </div>
+  </div>
+
+  <!-- Chapters -->
+  <div class="section-card">
+    <div class="section-label">Chapters</div>
+    <div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">0</span>
+                    <span class="chapter-title">LTX 2.3 基础介绍与运行渠道</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">介绍LTX2.3官方流程更新，生成功能分文生视频、图生视频两类，每类可分为一阶段直接出结果、二阶段带放大两个模式；流程来自ComfyUI LTX Video插件，线上可在RunningHub直接运行，本地用户的量化方案已放在网盘，低显存可使用NVFP4/GGUF格式的Gemma3模型</div>
+                    <ul class="chapter-points"><li>LTX2.3的生成模式分类与运行渠道</li></ul>
+                </div>
+            </div>
+        </div>
+<div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">38</span>
+                    <span class="chapter-title">文生视频单阶段参数配置</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">讲解文生视频单阶段没有后续放大组，生成的视频分辨率和输入宽高完全一致；可设置帧率、帧数、提示词三类基础参数；低显存用户优先选用GGUF Q4KS模型，追求质量可使用FP8模型；分体式模型包含Transformer、视频VAE、音频VAE、Gemma文本编码器四个部分</div>
+                    <ul class="chapter-points"><li>文生视频单阶段的基础参数配置逻辑与模型选择方案</li></ul>
+                </div>
+            </div>
+        </div>
+<div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">79</span>
+                    <span class="chapter-title">生成参数与效果对比</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">介绍384加速LoRA的权重推荐设置为0.5；双轨生成分为蒸馏8步、全量15步两个分组；sigma参数代表噪声强度，可手动指定模型计算的噪声层级；15步全量生成的结果更贴合提示词内涵，风格化表现更好</div>
+                    <ul class="chapter-points"><li>sigma参数的作用与不同生成步数的效果差异</li></ul>
+                </div>
+            </div>
+        </div>
+<div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">120</span>
+                    <span class="chapter-title">二阶段放大流程解析</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">讲解二阶段的核心是放大组模块；8步加速生成的文生视频效果怪异，甚至出现恐怖谷效应，推荐选用非加速节点组构建流程；控制变量后非加速流程生成的视频效果非常自然</div>
+                    <ul class="chapter-points"><li>二阶段放大组的作用与加速/非加速流的效果差异</li></ul>
+                </div>
+            </div>
+        </div>
+<div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">162</span>
+                    <span class="chapter-title">放大组原理与使用方法</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">二阶段放大组会在第一阶段生成结果的基础上注入0.85强度的噪声，重采样降噪过程中会补全原本不存在的高清细节实现放大，逻辑类似图像生成里的图生图；放大组的生成质量较好，可以单独接入文生视频流程使用</div>
+                    <ul class="chapter-points"><li>二阶段放大组的实现原理</li></ul>
+                </div>
+            </div>
+        </div>
+<div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">205</span>
+                    <span class="chapter-title">图生视频特性与LoRA兼容性</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">图生视频比文生视频多了输入图像项，需要先对输入图做尺寸约束适配；LTX2.3对LTX2的LoRA支持但不完全，旧版image to video的adapter LoRA可以生效，但效果不一定是正向增益，建议保留可选开关</div>
+                    <ul class="chapter-points"><li>图生视频的输入特性与旧版LoRA的兼容性</li></ul>
+                </div>
+            </div>
+        </div>
+<div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">247</span>
+                    <span class="chapter-title">图生视频优化方案</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">推荐图生视频使用单阶段双轨流程，不需要后续的官方放大组；单阶段生成的人物和参考图一致性非常高，缺点是动态幅度较小；官方推荐图生视频的参考权重为0.7</div>
+                    <ul class="chapter-points"><li>图生视频单阶段的优势与缺陷</li></ul>
+                </div>
+            </div>
+        </div>
+<div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">289</span>
+                    <span class="chapter-title">效果总结与后续规划</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">后续会在RunningHub更新凝练的两套流程和微调后的官方示例流程；目前LTX2.3的肢体表现不如Wan2.2，但强项十分明显，后续可通过社区LoRA补强缺陷；推荐图生视频使用单阶段非加速处理流程</div>
+                    <ul class="chapter-points"><li>LTX2.3的优缺点与后续优化方向</li></ul>
+                </div>
+            </div>
+        </div>
+  </div>
+
+  <!-- Quotes -->
+  <div class="section-card">
+    <div class="section-label">Notable Quotes</div>
+    <div class="quote-card">
+            <div class="quote-text">本地用户可使用量化模型降低显存需求，线上用户可直接在RunningHub运行对应流程</div>
+            <div class="quote-time">0</div>
+        </div>
+<div class="quote-card">
+            <div class="quote-text">单阶段生成的视频分辨率和输入参数完全一致，低显存环境优先选择GGUF量化模型</div>
+            <div class="quote-time">38</div>
+        </div>
+<div class="quote-card">
+            <div class="quote-text">全量15步生成效果更贴合提示词需求，8步加速生成可能无法达到预期效果</div>
+            <div class="quote-time">79</div>
+        </div>
+<div class="quote-card">
+            <div class="quote-text">加速流容易出现效果怪异的问题，生成时优先选择非加速流程</div>
+            <div class="quote-time">120</div>
+        </div>
+<div class="quote-card">
+            <div class="quote-text">放大组通过注入噪声重采样补充高清细节，放大效果稳定可单独复用</div>
+            <div class="quote-time">162</div>
+        </div>
+  </div>
+
+  <!-- Takeaways -->
+  <div class="section-card">
+    <div class="section-label">Takeaways</div>
+    <ul class="takeaway-list">
+      <li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            低显存用户可使用GGUF Q4KS版本主模型+NVFP4 Gemma 3文本编码器的配置，8G以上显存即可运行LTX 2.3
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            正式生成场景建议关闭384加速LoRA，使用15步非加速全量流程，避免出现内容怪异、恐怖谷效应
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            图生视频场景优先使用单阶段流程，动态权重设置0.7左右，可最大程度保证参考图人物的一致性，减少肢体崩坏概率
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            二阶段放大组仅在需要高分辨率输出时使用，无需放大的场景直接使用单阶段输出即可，避免不必要的内容改动
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            LTX 2.3支持LTX 2的LoRA模型吗？
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            单阶段和二阶段流程怎么选？
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            加速LoRA要不要开？
+        </li>
+    </ul>
+  </div>
+
+  <!-- Resources -->
+  <div class="section-card">
+    <div class="section-label">Tools & Resources</div>
+    <table class="resource-table">
+      <thead><tr><th>Name</th><th>Description</th><th>Link</th></tr></thead>
+      <tbody>
+        <tr><td>ComfyUI LTX Video插件</td><td>LTX 2.3的官方ComfyUI实现插件，本地部署必备</td><td><a href="https://github.com/lightricks/ComfyUI-LTXVideo" target="_blank" rel="noopener">Link</a></td></tr>
+<tr><td>RunningHub在线平台</td><td>已同步部署所有LTX 2.3流程，无需本地配置可直接在线运行</td><td><a href="https://RunningHub.ai（邀请码：rh-v1111）" target="_blank" rel="noopener">Link</a></td></tr>
+<tr><td>LTX 2.3本地量化流程包</td><td>预配置好的低显存可用ComfyUI流程，内置量化模型配置，本地用户可直接导入使用</td><td><span style="color:var(--text-muted)">--</span></td></tr>
+<tr><td>LTX 2.3分体量化模型</td><td>社区制作的分体式量化模型，包含Transformer、Video VAE、Audio VAE、Gemma文本编码器，适配低显存用户</td><td><span style="color:var(--text-muted)">--</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section-card">
+            <div class="section-label">FAQ</div>
+            <div class="faq-item">
+                <div class="faq-q">Q: LTX 2.3支持LTX 2的LoRA模型吗？</div>
+                <div class="faq-a"><p>不完全支持，image to video adapter LoRA可生效，但效果不一定是正向增益，可能出现内容崩坏，建议保留可选，根据实际生成效果决定是否开启，其他类型的LoRA兼容性暂未验证，需要自行测试。</p></div>
+            </div><div class="faq-item">
+                <div class="faq-q">Q: 单阶段和二阶段流程怎么选？</div>
+                <div class="faq-a"><p>如果不需要超高清输出，优先选单阶段流程，生成速度快，内容一致性高；如果需要输出4K等更高分辨率的视频，再使用二阶段带放大组的流程，放大时注意保留原始种子保证风格一致。</p></div>
+            </div><div class="faq-item">
+                <div class="faq-q">Q: 加速LoRA要不要开？</div>
+                <div class="faq-a"><p>仅快速预览效果时开启，正式生成建议关闭，加速LoRA虽然把步数从15步降到8步，但会大幅提升内容怪异、恐怖谷、肢体崩坏的概率，生成质量远不如非加速15步版本。</p></div>
+            </div>
+        </div>
+
+  <div class="section-card">
+            <div class="section-label">Summary</div>
+            <div class="summary-box"><p>本视频系统讲解了LTX 2.3的官方流程架构、优化方案和实操方法，核心亮点是提供了低显存用户可直接使用的量化配置，对比了不同生成模式的效果差异，指出了官方流程的优缺点，给出了文生视频、图生视频两个场景的最优实践。所有流程既可以在RunningHub平台在线运行，也有本地可用的预配置文件，帮助用户快速避开LTX 2.3当前版本的坑，得到高质量的视频生成结果。当前版本LTX 2.3风格化表现优秀，但肢体生成还有不足，后续可通过社区LoRA进一步优化。</p></div>
+        </div>
+
+  <footer class="report-footer">
+    powered by video-learn
+  </footer>
+</div>
+
+<script>
+// Chapter accordion
+document.querySelectorAll('.chapter-header').forEach(header => {
+  header.addEventListener('click', () => {
+    header.parentElement.classList.toggle('open');
+  });
+});
+</script>
+</body>
+</html>
