@@ -1,0 +1,24 @@
+{
+  "title": "3大视频模型全套精简工作流SmoothMix Remix Dasiwa Wan2.2",
+  "type": "learning",
+  "topic": "基于ComfyUI的文生图转视频全流程工作流搭建与实操，包含多模型适配、音频合成、内容合规优化",
+  "category": "AI工具",
+  "difficulty": "intermediate",
+  "learning_rating": 9.0,
+  "summary": "本教程系统性分享了基于ComfyUI的文生图转视频全流程高阶工作流，针对当前AI生成视频连贯性差、风格不稳定、后期处理繁琐、内容合规风险等痛点，提供了SmoothMix、Remix、Dasiwa三款主流生成模型的适配整合工作流，同时内置MMAudio视频加声模块与NSFW内容本地优化方案。所有工作流均完成预设参数调试与节点整合，无需复杂配置即可直接使用。教程不仅展示了工作流的整体框架、节点连接逻辑，还详细讲解了关键参数的调整方法、不同模型的适用场景、文生提示词的书写规范，同时通过实操对比展示了不同参数配置下的生成效果差异，最终可以实现从单张图/文本提示词到带声音的完整AI短视频的全链路产出，无需切换多个工具，大幅降低了AI短视频的制作门槛，适合内容创作者、AI爱好者快速落地商业或个人创作需求。",
+  "speaker": "源001",
+  "tags": [
+    "AI绘画",
+    "文生视频",
+    "ComfyUI",
+    "SmoothMix",
+    "Remix",
+    "Dasiwa",
+    "NSFW优化",
+    "AI音频",
+    "AI短视频制作"
+  ],
+  "source_url": "https://www.bilibili.com/video/BV188Ngz3Ejd/",
+  "duration": 3122,
+  "generated_at": "2026-03-08T16:34:34.343213"
+}
