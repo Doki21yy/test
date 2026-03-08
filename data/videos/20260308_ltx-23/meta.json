@@ -1,0 +1,22 @@
+{
+  "title": "LTX 2.3官方流程更新之后，更值得保留的答案是：文生视频非加速二阶段放大，图生视频单阶段高一致性保持",
+  "type": "learning",
+  "topic": "LTX 2.3视频生成模型的官方流程解读、低显存适配、场景实操与效果对比",
+  "category": "AI视频生成",
+  "difficulty": "intermediate",
+  "learning_rating": 8.5,
+  "summary": "本视频围绕最新发布的LTX 2.3视频生成模型的官方示例流程展开，系统解读了文生视频、图生视频两类核心场景的单阶段（直接生成）、二阶段（带放大）生成逻辑，针对本地用户显存不足的痛点，提供了GGUF量化、NVFP4版本Gemma 3的低显存配置方案。视频实测了加速LoRA、官方放大组的实际效果，对比了不同步数生成的质量差异，指出了当前版本肢体生成的不足和优化方向。所有流程已同步部署到RunningHub平台可在线运行，也提供了本地可用的预配置流程文件，帮助用户快速上手LTX 2.3，避开官方流程的冗余和问题，得到更高质量的视频生成结果。",
+  "speaker": "AI-KSK",
+  "tags": [
+    "LTX 2.3",
+    "ComfyUI",
+    "文生视频",
+    "图生视频",
+    "低显存优化",
+    "RunningHub",
+    "AI生成 workflow"
+  ],
+  "source_url": "https://www.bilibili.com/video/BV18NNuzqEix/",
+  "duration": 330.977619,
+  "generated_at": "2026-03-08T13:24:08.796298"
+}
