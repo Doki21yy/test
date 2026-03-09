@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-03-09T11:07:07.230794",
+  "last_updated": "2026-03-09T11:10:28.142640",
   "total_videos": 4,
   "videos": [
     {
@@ -9,8 +9,8 @@
       "summary": "本教程围绕Lightricks最新发布的开源视频生成大模型LTX-2.3展开，该模型支持消费级RTX 4090显卡本地运行，解决了此前AI视频生成依赖云端API、成本高、数据不安全的痛点。相比前代版本，LTX-2.3大幅提升了9:16竖屏生成质量、音视频同步效果、复杂提示词理解能力和英文文本渲染精度，生成视频的画面连贯性、配音准确度都达到实用水平。教程核心方法是基于ComfyUI现成工作流，用户无需复杂部署，仅需修改少量参数或输入大白话剧情，配合内置的Qwen3.5大模型自动生成符合规范的专业提示词，就能快速产出4类实用视频：动态LOGO展示、电影公司厂标动画、宠物播客短视频、武侠剧情片段。教程同时给出了提示词撰写规范、常见问题解决方案，普通用户也能快速上手生成符合需求的AI视频。",
       "duration": 547.155011,
       "date": "2026-03-09",
-      "platform": "Unknown",
-      "source_url": "",
+      "platform": "Xiaohongshu",
+      "source_url": "https://www.xiaohongshu.com/discovery/item/69ad9318000000002603c071",
       "thumbnail": "data/videos/20260309_ltx-23-comfyui-/thumbnail.jpg",
       "report": "data/videos/20260309_ltx-23-comfyui-/report.html",
       "type": "learning",
