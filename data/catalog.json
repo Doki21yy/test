@@ -1,48 +1,5 @@
 {
-  "last_updated": "2026-03-08T16:38:12.586193",
-  "total_videos": 3,
-  "videos": [
-    {
-      "slug": "20260308_3smoothmix-remix-dasiwa-wan22",
-      "title": "3大视频模型全套精简工作流SmoothMix Remix Dasiwa Wan2.2",
-      "score": 9.0,
-      "learning_rating": 9.0,
-      "summary": "本教程系统性分享了基于ComfyUI的文生图转视频全流程高阶工作流，针对当前AI生成视频连贯性差、风格不稳定、后期处理繁琐、内容合规风险等痛点，提供了SmoothMix、Remix、Dasiwa三款主流生成模型的适配整合工作流，同时内置MMAudio视频加声模块与NSFW内容本地优化方案。所有工作流均完成预设参数调试与节点整合，无需复杂配置即可直接使用。教程不仅展示了工作流的整体框架、节点连接逻辑",
-      "duration": 3122,
-      "date": "2026-03-08",
-      "platform": "Bilibili",
-      "source_url": "https://www.bilibili.com/video/BV188Ngz3Ejd/",
-      "thumbnail": "data/videos/20260308_3smoothmix-remix-dasiwa-wan22/thumbnail.jpg",
-      "report": "data/videos/20260308_3smoothmix-remix-dasiwa-wan22/report.html",
-      "type": "learning"
-    },
-    {
-      "slug": "20260308_bv1plpgzoeu1",
-      "title": "数字人视频不再僵硬，Comfyui-Dnode强化数字人临场感",
-      "score": 8.0,
-      "learning_rating": 8.0,
-      "summary": "本视频介绍了一款轻量实用的ComfyUI插件ComfyUI-Dnode，核心功能是为已生成的数字人视频添加类似真实手持拍摄的自然镜头呼吸感，解决传统数字人视频镜头固定、观感生硬、缺乏临场感的痛点。该插件基于利萨茹（Lissajous）曲线实现平滑的镜头运动模拟，属于纯后处理工具，不需要在视频生成前做任何前置调整，任意成品视频都可以直接导入处理。视频详细讲解了插件唯一核心节点Lissajous Ca",
-      "duration": 234.12,
-      "date": "2026-03-08",
-      "platform": "Bilibili",
-      "source_url": "https://www.bilibili.com/video/BV1pLPgzoEu1/?spm_id_from=333.1007.tianma.1-2-2.click",
-      "thumbnail": "data/videos/20260308_bv1plpgzoeu1/thumbnail.jpg",
-      "report": "data/videos/20260308_bv1plpgzoeu1/report.html",
-      "type": "learning"
-    },
-    {
-      "slug": "20260308_ltx-23",
-      "title": "LTX 2.3官方流程更新之后，更值得保留的答案是：文生视频非加速二阶段放大，图生视频单阶段高一致性保持",
-      "score": 8.5,
-      "learning_rating": 8.5,
-      "summary": "本视频围绕最新发布的LTX 2.3视频生成模型的官方示例流程展开，系统解读了文生视频、图生视频两类核心场景的单阶段（直接生成）、二阶段（带放大）生成逻辑，针对本地用户显存不足的痛点，提供了GGUF量化、NVFP4版本Gemma 3的低显存配置方案。视频实测了加速LoRA、官方放大组的实际效果，对比了不同步数生成的质量差异，指出了当前版本肢体生成的不足和优化方向。所有流程已同步部署到RunningH",
-      "duration": 330.977619,
-      "date": "2026-03-08",
-      "platform": "Bilibili",
-      "source_url": "https://www.bilibili.com/video/BV18NNuzqEix/",
-      "thumbnail": "data/videos/20260308_ltx-23/thumbnail.jpg",
-      "report": "data/videos/20260308_ltx-23/report.html",
-      "type": "learning"
-    }
-  ]
+  "last_updated": "2026-03-09T11:06:42.705211",
+  "total_videos": 0,
+  "videos": []
 }
