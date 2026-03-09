@@ -91,6 +91,9 @@ a:hover { text-decoration: underline; }
 }
 .video-embed .video-link-fallback:hover { color: var(--accent-soft); }
 .video-embed .video-link-fallback svg { width: 48px; height: 48px; opacity: 0.5; }
+.source-link-row { margin-top: -14px; margin-bottom: 18px; text-align: center; font-size: 12px; color: var(--text-muted); }
+.source-link-row a { color: var(--accent); text-decoration: none; word-break: break-all; }
+.source-link-row a:hover { text-decoration: underline; }
 
 .hero-title {
   font-family: var(--font-heading);
@@ -383,8 +386,9 @@ a:hover { text-decoration: underline; }
 
   <section class="hero">
     <div class="video-embed">
-      <a href="https://www.xiaohongshu.com/discovery/item/69ad9318000000002603c071" target="_blank" class="video-link-fallback"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="5 3 19 12 5 21 5 3"/></svg><span>Watch on original platform</span></a>
+      <a href="https://www.xiaohongshu.com/discovery/item/69ad9318000000002603c071" target="_blank" rel="noopener" class="video-link-fallback"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="5 3 19 12 5 21 5 3"/></svg><span>在原平台观看视频</span></a>
     </div>
+    <div class="source-link-row">原视频链接：<a href="https://www.xiaohongshu.com/discovery/item/69ad9318000000002603c071" target="_blank" rel="noopener">https://www.xiaohongshu.com/discovery/item/69ad9318000000002603c071</a></div>
 
     <h1 class="hero-title">LTX-2.3开源视频大模型4090本地运行与ComfyUI工作流实战教程</h1>
 
