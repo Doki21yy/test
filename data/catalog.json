@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-03-10T02:11:53.544868",
+  "last_updated": "2026-03-10T02:15:47.873821",
   "total_videos": 7,
   "videos": [
     {
@@ -21,7 +21,7 @@
     },
     {
       "slug": "20260310_zpajfpj4hm",
-      "title": "ZPAjfp_j4HM",
+      "title": "Gemini 3.1 Flash（昵称Nano Banana 2）深度评测与使用指南",
       "score": 8.2,
       "summary": "本内容是针对谷歌最新发布的图像生成模型Gemini 3.1 Flash（昵称Nano Banana 2）的深度评测，该模型是此前爆款产品Nano Banana Pro的迭代版本，官方主打「专业级生成能力+闪电般的响应速度」特性。评测者在OpenArt平台对该模型开展多维度测试，同时横向对比Nano Banana 1、Nano Banana Pro、Cadream 5.0 light等同类产品的表现，验证官方宣传的性能是否达标。测试覆盖三大核心维度：一是基于Gemini知识库的世界历史/地理常识还原能力，通过输入罗马斗兽场坐标，要求生成不同历史时期的斗兽场图像；二是真实人像生成质量，生成名人超写实肖像对比真实度；三是文本渲染精度，要求生成包含7种不同载体文本的复杂场景。实测结果显示Nano Banana 2在常识还原、文本生成能力上明显优于同类产品，人像表现接近Pro版本，整体符合宣传预期。",
       "duration": 1288,
