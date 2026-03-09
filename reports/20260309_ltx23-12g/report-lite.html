@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LTX2.3全面优化版工作流使用指南：图生/文生视频一体化实操教程 - Learning Archive</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg-deep: #06060B;
+  --bg-surface: #0D0D14;
+  --bg-card: #12121C;
+  --bg-card-hover: #181826;
+  --border-subtle: rgba(99, 102, 241, 0.08);
+  --border-hover: rgba(99, 102, 241, 0.2);
+  --text-primary: #E8E8ED;
+  --text-secondary: #7A7A8E;
+  --text-muted: #4A4A5E;
+  --accent: #6366F1;
+  --accent-glow: rgba(99, 102, 241, 0.15);
+  --accent-soft: #818CF8;
+  --radius: 12px;
+  --font-heading: 'DM Sans', -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: var(--font-heading);
+  font-weight: 400;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: -200px; left: 50%;
+  transform: translateX(-50%);
+  width: 800px; height: 600px;
+  background: radial-gradient(ellipse, rgba(99, 102, 241, 0.05) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 24px;
+  position: relative;
+  z-index: 1;
+}
+
+a { color: var(--accent-soft); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Back Nav */
+.back-nav { padding: 24px 0; }
+.back-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--text-muted); text-decoration: none;
+  font-family: var(--font-mono); font-size: 0.78rem;
+  transition: color 0.2s;
+}
+.back-link:hover { color: var(--accent-soft); text-decoration: none; }
+.back-link svg { width: 16px; height: 16px; }
+
+/* Hero */
+.hero { padding-bottom: 40px; }
+
+.video-embed {
+  width: 100%; aspect-ratio: 16/9;
+  border-radius: var(--radius); overflow: hidden;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  margin-bottom: 28px;
+}
+.video-embed iframe { width: 100%; height: 100%; border: none; }
+.video-embed .video-link-fallback {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 12px;
+  color: var(--text-secondary); text-decoration: none;
+}
+.video-embed .video-link-fallback:hover { color: var(--accent-soft); }
+.video-embed .video-link-fallback svg { width: 48px; height: 48px; opacity: 0.5; }
+
+.hero-title {
+  font-family: var(--font-heading);
+  font-weight: 900;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  letter-spacing: -0.02em; line-height: 1.25;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+
+.hero-meta {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+}
+
+.meta-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 12px; border-radius: 6px;
+  font-family: var(--font-mono); font-size: 0.72rem;
+  font-weight: 500; letter-spacing: 0.03em;
+}
+.meta-badge.platform {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+}
+.meta-badge.platform .p-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+}
+.meta-badge.score {
+  background: var(--accent-glow);
+  border: 1px solid rgba(99, 102, 241, 0.15);
+  color: var(--accent-soft);
+}
+.meta-badge.duration, .meta-badge.date {
+  color: var(--text-muted);
+  font-family: var(--font-mono); font-size: 0.72rem;
+}
+
+/* Section Cards */
+.section-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  margin-bottom: 16px;
+}
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem; font-weight: 500;
+  color: var(--accent-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+}
+.section-heading {
+  font-family: var(--font-heading);
+  font-weight: 700; font-size: 1.15rem;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+.section-text {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+
+/* Tags */
+.tag-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.tag-pill {
+  padding: 3px 10px; border-radius: 4px;
+  font-family: var(--font-mono); font-size: 0.7rem; font-weight: 500;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+}
+.tag-pill.difficulty-beginner { border-color: rgba(34, 197, 94, 0.2); color: #4ADE80; }
+.tag-pill.difficulty-intermediate { border-color: rgba(250, 204, 21, 0.2); color: #FACC15; }
+.tag-pill.difficulty-advanced { border-color: rgba(239, 68, 68, 0.2); color: #F87171; }
+
+/* Knowledge Points */
+.knowledge-list { list-style: none; }
+.knowledge-item { padding: 14px 0; border-bottom: 1px solid var(--border-subtle); }
+.knowledge-item:last-child { border-bottom: none; }
+.knowledge-concept {
+  font-family: var(--font-heading); font-weight: 700;
+  font-size: 0.9rem; color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.knowledge-explain {
+  font-size: 0.84rem; color: var(--text-secondary); line-height: 1.65;
+}
+
+/* Chapters Accordion */
+.chapter-item { border-bottom: 1px solid var(--border-subtle); }
+.chapter-item:last-child { border-bottom: none; }
+.chapter-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 0; cursor: pointer; user-select: none;
+  transition: color 0.2s;
+}
+.chapter-header:hover { color: var(--accent-soft); }
+.chapter-header-left {
+  display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0;
+}
+.chapter-time {
+  font-family: var(--font-mono); font-size: 0.72rem;
+  color: var(--accent-soft); white-space: nowrap; flex-shrink: 0;
+}
+.chapter-title {
+  font-family: var(--font-heading); font-weight: 600;
+  font-size: 0.9rem; color: var(--text-primary);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.chapter-arrow {
+  color: var(--text-muted);
+  transition: transform 0.3s ease; flex-shrink: 0;
+}
+.chapter-item.open .chapter-arrow { transform: rotate(180deg); }
+.chapter-content { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+.chapter-item.open .chapter-content { max-height: 500px; }
+.chapter-inner { padding: 0 0 20px 0; }
+.chapter-summary {
+  font-size: 0.85rem; color: var(--text-secondary);
+  margin-bottom: 12px; line-height: 1.7;
+}
+.chapter-points { list-style: none; padding: 0; }
+.chapter-points li {
+  position: relative; padding-left: 16px;
+  margin-bottom: 6px; font-size: 0.82rem; color: var(--text-secondary);
+}
+.chapter-points li::before {
+  content: ''; position: absolute; left: 0; top: 9px;
+  width: 4px; height: 4px; border-radius: 50%; background: var(--accent);
+}
+
+/* Quotes */
+.quote-card {
+  position: relative; padding: 20px 24px;
+  margin-bottom: 12px;
+  border-left: 2px solid var(--accent);
+  background: rgba(99, 102, 241, 0.03);
+  border-radius: 0 8px 8px 0;
+}
+.quote-card:last-child { margin-bottom: 0; }
+.quote-text {
+  font-size: 0.9rem; color: var(--text-primary);
+  font-style: italic; line-height: 1.65; margin-bottom: 8px;
+}
+.quote-time {
+  font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent-soft);
+}
+
+/* Takeaways */
+.takeaway-list { list-style: none; }
+.takeaway-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 8px 0; font-size: 0.88rem; color: var(--text-secondary);
+}
+.takeaway-check {
+  width: 18px; height: 18px;
+  border: 1.5px solid var(--border-hover);
+  border-radius: 4px; flex-shrink: 0; margin-top: 2px;
+  display: flex; align-items: center; justify-content: center;
+}
+.takeaway-check svg {
+  width: 12px; height: 12px; color: var(--accent-soft);
+}
+
+/* Resources Table */
+.resource-table { width: 100%; border-collapse: collapse; }
+.resource-table th {
+  text-align: left; font-family: var(--font-mono);
+  font-size: 0.7rem; font-weight: 500; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.06em;
+  padding: 10px 0; border-bottom: 1px solid var(--border-subtle);
+}
+.resource-table td {
+  padding: 10px 0; font-size: 0.84rem;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.resource-table tr:last-child td { border-bottom: none; }
+.resource-table a { color: var(--accent-soft); text-decoration: none; }
+.resource-table a:hover { text-decoration: underline; }
+
+/* Detailed Content Sections */
+.section-block {
+  margin-bottom: 20px;
+  background: rgba(99, 102, 241, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+}
+.sec-title {
+  font-family: var(--font-heading);
+  font-size: 1rem; font-weight: 700;
+  margin-bottom: 14px; display: flex; align-items: center; gap: 10px;
+  color: var(--text-primary);
+}
+.sec-num {
+  font-family: var(--font-mono); font-size: 0.68rem;
+  color: #fff; background: var(--accent);
+  width: 24px; height: 24px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.sec-body { color: var(--text-secondary); line-height: 1.8; font-size: 0.88rem; }
+.sec-body p { margin-bottom: 10px; }
+.sec-body strong { color: var(--text-primary); font-weight: 600; }
+.subsection { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border-subtle); }
+.subsec-title { font-size: 0.92rem; font-weight: 600; margin-bottom: 8px; color: var(--text-primary); }
+.subsec-body { color: var(--text-secondary); font-size: 0.86rem; }
+.subsec-body p { margin-bottom: 8px; }
+.content-list { margin: 10px 0; padding-left: 22px; }
+.content-list li { margin-bottom: 5px; line-height: 1.65; }
+.content-h4 { font-size: 0.95rem; font-weight: 600; margin: 14px 0 8px; color: var(--text-primary); }
+.content-h5 { font-size: 0.88rem; font-weight: 600; margin: 10px 0 6px; color: var(--text-secondary); }
+.code-block {
+  background: #0D0D14; color: #CDD6F4;
+  padding: 14px 18px; border-radius: 8px;
+  overflow-x: auto; font-family: var(--font-mono);
+  font-size: 0.8rem; line-height: 1.6; margin: 10px 0;
+  border: 1px solid var(--border-subtle);
+}
+.inline-code {
+  background: var(--accent-glow); color: var(--accent-soft);
+  padding: 1px 6px; border-radius: 4px;
+  font-family: var(--font-mono); font-size: 0.85em;
+}
+
+/* FAQ */
+.faq-item {
+  margin-bottom: 14px; padding: 16px 20px;
+  background: rgba(99, 102, 241, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+}
+.faq-q { font-weight: 600; color: var(--accent-soft); margin-bottom: 8px; font-size: 0.9rem; }
+.faq-a { color: var(--text-secondary); font-size: 0.86rem; }
+.faq-a p { margin-bottom: 6px; }
+
+/* Summary Box */
+.summary-box {
+  background: rgba(99, 102, 241, 0.04);
+  border: 1px solid rgba(99, 102, 241, 0.1);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+}
+.summary-box p { color: var(--text-secondary); line-height: 1.85; font-size: 0.92rem; }
+
+/* Footer */
+.report-footer {
+  padding: 48px 0 32px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.section-card { animation: fadeInUp 0.5s ease both; }
+.section-card:nth-child(1) { animation-delay: 0.1s; }
+.section-card:nth-child(2) { animation-delay: 0.15s; }
+.section-card:nth-child(3) { animation-delay: 0.2s; }
+.section-card:nth-child(4) { animation-delay: 0.25s; }
+.section-card:nth-child(5) { animation-delay: 0.3s; }
+.section-card:nth-child(6) { animation-delay: 0.35s; }
+
+/* Responsive */
+@media (max-width: 640px) {
+  .container { padding: 0 16px; }
+  .section-card { padding: 20px 18px; }
+  .hero-title { font-size: 1.4rem; }
+  .section-block { padding: 18px 16px; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <nav class="back-nav">
+    <a href="../../../" class="back-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Archive
+    </a>
+  </nav>
+
+  <section class="hero">
+    <div class="video-embed">
+      <iframe src="//player.bilibili.com/player.html?bvid=BV1huPtzREhh&high_quality=1&danmaku=0" allowfullscreen="true" frameborder="0"></iframe>
+    </div>
+
+    <h1 class="hero-title">LTX2.3全面优化版工作流使用指南：图生/文生视频一体化实操教程</h1>
+
+    <div class="hero-meta">
+      <span class="meta-badge platform"><span class="p-dot" style="background:#00A1D6"></span>Bilibili</span>
+      <span class="meta-badge score">8.0/10</span>
+      <span class="meta-badge duration">9:47</span>
+      <span class="meta-badge date">2026-03-09</span>
+    </div>
+  </section>
+
+  <!-- Overview -->
+  <div class="section-card">
+    <div class="section-label">Overview</div>
+    <div class="tag-row">
+      <span class="tag-pill difficulty-intermediate">Intermediate</span>
+      <span class="tag-pill">AI工具</span>
+      <span class="tag-pill">Work-Fisher</span>
+    </div>
+    <div class="section-text">本视频是UP主Work-Fisher针对最新发布的LTX2.3多模态大模型打造的优化版工作流教程。对比2.0版本，LTX2.3在人物动态自然度、面部细节稳定性、口型匹配精度上均有大幅提升，解决了旧版本长视频生成中人物面部褶皱异常增多的问题。视频核心是讲解经过UP主调试优化的图生/文生一体化工作流的使用方法，包含模型选型逻辑、核心参数配置、两类提示词模板的适用场景、分辨率和帧数设置规则，同时给出了本地化部署和云端运行的双方案，适配不同硬件配置的用户。UP主还提供了预调试完成的工作流文件和相关模型资源，大幅降低了用户的使用门槛，配合后处理超分工具即可生成高质量的AI视频内容。</div>
+  </div>
+
+  <!-- Key Knowledge Points -->
+  <div class="section-card">
+    <div class="section-label">Key Knowledge</div>
+    <ul class="knowledge-list">
+      <li class="knowledge-item">
+            <div class="knowledge-concept">LTX2.3版本核心升级亮点</div>
+            <div class="knowledge-explain">LTX2.3相对2.0版本的提升是全方位的，核心优化点如下：</div>
+        </li>
+<li class="knowledge-item">
+            <div class="knowledge-concept">一体化工作流架构与基础使用流程</div>
+            <div class="knowledge-explain">本次提供的是图生视频和文生视频合并的一体化工作流，无需切换工作流即可完成两种模式的生成，全流程自动化程度高，基础使用步骤如下：</div>
+        </li>
+<li class="knowledge-item">
+            <div class="knowledge-concept">核心参数配置指南</div>
+            <div class="knowledge-explain"></div>
+        </li>
+<li class="knowledge-item">
+            <div class="knowledge-concept">提示词模板使用说明</div>
+            <div class="knowledge-explain">工作流提供了静态版和高动态版两类提示词模板，适用场景差异明显，可按需选择：</div>
+        </li>
+<li class="knowledge-item">
+            <div class="knowledge-concept">资源部署说明</div>
+            <div class="knowledge-explain">所有相关资源都已经上传到UP主的共享网盘，包含以下内容：</div>
+        </li>
+    </ul>
+  </div>
+
+  <!-- Detailed Content -->
+  <div class="section-card">
+    <div class="section-label">Detailed Content</div>
+    <div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">01</span>LTX2.3版本核心升级亮点</h3>
+            <div class="sec-body"><p>LTX2.3相对2.0版本的提升是全方位的，核心优化点如下：</p>
+<ol class="content-list">
+<li><strong>人物表现优化</strong>：面部生成稳定性大幅提升，解决了旧版本长视频生成时人物面部随时间推移出现大量异常褶皱的问题；口型匹配精度明显提高，和台词的契合度更好。</li>
+<li><strong>动态能力升级</strong>：整体动态生成能力优于旧版本，配合高动态提示词模板可以生成更丰富的人物动作和场景变化，动作自然度更高。</li>
+<li><strong>性能优化</strong>：推出的FP8量化版本模型仅为原版40G+模型的几分之一大小，但生成效果和原版差距极小，大幅降低了硬件显存要求，普通消费级显卡也可运行。</li>
+</ol></div>
+            
+        </div><div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">02</span>一体化工作流架构与基础使用流程</h3>
+            <div class="sec-body"><p>本次提供的是图生视频和文生视频合并的一体化工作流，无需切换工作流即可完成两种模式的生成，全流程自动化程度高，基础使用步骤如下：</p>
+<ol class="content-list">
+<li><strong>模式切换</strong>：开启对应旁路开关即为文生视频模式，关闭开关即为图生视频模式，切换逻辑简单直观。</li>
+<li><strong>输入准备</strong>：图生模式上传参考图片；文生模式输入核心描述文字，也可外接大模型生成完整提示词。</li>
+<li><strong>模板选择</strong>：根据自身需求和硬件配置选择静态版或高动态版提示词模板。</li>
+<li><strong>参数配置</strong>：调整采样分辨率、生成帧数等核心参数，符合规则即可。</li>
+<li><strong>运行生成</strong>：工作流自动完成所有中间步骤，无需人工干预。</li>
+<li><strong>后处理优化</strong>：原生输出视频偏模糊，建议使用Flash VSR工具做超分放大，可大幅提升最终清晰度。</li>
+</ol>
+<p>工作流还内置了台词功能，支持自动生成适配视频内容的台词，也可手动输入自定义台词，系统会自动匹配对应口型。</p></div>
+            
+        </div><div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">03</span>核心参数配置指南</h3>
+            <div class="sec-body"></div>
+            <div class="subsection">
+                    <h4 class="subsec-title">分辨率与帧数设置规则</h4>
+                    <div class="subsec-body"><ul class="content-list">
+<li><strong>分辨率设置</strong>：工作流第一次采样的分辨率最终输出时会自动翻倍，例如第一次采样设置为720P，最终输出分辨率为1440P。建议优先将第一次采样分辨率设置为1280*720，效果提升明显，不要设置过高避免不必要的性能浪费。</li>
+<li><strong>帧数设置规则</strong>：必须遵循「8的倍数+1」的规则，当前主流视频为24帧，对应时长换算如下：</li>
+<li>生成5秒视频：帧数设置为121（24*5+1）</li>
+<li>生成10秒视频：帧数设置为241（24*10+1）</li>
+</ul>
+<p>不遵循该规则会出现生成报错或者效果异常的问题。</p></div>
+                </div><div class="subsection">
+                    <h4 class="subsec-title">硬件适配配置方案</h4>
+                    <div class="subsec-body"><ul class="content-list">
+<li><strong>模型选型</strong>：优先选择FP8版本模型，和原版40G+大模型生成效果差距极小，但显存占用大幅降低，性价比极高。</li>
+<li><strong>显存要求</strong>：12G显存即可正常运行基础配置，工作流新增了显存保留机制，降低了硬件压力；16G及以上显存可以流畅运行较高配置的任务。</li>
+<li><strong>性能优化建议</strong>：配置较高的用户优先调高第一次采样的分辨率，比使用更大体积的模型带来的效果提升更明显，不要盲目追求大模型。</li>
+</ul></div>
+                </div>
+        </div><div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">04</span>提示词模板使用说明</h3>
+            <div class="sec-body"><p>工作流提供了静态版和高动态版两类提示词模板，适用场景差异明显，可按需选择：</p>
+<p>| 模板类型 | 优势 | 劣势 | 适用场景 |</p>
+<p>| --- | --- | --- | --- |</p>
+<p>| 静态版 | 人物模糊度低，动作稳定性高，生成成功率接近100% | 人物和场景的动态变化较少 | 低配置用户、新手首次使用、不需要大幅动作的静态场景 |</p>
+<p>| 高动态版 | 人物动作丰富，场景动态效果好，画面变化更多 | 低分辨率下人物容易模糊，有概率出现动作崩坏，需要多次生成抽卡（通常3-4次可得到可用结果） | 高配置用户、需要丰富动态的场景、已经熟悉工具的进阶用户 |</p>
+<p>提示词支持外接大模型生成：RH端已经接好2.5版本可以自动生成提示词，本地部署用户可以调用豆包或者DeepSeek生成提示词，比内置大模型更灵活，也降低了配置压力。</p></div>
+            
+        </div><div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">05</span>资源部署说明</h3>
+            <div class="sec-body"><p>所有相关资源都已经上传到UP主的共享网盘，包含以下内容：</p>
+<ol class="content-list">
+<li>预配置完成的LTX2.3图生/文生一体化工作流文件</li>
+<li>LTX2.3 FP8量化版主模型文件</li>
+<li>配套的ComfyUI自定义节点插件包</li>
+<li>静态版和高动态版提示词模板文件</li>
+</ol>
+<p>部署注意事项：工作流默认没有接入QWEN3VL模型，避免额外增加配置压力和报错概率，调用外部大模型生成提示词比内置更方便灵活，也更符合多数用户的使用习惯。</p></div>
+            
+        </div>
+  </div>
+
+  <!-- Chapters -->
+  <div class="section-card">
+    <div class="section-label">Chapters</div>
+    <div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">0</span>
+                    <span class="chapter-title">开篇效果演示与LTX2.3版本概述</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">开篇用意境文案展示生成视频效果，引出要介绍的LTX2.3版本. 说明LTX2.3版本昨晚发布，和2.0版本相比，人物动态、细节表现都有很大提升. 说明2.3版本解决了旧版人物脸部随时间产生多余皱纹的问题，口型同步也有进步，作为开源多模态模型潜力大，能给开源领域注入信心</div>
+                    <ul class="chapter-points"><li>展示LTX2.3版本生成视频的效果上限</li><li>LTX2.3整体生成效果显著优于2.0版本</li><li>LTX2.3修复了旧版人物脸部崩坏的缺陷</li></ul>
+                </div>
+            </div>
+        </div>
+<div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">140</span>
+                    <span class="chapter-title">工作流基础操作与效果演示</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">演示图生视频效果，说明生成的视频默认模糊，原因是初始采样分辨率设置较低，需要二次放大优化. 建议生成后用Flash VSR做超分放大解决模糊问题，工作流已上传到Running Hub，建议初始分辨率设为1280*720效果更好. 说明自己主要测试图生视频，文生视频在2.0版本就有不错的表现，2.3版本文生效果会更好</div>
+                    <ul class="chapter-points"><li>生成视频默认模糊的核心原因是初始采样分辨率低</li><li>超分工具可以有效解决生成视频模糊的问题</li><li>LTX2.3的文生视频能力继承旧版优势并优化</li></ul>
+                </div>
+            </div>
+        </div>
+<div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">242</span>
+                    <span class="chapter-title">工作流配置与提示词使用说明</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">介绍工作流使用FP8版本模型，和40多G的原版效果差别不大，更省显存，本地12G显存即可运行，16G显存可以流畅运行. 说明5秒121帧的视频生成大概需要4分钟左右，提示词分为静态版和高动态版两个版本. 说明高动态版提示词的人物动态效果更好，但低分辨率下会出现模糊，还容易出现动作崩坏；配置低建议用静态版，高动态版需要多次生成，三四次能出不错的效果</div>
+                    <ul class="chapter-points"><li>FP8版本模型性价比更高，对显存要求更低</li><li>视频生成时长参考与提示词版本分类</li><li>两种提示词版本的优劣与适用场景</li></ul>
+                </div>
+            </div>
+        </div>
+<div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">374</span>
+                    <span class="chapter-title">参数设置与功能切换讲解</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">说明工作流没有接入QWEN3.5，因为容易出问题而且占用更多显存，建议用户调用外部大模型更方便. 介绍RH词已经接入2.5版本，可全自动生成，台词可以自定义输入，也可以自动生成. 讲解参数规则：采样分辨率最终输出会翻倍，比如720P采样最终输出1440P；帧数需要设置为8的倍数加1，5秒视频对应121帧，10秒视频对应241帧. 说明工作流是图生、文生合并版本，开启对应开关就是文生视频，关掉就是图生视频，使用很方便</div>
+                    <ul class="chapter-points"><li>工作流不内置大模型的原因与替代方案</li><li>台词生成功能的使用方法</li><li>分辨率和帧数的设置规则</li><li>图生/文生视频的切换方法</li></ul>
+                </div>
+            </div>
+        </div>
+<div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">495</span>
+                    <span class="chapter-title">资源说明与收尾总结</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">介绍网盘里的内容，包含需要用到的模型、工作流等所有资源，用户可以自行下载使用. 说明工作流没有其他特殊插件，自己对工作流做了很多优化，解决了早期版本难用、容易乱出字幕等问题，使用很方便，最后请求观众一键三连</div>
+                    <ul class="chapter-points"><li>配套资源的获取方式</li><li>优化后的工作流使用门槛低、稳定性好</li></ul>
+                </div>
+            </div>
+        </div>
+  </div>
+
+  <!-- Quotes -->
+  <div class="section-card">
+    <div class="section-label">Notable Quotes</div>
+    <div class="quote-card">
+            <div class="quote-text">开篇demo直观呈现LTX2.3的视频生成质量水平</div>
+            <div class="quote-time">0</div>
+        </div>
+<div class="quote-card">
+            <div class="quote-text">2.3版本在人物动态、细节表现上比2.0版本有明显进步</div>
+            <div class="quote-time">59</div>
+        </div>
+<div class="quote-card">
+            <div class="quote-text">2.3修复了人物脸部随时间生成多余皱纹的bug，口型同步效果也有提升</div>
+            <div class="quote-time">101</div>
+        </div>
+<div class="quote-card">
+            <div class="quote-text">生成视频默认模糊是因为初始采样分辨率低，需要后续超分优化</div>
+            <div class="quote-time">140</div>
+        </div>
+<div class="quote-card">
+            <div class="quote-text">生成后用Flash VSR做超分，初始分辨率设1280*720可获得更好效果</div>
+            <div class="quote-time">180</div>
+        </div>
+  </div>
+
+  <!-- Takeaways -->
+  <div class="section-card">
+    <div class="section-label">Takeaways</div>
+    <ul class="takeaway-list">
+      <li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            LTX2.3原生输出视频偏模糊是正常现象，使用Flash VSR做超分放大后可以大幅提升清晰度，不要盲目提高第一次采样的分辨率增加性能负担
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            优先选择FP8版本模型，效果和原版大模型几乎无差异，显存需求降低很多，比使用大体积模型的性价比高很多
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            新手首次使用优先选择静态版提示词模板，生成成功率更高，熟悉工具后再尝试高动态版
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            生成帧数必须设置为8的倍数+1，否则会出现生成报错或者画面异常的问题
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            生成的人物面部模糊、动作崩坏怎么办？
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            显存不足无法运行模型怎么办？
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            生成的视频中出现多余字幕怎么办？
+        </li>
+    </ul>
+  </div>
+
+  <!-- Resources -->
+  <div class="section-card">
+    <div class="section-label">Tools & Resources</div>
+    <table class="resource-table">
+      <thead><tr><th>Name</th><th>Description</th><th>Link</th></tr></thead>
+      <tbody>
+        <tr><td>Work-Flsh-LTX2.3全面优化版工作流</td><td>预配置完成的图生/文生一体化工作流，包含自动化流程和两类提示词模板，开箱即用</td><td><span style="color:var(--text-muted)">--</span></td></tr>
+<tr><td>LTX2.3 FP8版本模型</td><td>量化后的LTX2.3主模型，显存占用低，效果接近原版40G+模型，适合消费级显卡使用</td><td><span style="color:var(--text-muted)">--</span></td></tr>
+<tr><td>Flash VSR</td><td>视频超分辨率工具，用于优化LTX2.3原生输出视频偏模糊的问题，大幅提升清晰度</td><td><span style="color:var(--text-muted)">--</span></td></tr>
+<tr><td>Running Hub云平台</td><td>UP主常用的云运行平台，已经上传了完整工作流，配置较高，本地硬件不足的用户可以选择云端运行</td><td><span style="color:var(--text-muted)">--</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section-card">
+            <div class="section-label">FAQ</div>
+            <div class="faq-item">
+                <div class="faq-q">Q: 生成的人物面部模糊、动作崩坏怎么办？</div>
+                <div class="faq-a"><p>首先检查是否在低分辨率下使用了高动态版提示词，建议先调高第一次采样的分辨率，或者切换为静态版提示词；如果是动作崩坏可以重新生成，高动态版通常3-4次可以得到可用结果。</p></div>
+            </div><div class="faq-item">
+                <div class="faq-q">Q: 显存不足无法运行模型怎么办？</div>
+                <div class="faq-a"><p>优先使用FP8版本模型，降低第一次采样的分辨率，关闭不必要的后台程序释放显存，12G显存足够运行基础配置的任务。</p></div>
+            </div><div class="faq-item">
+                <div class="faq-q">Q: 生成的视频中出现多余字幕怎么办？</div>
+                <div class="faq-a"><p>本次优化版工作流已经解决了大部分字幕生成问题，只有极低概率会出现字幕，重新生成即可解决。</p></div>
+            </div>
+        </div>
+
+  <div class="section-card">
+            <div class="section-label">Summary</div>
+            <div class="summary-box"><p>本教程系统讲解了LTX2.3多模态大模型的升级亮点和配套优化工作流的使用方法，核心价值是UP主对官方初始版本的工作流和提示词模板做了大量优化，解决了初始版本效果差、难上手的问题，提供了开箱即用的图生/文生一体化工作流。教程针对不同硬件配置给出了适配方案，提供了静态和高动态两类提示词模板满足不同场景需求，配合后处理超分工具即可生成人物细节自然、动态流畅的高质量AI视频，大幅降低了用户使用LTX2.3的技术门槛，适合不同水平的AIGC创作者学习使用。</p></div>
+        </div>
+
+  <footer class="report-footer">
+    powered by video-learn
+  </footer>
+</div>
+
+<script>
+// Chapter accordion
+document.querySelectorAll('.chapter-header').forEach(header => {
+  header.addEventListener('click', () => {
+    header.parentElement.classList.toggle('open');
+  });
+});
+</script>
+</body>
+</html>
