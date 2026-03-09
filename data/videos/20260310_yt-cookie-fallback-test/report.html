@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>《Never Gonna Give You Up》核心歌词及瑞克摇迷因学习指南 - Learning Archive</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg-deep: #06060B;
+  --bg-surface: #0D0D14;
+  --bg-card: #12121C;
+  --bg-card-hover: #181826;
+  --border-subtle: rgba(99, 102, 241, 0.08);
+  --border-hover: rgba(99, 102, 241, 0.2);
+  --text-primary: #E8E8ED;
+  --text-secondary: #7A7A8E;
+  --text-muted: #4A4A5E;
+  --accent: #6366F1;
+  --accent-glow: rgba(99, 102, 241, 0.15);
+  --accent-soft: #818CF8;
+  --radius: 12px;
+  --font-heading: 'DM Sans', -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: var(--font-heading);
+  font-weight: 400;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: -200px; left: 50%;
+  transform: translateX(-50%);
+  width: 800px; height: 600px;
+  background: radial-gradient(ellipse, rgba(99, 102, 241, 0.05) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 24px;
+  position: relative;
+  z-index: 1;
+}
+
+a { color: var(--accent-soft); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Back Nav */
+.back-nav { padding: 24px 0; }
+.back-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--text-muted); text-decoration: none;
+  font-family: var(--font-mono); font-size: 0.78rem;
+  transition: color 0.2s;
+}
+.back-link:hover { color: var(--accent-soft); text-decoration: none; }
+.back-link svg { width: 16px; height: 16px; }
+
+/* Hero */
+.hero { padding-bottom: 40px; }
+
+.video-embed {
+  width: 100%; aspect-ratio: 16/9;
+  border-radius: var(--radius); overflow: hidden;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  margin-bottom: 28px;
+}
+.video-embed iframe { width: 100%; height: 100%; border: none; }
+.video-embed .video-link-fallback {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 12px;
+  color: var(--text-secondary); text-decoration: none;
+}
+.video-embed .video-link-fallback:hover { color: var(--accent-soft); }
+.video-embed .video-link-fallback svg { width: 48px; height: 48px; opacity: 0.5; }
+.source-link-row { margin-top: -14px; margin-bottom: 18px; text-align: center; font-size: 12px; color: var(--text-muted); }
+.source-link-row a { color: var(--accent); text-decoration: none; word-break: break-all; }
+.source-link-row a:hover { text-decoration: underline; }
+
+.hero-title {
+  font-family: var(--font-heading);
+  font-weight: 900;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  letter-spacing: -0.02em; line-height: 1.25;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+
+.hero-meta {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+}
+
+.meta-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 12px; border-radius: 6px;
+  font-family: var(--font-mono); font-size: 0.72rem;
+  font-weight: 500; letter-spacing: 0.03em;
+}
+.meta-badge.platform {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+}
+.meta-badge.platform .p-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+}
+.meta-badge.score {
+  background: var(--accent-glow);
+  border: 1px solid rgba(99, 102, 241, 0.15);
+  color: var(--accent-soft);
+}
+.meta-badge.duration, .meta-badge.date {
+  color: var(--text-muted);
+  font-family: var(--font-mono); font-size: 0.72rem;
+}
+
+/* Section Cards */
+.section-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  margin-bottom: 16px;
+}
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem; font-weight: 500;
+  color: var(--accent-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+}
+.section-heading {
+  font-family: var(--font-heading);
+  font-weight: 700; font-size: 1.15rem;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+.section-text {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+
+/* Tags */
+.tag-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.tag-pill {
+  padding: 3px 10px; border-radius: 4px;
+  font-family: var(--font-mono); font-size: 0.7rem; font-weight: 500;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+}
+.tag-pill.difficulty-beginner { border-color: rgba(34, 197, 94, 0.2); color: #4ADE80; }
+.tag-pill.difficulty-intermediate { border-color: rgba(250, 204, 21, 0.2); color: #FACC15; }
+.tag-pill.difficulty-advanced { border-color: rgba(239, 68, 68, 0.2); color: #F87171; }
+
+/* Knowledge Points */
+.knowledge-list { list-style: none; }
+.knowledge-item { padding: 14px 0; border-bottom: 1px solid var(--border-subtle); }
+.knowledge-item:last-child { border-bottom: none; }
+.knowledge-concept {
+  font-family: var(--font-heading); font-weight: 700;
+  font-size: 0.9rem; color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.knowledge-explain {
+  font-size: 0.84rem; color: var(--text-secondary); line-height: 1.65;
+}
+
+/* Chapters Accordion */
+.chapter-item { border-bottom: 1px solid var(--border-subtle); }
+.chapter-item:last-child { border-bottom: none; }
+.chapter-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 0; cursor: pointer; user-select: none;
+  transition: color 0.2s;
+}
+.chapter-header:hover { color: var(--accent-soft); }
+.chapter-header-left {
+  display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0;
+}
+.chapter-time {
+  font-family: var(--font-mono); font-size: 0.72rem;
+  color: var(--accent-soft); white-space: nowrap; flex-shrink: 0;
+}
+.chapter-title {
+  font-family: var(--font-heading); font-weight: 600;
+  font-size: 0.9rem; color: var(--text-primary);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.chapter-arrow {
+  color: var(--text-muted);
+  transition: transform 0.3s ease; flex-shrink: 0;
+}
+.chapter-item.open .chapter-arrow { transform: rotate(180deg); }
+.chapter-content { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+.chapter-item.open .chapter-content { max-height: 500px; }
+.chapter-inner { padding: 0 0 20px 0; }
+.chapter-summary {
+  font-size: 0.85rem; color: var(--text-secondary);
+  margin-bottom: 12px; line-height: 1.7;
+}
+.chapter-points { list-style: none; padding: 0; }
+.chapter-points li {
+  position: relative; padding-left: 16px;
+  margin-bottom: 6px; font-size: 0.82rem; color: var(--text-secondary);
+}
+.chapter-points li::before {
+  content: ''; position: absolute; left: 0; top: 9px;
+  width: 4px; height: 4px; border-radius: 50%; background: var(--accent);
+}
+
+/* Quotes */
+.quote-card {
+  position: relative; padding: 20px 24px;
+  margin-bottom: 12px;
+  border-left: 2px solid var(--accent);
+  background: rgba(99, 102, 241, 0.03);
+  border-radius: 0 8px 8px 0;
+}
+.quote-card:last-child { margin-bottom: 0; }
+.quote-text {
+  font-size: 0.9rem; color: var(--text-primary);
+  font-style: italic; line-height: 1.65; margin-bottom: 8px;
+}
+.quote-time {
+  font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent-soft);
+}
+
+/* Takeaways */
+.takeaway-list { list-style: none; }
+.takeaway-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 8px 0; font-size: 0.88rem; color: var(--text-secondary);
+}
+.takeaway-check {
+  width: 18px; height: 18px;
+  border: 1.5px solid var(--border-hover);
+  border-radius: 4px; flex-shrink: 0; margin-top: 2px;
+  display: flex; align-items: center; justify-content: center;
+}
+.takeaway-check svg {
+  width: 12px; height: 12px; color: var(--accent-soft);
+}
+
+/* Resources Table */
+.resource-table { width: 100%; border-collapse: collapse; }
+.resource-table th {
+  text-align: left; font-family: var(--font-mono);
+  font-size: 0.7rem; font-weight: 500; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.06em;
+  padding: 10px 0; border-bottom: 1px solid var(--border-subtle);
+}
+.resource-table td {
+  padding: 10px 0; font-size: 0.84rem;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.resource-table tr:last-child td { border-bottom: none; }
+.resource-table a { color: var(--accent-soft); text-decoration: none; }
+.resource-table a:hover { text-decoration: underline; }
+
+/* Detailed Content Sections */
+.section-block {
+  margin-bottom: 20px;
+  background: rgba(99, 102, 241, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+}
+.sec-title {
+  font-family: var(--font-heading);
+  font-size: 1rem; font-weight: 700;
+  margin-bottom: 14px; display: flex; align-items: center; gap: 10px;
+  color: var(--text-primary);
+}
+.sec-num {
+  font-family: var(--font-mono); font-size: 0.68rem;
+  color: #fff; background: var(--accent);
+  width: 24px; height: 24px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.sec-body { color: var(--text-secondary); line-height: 1.8; font-size: 0.88rem; }
+.sec-body p { margin-bottom: 10px; }
+.sec-body strong { color: var(--text-primary); font-weight: 600; }
+.subsection { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border-subtle); }
+.subsec-title { font-size: 0.92rem; font-weight: 600; margin-bottom: 8px; color: var(--text-primary); }
+.subsec-body { color: var(--text-secondary); font-size: 0.86rem; }
+.subsec-body p { margin-bottom: 8px; }
+.content-list { margin: 10px 0; padding-left: 22px; }
+.content-list li { margin-bottom: 5px; line-height: 1.65; }
+.content-h4 { font-size: 0.95rem; font-weight: 600; margin: 14px 0 8px; color: var(--text-primary); }
+.content-h5 { font-size: 0.88rem; font-weight: 600; margin: 10px 0 6px; color: var(--text-secondary); }
+.code-block {
+  background: #0D0D14; color: #CDD6F4;
+  padding: 14px 18px; border-radius: 8px;
+  overflow-x: auto; font-family: var(--font-mono);
+  font-size: 0.8rem; line-height: 1.6; margin: 10px 0;
+  border: 1px solid var(--border-subtle);
+}
+.inline-code {
+  background: var(--accent-glow); color: var(--accent-soft);
+  padding: 1px 6px; border-radius: 4px;
+  font-family: var(--font-mono); font-size: 0.85em;
+}
+
+/* FAQ */
+.faq-item {
+  margin-bottom: 14px; padding: 16px 20px;
+  background: rgba(99, 102, 241, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+}
+.faq-q { font-weight: 600; color: var(--accent-soft); margin-bottom: 8px; font-size: 0.9rem; }
+.faq-a { color: var(--text-secondary); font-size: 0.86rem; }
+.faq-a p { margin-bottom: 6px; }
+
+/* Summary Box */
+.summary-box {
+  background: rgba(99, 102, 241, 0.04);
+  border: 1px solid rgba(99, 102, 241, 0.1);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+}
+.summary-box p { color: var(--text-secondary); line-height: 1.85; font-size: 0.92rem; }
+
+/* Footer */
+.report-footer {
+  padding: 48px 0 32px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.section-card { animation: fadeInUp 0.5s ease both; }
+.section-card:nth-child(1) { animation-delay: 0.1s; }
+.section-card:nth-child(2) { animation-delay: 0.15s; }
+.section-card:nth-child(3) { animation-delay: 0.2s; }
+.section-card:nth-child(4) { animation-delay: 0.25s; }
+.section-card:nth-child(5) { animation-delay: 0.3s; }
+.section-card:nth-child(6) { animation-delay: 0.35s; }
+
+/* Responsive */
+@media (max-width: 640px) {
+  .container { padding: 0 16px; }
+  .section-card { padding: 20px 18px; }
+  .hero-title { font-size: 1.4rem; }
+  .section-block { padding: 18px 16px; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <nav class="back-nav">
+    <a href="../../../" class="back-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Archive
+    </a>
+  </nav>
+
+  <section class="hero">
+    <div class="video-embed">
+      <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen frameborder="0"></iframe>
+    </div>
+    <div class="source-link-row">原视频链接：<a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener">https://www.youtube.com/watch?v=dQw4w9WgXcQ</a></div>
+
+    <h1 class="hero-title">《Never Gonna Give You Up》核心歌词及瑞克摇迷因学习指南</h1>
+
+    <div class="hero-meta">
+      <span class="meta-badge platform"><span class="p-dot" style="background:#FF0000"></span>YouTube</span>
+      <span class="meta-badge score">6.0/10</span>
+      <span class="meta-badge duration">3:33</span>
+      <span class="meta-badge date">2026-03-10</span>
+    </div>
+  </section>
+
+  <!-- Overview -->
+  <div class="section-card">
+    <div class="section-label">Overview</div>
+    <div class="tag-row">
+      <span class="tag-pill difficulty-beginner">Beginner</span>
+      <span class="tag-pill">流行文化/音乐</span>
+      <span class="tag-pill">Rick Astley</span>
+    </div>
+    <div class="section-text">本内容为英国知名歌手Rick Astley1987年发行的冠军单曲《Never Gonna Give You Up》的核心歌词片段，该曲不仅是80年代欧洲流行乐的代表作之一，更因全球知名网络迷因「瑞克摇（Rickrolling）」被当代互联网用户广泛熟知。本次呈现的内容包含了该曲辨识度最高的主歌、副歌段落，是所有瑞克摇恶作剧内容的核心组成部分。该曲发行后曾登顶全球16个国家的音乐排行榜，2007年起随着4chan论坛的相关恶作剧传播，逐渐成为全球最知名的网络迷因之一，每年都有大量用户通过伪装链接诱导他人观看该曲MV，也就是俗称的「被瑞克摇」。本内容适合想要了解该迷因背景、学习演唱该曲、研究流行文化演变的用户参考。</div>
+  </div>
+
+  <!-- Key Knowledge Points -->
+  <div class="section-card">
+    <div class="section-label">Key Knowledge</div>
+    <ul class="knowledge-list">
+      <li class="knowledge-item">
+            <div class="knowledge-concept">核心歌词中英对照</div>
+            <div class="knowledge-explain">以下为歌曲核心段落的中英对照内容，其中副歌部分是全曲记忆点最高的内容，也是瑞克摇迷因的核心识别标识：</div>
+        </li>
+<li class="knowledge-item">
+            <div class="knowledge-concept">瑞克摇迷因背景介绍</div>
+            <div class="knowledge-explain">瑞克摇（Rickrolling）是起源于2007年的全球性网络迷因，最早诞生于欧美论坛4chan的相关恶作剧：用户会发布看似是热门资源、热点新闻、福利内容的链接，实则点击后会跳转至《Never Gonna Give You Up》的官方MV页面，被跳转的用户就被称为「被瑞克摇了」。</div>
+        </li>
+<li class="knowledge-item">
+            <div class="knowledge-concept">迷因适用场景与注意事项</div>
+            <div class="knowledge-explain">瑞克摇作为传播了十余年的经典迷因，属于无恶意的娱乐类内容，主要适用场景包括：</div>
+        </li>
+    </ul>
+  </div>
+
+  <!-- Detailed Content -->
+  <div class="section-card">
+    <div class="section-label">Detailed Content</div>
+    <div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">01</span>核心歌词中英对照</h3>
+            <div class="sec-body"><p>以下为歌曲核心段落的中英对照内容，其中副歌部分是全曲记忆点最高的内容，也是瑞克摇迷因的核心识别标识：</p>
+<h4 class="content-h4">主歌第一段</h4>
+<p>> ♪ We're no strangers to love ♪</p>
+<p>> 我们对爱都不陌生</p>
+<p>> ♪ You know the rules and so do I ♪</p>
+<p>> 你知道规则我也一样</p>
+<p>> ♪ A full commitment's what I'm thinking of ♪</p>
+<p>> 我想要的是全心投入</p>
+<p>> ♪ You wouldn't get this from any other guy ♪</p>
+<p>> 你从其他男人那里得不到这些</p>
+<p>> ♪ I just wanna tell you how I'm feeling ♪</p>
+<p>> 我只想告诉你我的感受</p>
+<p>> ♪ Gotta make you understand ♪</p>
+<p>> 一定要让你明白</p>
+<h4 class="content-h4">标志性副歌</h4>
+<pre class="code-block"><code>Never gonna give you up
+<p>Never gonna let you down</p>
+<p>Never gonna run around and desert you</p>
+<p>Never gonna make you cry</p>
+<p>Never gonna say goodbye</p>
+<p>Never gonna tell a lie and hurt you</code></pre></p>
+<p>> 永不放弃你</p>
+<p>> 永不辜负你</p>
+<p>> 永不四处游荡抛弃你</p>
+<p>> 永不惹你哭泣</p>
+<p>> 永不与你道别</p>
+<p>> 永不撒谎伤害你</p></div>
+            
+        </div><div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">02</span>瑞克摇迷因背景介绍</h3>
+            <div class="sec-body"><p>瑞克摇（Rickrolling）是起源于2007年的全球性网络迷因，最早诞生于欧美论坛4chan的相关恶作剧：用户会发布看似是热门资源、热点新闻、福利内容的链接，实则点击后会跳转至《Never Gonna Give You Up》的官方MV页面，被跳转的用户就被称为「被瑞克摇了」。</p>
+<p>该迷因传播范围极广，甚至曾出现在官方活动、公众人物的社交账号内容中，2008年美国总统选举期间，就有候选人的官方网站链接被网友替换为该MV链接。截至2024年，该曲的官方MV在YouTube平台的播放量已经突破14亿次，是YouTube平台播放量最高的80年代流行歌曲之一。原唱Rick Astley也凭借该迷因再次翻红，多次在公开场合演唱该曲回应网友的玩梗热潮。</p></div>
+            
+        </div><div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">03</span>迷因适用场景与注意事项</h3>
+            <div class="sec-body"><p>瑞克摇作为传播了十余年的经典迷因，属于无恶意的娱乐类内容，主要适用场景包括：</p>
+<ol class="content-list">
+<li>好友间的趣味互动：在私人聊天、好友社群中发送伪装链接，作为轻松的恶作剧使用</li>
+<li>品牌/账号的趣味营销：不少品牌、公众账号会将瑞克摇作为互动福利的彩蛋，拉近和用户的距离</li>
+<li>二次创作素材：很多剪辑、音乐、动画类二次创作都会融入该曲的副歌片段，作为致敬迷因的彩蛋</li>
+</ol>
+<p>使用时需注意：该迷因仅适合轻松的娱乐场景，不要在工作沟通、政务沟通、正式活动等严肃场景中使用，避免造成误解，给他人带来不必要的困扰。</p></div>
+            
+        </div>
+  </div>
+
+  <!-- Chapters -->
+  <div class="section-card">
+    <div class="section-label">Chapters</div>
+    <div class="chapter-item"><div class="chapter-header"><div class="chapter-header-left"><span class="chapter-time">--</span><span class="chapter-title">No chapter data available</span></div></div></div>
+  </div>
+
+  <!-- Quotes -->
+  <div class="section-card">
+    <div class="section-label">Notable Quotes</div>
+    <div class="quote-card">
+            <div class="quote-text">遇到来源不明的陌生链接，可先检查链接域名是否指向YouTube官方Rick Astley频道的该MV地址，避免被瑞克摇</div>
+            
+        </div>
+<div class="quote-card">
+            <div class="quote-text">该歌曲歌词难度低、节奏清晰、发音标准，适合作为英文流行歌入门演唱练习素材</div>
+            
+        </div>
+<div class="quote-card">
+            <div class="quote-text">如果想要玩瑞克摇的梗，可以将链接添加短码伪装，降低被对方提前识别的概率，提升娱乐效果</div>
+            
+        </div>
+  </div>
+
+  <!-- Takeaways -->
+  <div class="section-card">
+    <div class="section-label">Takeaways</div>
+    <ul class="takeaway-list">
+      <li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            遇到来源不明的陌生链接，可先检查链接域名是否指向YouTube官方Rick Astley频道的该MV地址，避免被瑞克摇
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            该歌曲歌词难度低、节奏清晰、发音标准，适合作为英文流行歌入门演唱练习素材
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            如果想要玩瑞克摇的梗，可以将链接添加短码伪装，降低被对方提前识别的概率，提升娱乐效果
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            《Never Gonna Give You Up》的原唱是谁，发行于哪一年？
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            被瑞克摇了是什么意思？
+        </li>
+    </ul>
+  </div>
+
+  <!-- Resources -->
+  <div class="section-card">
+    <div class="section-label">Tools & Resources</div>
+    <table class="resource-table">
+      <thead><tr><th>Name</th><th>Description</th><th>Link</th></tr></thead>
+      <tbody>
+        <tr><td colspan="3" style="color:var(--text-muted);font-style:italic">No tools or resources mentioned.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section-card">
+            <div class="section-label">FAQ</div>
+            <div class="faq-item">
+                <div class="faq-q">Q: 《Never Gonna Give You Up》的原唱是谁，发行于哪一年？</div>
+                <div class="faq-a"><p>该歌曲原唱是英国歌手Rick Astley，发行于1987年，曾登顶全球16个国家的音乐排行榜，是80年代流行乐的经典作品之一。</p></div>
+            </div><div class="faq-item">
+                <div class="faq-q">Q: 被瑞克摇了是什么意思？</div>
+                <div class="faq-a"><p>指点击了他人伪装成其他内容的链接，最终跳转到《Never Gonna Give You Up》MV的情况，是一种流行多年的无恶意网络恶作剧。</p></div>
+            </div>
+        </div>
+
+  <div class="section-card">
+            <div class="section-label">Summary</div>
+            <div class="summary-box"><p>本内容呈现了经典流行歌曲《Never Gonna Give You Up》的核心歌词段落，同时介绍了该曲相关的全球知名网络迷因「瑞克摇」的背景信息、适用场景和注意事项。该曲既是80年代流行乐的代表作，也是当代互联网流行文化的标志性符号，本次收录的内容包含了全曲记忆点最高的主歌、副歌段落，用户可通过内容快速熟悉歌曲核心内容，了解瑞克摇迷因的核心来源，也可将内容作为英文歌曲演唱练习的参考。内容轻松易懂，无学习门槛，适合所有对流行文化、网络迷因感兴趣的用户。</p></div>
+        </div>
+
+  <footer class="report-footer">
+    powered by video-learn
+  </footer>
+</div>
+
+<script>
+// Chapter accordion
+document.querySelectorAll('.chapter-header').forEach(header => {
+  header.addEventListener('click', () => {
+    header.parentElement.classList.toggle('open');
+  });
+});
+</script>
+</body>
+</html>
