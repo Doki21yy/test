@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-03-10T02:42:22.127747",
+  "last_updated": "2026-03-10T02:49:59.111190",
   "total_videos": 7,
   "videos": [
     {
@@ -9,8 +9,8 @@
       "summary": "本视频由Excalicord的开发者主讲，Excalicord是一款结合无限白板+录屏功能的内容创作工具，用户在白板涂画时摄像头会悬浮展示，内容自动合成高清视频，比传统录屏+白板的组合体验更流畅。视频核心是演示如何用Claude Code这款AI编程助手，把Excalicord的完整代码库拆解成可视化、无编程基础也能看懂的说明网页，内容涵盖产品三层技术架构（界面层、逻辑层、服务层）、各模块间的协作逻辑（用群聊对话的通俗形式讲解服务调用流程）、产品用到的全部7款SaaS工具的作用、免费额度和成本计算，还分享了让AI生成代码库拆解文档的提示词技巧，帮独立开发者低成本理解项目架构、快速落地SaaS产品，即使无编程经验也能搞懂一款Web产品从开发到上线的全链路构成。",
       "duration": 245.481995,
       "date": "2026-03-10",
-      "platform": "Unknown",
-      "source_url": "",
+      "platform": "Xiaohongshu",
+      "source_url": "https://www.xiaohongshu.com/discovery/item/6994f5a1000000002800a094",
       "thumbnail": "data/videos/20260310_coding-agent--/thumbnail.jpg",
       "report": "data/videos/20260310_coding-agent--/report.html",
       "type": "learning",
