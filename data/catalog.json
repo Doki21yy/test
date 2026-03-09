@@ -1,7 +1,24 @@
 {
-  "last_updated": "2026-03-10T02:09:43.026600",
-  "total_videos": 6,
+  "last_updated": "2026-03-10T02:11:53.544868",
+  "total_videos": 7,
   "videos": [
+    {
+      "slug": "20260310_yt-cookie-fallback-test",
+      "title": "yt-cookie-fallback-test",
+      "score": 6.0,
+      "summary": "本内容为英国知名歌手Rick Astley1987年发行的冠军单曲《Never Gonna Give You Up》的核心歌词片段，该曲不仅是80年代欧洲流行乐的代表作之一，更因全球知名网络迷因「瑞克摇（Rickrolling）」被当代互联网用户广泛熟知。本次呈现的内容包含了该曲辨识度最高的主歌、副歌段落，是所有瑞克摇恶作剧内容的核心组成部分。该曲发行后曾登顶全球16个国家的音乐排行榜，2007年起随着4chan论坛的相关恶作剧传播，逐渐成为全球最知名的网络迷因之一，每年都有大量用户通过伪装链接诱导他人观看该曲MV，也就是俗称的「被瑞克摇」。本内容适合想要了解该迷因背景、学习演唱该曲、研究流行文化演变的用户参考。",
+      "duration": 213,
+      "date": "2026-03-10",
+      "platform": "YouTube",
+      "source_url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "thumbnail": "data/videos/20260310_yt-cookie-fallback-test/thumbnail.jpg",
+      "report": "data/videos/20260310_yt-cookie-fallback-test/report.html",
+      "type": "learning",
+      "topic": "经典流行歌曲《Never Gonna Give You Up》歌词解析及相关网络迷因介绍",
+      "category": "流行文化/音乐",
+      "difficulty": "beginner",
+      "learning_rating": 6.0
+    },
     {
       "slug": "20260310_zpajfpj4hm",
       "title": "ZPAjfp_j4HM",
