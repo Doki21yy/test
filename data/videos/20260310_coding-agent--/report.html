@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>拆解Excalicord：用AI辅助开发SaaS产品的完整实践 - Learning Archive</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg-deep: #06060B;
+  --bg-surface: #0D0D14;
+  --bg-card: #12121C;
+  --bg-card-hover: #181826;
+  --border-subtle: rgba(99, 102, 241, 0.08);
+  --border-hover: rgba(99, 102, 241, 0.2);
+  --text-primary: #E8E8ED;
+  --text-secondary: #7A7A8E;
+  --text-muted: #4A4A5E;
+  --accent: #6366F1;
+  --accent-glow: rgba(99, 102, 241, 0.15);
+  --accent-soft: #818CF8;
+  --radius: 12px;
+  --font-heading: 'DM Sans', -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: var(--font-heading);
+  font-weight: 400;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: -200px; left: 50%;
+  transform: translateX(-50%);
+  width: 800px; height: 600px;
+  background: radial-gradient(ellipse, rgba(99, 102, 241, 0.05) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 24px;
+  position: relative;
+  z-index: 1;
+}
+
+a { color: var(--accent-soft); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Back Nav */
+.back-nav { padding: 24px 0; }
+.back-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--text-muted); text-decoration: none;
+  font-family: var(--font-mono); font-size: 0.78rem;
+  transition: color 0.2s;
+}
+.back-link:hover { color: var(--accent-soft); text-decoration: none; }
+.back-link svg { width: 16px; height: 16px; }
+
+/* Hero */
+.hero { padding-bottom: 40px; }
+
+.video-embed {
+  width: 100%; aspect-ratio: 16/9;
+  border-radius: var(--radius); overflow: hidden;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  margin-bottom: 28px;
+}
+.video-embed iframe { width: 100%; height: 100%; border: none; }
+.video-embed .video-link-fallback {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 12px;
+  color: var(--text-secondary); text-decoration: none;
+}
+.video-embed .video-link-fallback:hover { color: var(--accent-soft); }
+.video-embed .video-link-fallback svg { width: 48px; height: 48px; opacity: 0.5; }
+.source-link-row { margin-top: -14px; margin-bottom: 18px; text-align: center; font-size: 12px; color: var(--text-muted); }
+.source-link-row a { color: var(--accent); text-decoration: none; word-break: break-all; }
+.source-link-row a:hover { text-decoration: underline; }
+
+.hero-title {
+  font-family: var(--font-heading);
+  font-weight: 900;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  letter-spacing: -0.02em; line-height: 1.25;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+
+.hero-meta {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+}
+
+.meta-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 12px; border-radius: 6px;
+  font-family: var(--font-mono); font-size: 0.72rem;
+  font-weight: 500; letter-spacing: 0.03em;
+}
+.meta-badge.platform {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+}
+.meta-badge.platform .p-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+}
+.meta-badge.score {
+  background: var(--accent-glow);
+  border: 1px solid rgba(99, 102, 241, 0.15);
+  color: var(--accent-soft);
+}
+.meta-badge.duration, .meta-badge.date {
+  color: var(--text-muted);
+  font-family: var(--font-mono); font-size: 0.72rem;
+}
+
+/* Section Cards */
+.section-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  margin-bottom: 16px;
+}
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem; font-weight: 500;
+  color: var(--accent-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+}
+.section-heading {
+  font-family: var(--font-heading);
+  font-weight: 700; font-size: 1.15rem;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+.section-text {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+
+/* Tags */
+.tag-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.tag-pill {
+  padding: 3px 10px; border-radius: 4px;
+  font-family: var(--font-mono); font-size: 0.7rem; font-weight: 500;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+}
+.tag-pill.difficulty-beginner { border-color: rgba(34, 197, 94, 0.2); color: #4ADE80; }
+.tag-pill.difficulty-intermediate { border-color: rgba(250, 204, 21, 0.2); color: #FACC15; }
+.tag-pill.difficulty-advanced { border-color: rgba(239, 68, 68, 0.2); color: #F87171; }
+
+/* Knowledge Points */
+.knowledge-list { list-style: none; }
+.knowledge-item { padding: 14px 0; border-bottom: 1px solid var(--border-subtle); }
+.knowledge-item:last-child { border-bottom: none; }
+.knowledge-concept {
+  font-family: var(--font-heading); font-weight: 700;
+  font-size: 0.9rem; color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.knowledge-explain {
+  font-size: 0.84rem; color: var(--text-secondary); line-height: 1.65;
+}
+
+/* Chapters Accordion */
+.chapter-item { border-bottom: 1px solid var(--border-subtle); }
+.chapter-item:last-child { border-bottom: none; }
+.chapter-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 0; cursor: pointer; user-select: none;
+  transition: color 0.2s;
+}
+.chapter-header:hover { color: var(--accent-soft); }
+.chapter-header-left {
+  display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0;
+}
+.chapter-time {
+  font-family: var(--font-mono); font-size: 0.72rem;
+  color: var(--accent-soft); white-space: nowrap; flex-shrink: 0;
+}
+.chapter-title {
+  font-family: var(--font-heading); font-weight: 600;
+  font-size: 0.9rem; color: var(--text-primary);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.chapter-arrow {
+  color: var(--text-muted);
+  transition: transform 0.3s ease; flex-shrink: 0;
+}
+.chapter-item.open .chapter-arrow { transform: rotate(180deg); }
+.chapter-content { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+.chapter-item.open .chapter-content { max-height: 500px; }
+.chapter-inner { padding: 0 0 20px 0; }
+.chapter-summary {
+  font-size: 0.85rem; color: var(--text-secondary);
+  margin-bottom: 12px; line-height: 1.7;
+}
+.chapter-points { list-style: none; padding: 0; }
+.chapter-points li {
+  position: relative; padding-left: 16px;
+  margin-bottom: 6px; font-size: 0.82rem; color: var(--text-secondary);
+}
+.chapter-points li::before {
+  content: ''; position: absolute; left: 0; top: 9px;
+  width: 4px; height: 4px; border-radius: 50%; background: var(--accent);
+}
+
+/* Quotes */
+.quote-card {
+  position: relative; padding: 20px 24px;
+  margin-bottom: 12px;
+  border-left: 2px solid var(--accent);
+  background: rgba(99, 102, 241, 0.03);
+  border-radius: 0 8px 8px 0;
+}
+.quote-card:last-child { margin-bottom: 0; }
+.quote-text {
+  font-size: 0.9rem; color: var(--text-primary);
+  font-style: italic; line-height: 1.65; margin-bottom: 8px;
+}
+.quote-time {
+  font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent-soft);
+}
+
+/* Takeaways */
+.takeaway-list { list-style: none; }
+.takeaway-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 8px 0; font-size: 0.88rem; color: var(--text-secondary);
+}
+.takeaway-check {
+  width: 18px; height: 18px;
+  border: 1.5px solid var(--border-hover);
+  border-radius: 4px; flex-shrink: 0; margin-top: 2px;
+  display: flex; align-items: center; justify-content: center;
+}
+.takeaway-check svg {
+  width: 12px; height: 12px; color: var(--accent-soft);
+}
+
+/* Resources Table */
+.resource-table { width: 100%; border-collapse: collapse; }
+.resource-table th {
+  text-align: left; font-family: var(--font-mono);
+  font-size: 0.7rem; font-weight: 500; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.06em;
+  padding: 10px 0; border-bottom: 1px solid var(--border-subtle);
+}
+.resource-table td {
+  padding: 10px 0; font-size: 0.84rem;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.resource-table tr:last-child td { border-bottom: none; }
+.resource-table a { color: var(--accent-soft); text-decoration: none; }
+.resource-table a:hover { text-decoration: underline; }
+
+/* Detailed Content Sections */
+.section-block {
+  margin-bottom: 20px;
+  background: rgba(99, 102, 241, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+}
+.sec-title {
+  font-family: var(--font-heading);
+  font-size: 1rem; font-weight: 700;
+  margin-bottom: 14px; display: flex; align-items: center; gap: 10px;
+  color: var(--text-primary);
+}
+.sec-num {
+  font-family: var(--font-mono); font-size: 0.68rem;
+  color: #fff; background: var(--accent);
+  width: 24px; height: 24px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.sec-body { color: var(--text-secondary); line-height: 1.8; font-size: 0.88rem; }
+.sec-body p { margin-bottom: 10px; }
+.sec-body strong { color: var(--text-primary); font-weight: 600; }
+.subsection { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border-subtle); }
+.subsec-title { font-size: 0.92rem; font-weight: 600; margin-bottom: 8px; color: var(--text-primary); }
+.subsec-body { color: var(--text-secondary); font-size: 0.86rem; }
+.subsec-body p { margin-bottom: 8px; }
+.content-list { margin: 10px 0; padding-left: 22px; }
+.content-list li { margin-bottom: 5px; line-height: 1.65; }
+.content-h4 { font-size: 0.95rem; font-weight: 600; margin: 14px 0 8px; color: var(--text-primary); }
+.content-h5 { font-size: 0.88rem; font-weight: 600; margin: 10px 0 6px; color: var(--text-secondary); }
+.code-block {
+  background: #0D0D14; color: #CDD6F4;
+  padding: 14px 18px; border-radius: 8px;
+  overflow-x: auto; font-family: var(--font-mono);
+  font-size: 0.8rem; line-height: 1.6; margin: 10px 0;
+  border: 1px solid var(--border-subtle);
+}
+.inline-code {
+  background: var(--accent-glow); color: var(--accent-soft);
+  padding: 1px 6px; border-radius: 4px;
+  font-family: var(--font-mono); font-size: 0.85em;
+}
+
+/* FAQ */
+.faq-item {
+  margin-bottom: 14px; padding: 16px 20px;
+  background: rgba(99, 102, 241, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+}
+.faq-q { font-weight: 600; color: var(--accent-soft); margin-bottom: 8px; font-size: 0.9rem; }
+.faq-a { color: var(--text-secondary); font-size: 0.86rem; }
+.faq-a p { margin-bottom: 6px; }
+
+/* Summary Box */
+.summary-box {
+  background: rgba(99, 102, 241, 0.04);
+  border: 1px solid rgba(99, 102, 241, 0.1);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+}
+.summary-box p { color: var(--text-secondary); line-height: 1.85; font-size: 0.92rem; }
+
+/* Footer */
+.report-footer {
+  padding: 48px 0 32px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.section-card { animation: fadeInUp 0.5s ease both; }
+.section-card:nth-child(1) { animation-delay: 0.1s; }
+.section-card:nth-child(2) { animation-delay: 0.15s; }
+.section-card:nth-child(3) { animation-delay: 0.2s; }
+.section-card:nth-child(4) { animation-delay: 0.25s; }
+.section-card:nth-child(5) { animation-delay: 0.3s; }
+.section-card:nth-child(6) { animation-delay: 0.35s; }
+
+/* Responsive */
+@media (max-width: 640px) {
+  .container { padding: 0 16px; }
+  .section-card { padding: 20px 18px; }
+  .hero-title { font-size: 1.4rem; }
+  .section-block { padding: 18px 16px; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <nav class="back-nav">
+    <a href="../../../" class="back-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Archive
+    </a>
+  </nav>
+
+  <section class="hero">
+    <div class="video-embed">
+      <a href="#" class="video-link-fallback"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="5 3 19 12 5 21 5 3"/></svg><span>No video link available</span></a>
+    </div>
+    
+
+    <h1 class="hero-title">拆解Excalicord：用AI辅助开发SaaS产品的完整实践</h1>
+
+    <div class="hero-meta">
+      <span class="meta-badge platform"><span class="p-dot" style="background:#6366F1"></span>Video</span>
+      <span class="meta-badge score">8.5/10</span>
+      <span class="meta-badge duration">4:05</span>
+      <span class="meta-badge date">2026-03-10</span>
+    </div>
+  </section>
+
+  <!-- Overview -->
+  <div class="section-card">
+    <div class="section-label">Overview</div>
+    <div class="tag-row">
+      <span class="tag-pill difficulty-beginner">Beginner</span>
+      <span class="tag-pill">AI工具/编程/创业</span>
+      <span class="tag-pill">Excalicord官方作者（独立开发者）</span>
+    </div>
+    <div class="section-text">本视频由Excalicord的开发者主讲，Excalicord是一款结合无限白板+录屏功能的内容创作工具，用户在白板涂画时摄像头会悬浮展示，内容自动合成高清视频，比传统录屏+白板的组合体验更流畅。视频核心是演示如何用Claude Code这款AI编程助手，把Excalicord的完整代码库拆解成可视化、无编程基础也能看懂的说明网页，内容涵盖产品三层技术架构（界面层、逻辑层、服务层）、各模块间的协作逻辑（用群聊对话的通俗形式讲解服务调用流程）、产品用到的全部7款SaaS工具的作用、免费额度和成本计算，还分享了让AI生成代码库拆解文档的提示词技巧，帮独立开发者低成本理解项目架构、快速落地SaaS产品，即使无编程经验也能搞懂一款Web产品从开发到上线的全链路构成。</div>
+  </div>
+
+  <!-- Key Knowledge Points -->
+  <div class="section-card">
+    <div class="section-label">Key Knowledge</div>
+    <ul class="knowledge-list">
+      <li class="knowledge-item">
+            <div class="knowledge-concept">Excalicord产品介绍与三层技术架构</div>
+            <div class="knowledge-explain">Excalicord是「屏幕录制+数字白板」的结合体，核心是把无限白板变成录制工作室，支持在白板上随意涂画，摄像头悬浮在角落展示，所有内容自动合成为流畅的精品视频，相比传统录屏工具无需复杂后期剪辑。</div>
+        </li>
+<li class="knowledge-item">
+            <div class="knowledge-concept">模块间协作逻辑的通俗拆解</div>
+            <div class="knowledge-explain">为了让无编程基础的人理解各服务如何配合，作者用「群聊对话」的拟人化形式模拟了核心场景的请求流转路径，其中最典型的是录制视频的完整流程：</div>
+        </li>
+<li class="knowledge-item">
+            <div class="knowledge-concept">SaaS工具清单与成本核算</div>
+            <div class="knowledge-explain">开发Excalicord全程不需要从零搭建底层能力，全部用现成SaaS服务，极大降低了开发门槛，共用到7款工具，详细信息如下：</div>
+        </li>
+<li class="knowledge-item">
+            <div class="knowledge-concept">用AI拆解代码库的实操方法</div>
+            <div class="knowledge-explain">想要让Claude Code把你的代码库转换成小白易懂的可视化说明网页，只需要给AI明确的提示词要求即可，核心提示词示例如下：</div>
+        </li>
+    </ul>
+  </div>
+
+  <!-- Detailed Content -->
+  <div class="section-card">
+    <div class="section-label">Detailed Content</div>
+    <div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">01</span>Excalicord产品介绍与三层技术架构</h3>
+            <div class="sec-body"><p>Excalicord是「屏幕录制+数字白板」的结合体，核心是把无限白板变成录制工作室，支持在白板上随意涂画，摄像头悬浮在角落展示，所有内容自动合成为流畅的精品视频，相比传统录屏工具无需复杂后期剪辑。</p>
+<p>目前已上线的功能包括：中文界面支持、白板内容自动保存、用户偏好设置留存、PPT幻灯片模式（可预先设计好slides，录制时支持翻页）、设置画面时实时预览，后续还将上线美颜、非白板画面录制等功能。</p>
+<p>产品整体采用三层蛋糕式架构，无编程基础也能轻松理解：</p>
+<ol class="content-list">
+<li><strong>界面层</strong>：用户直接可见、可交互的模块，包括Excalidraw无限画布（所有涂画操作都在这里完成）、摄像头悬浮气泡（可拖拽到任意位置）、录制控制栏（支持开始/暂停/停止、场景选择）、幻灯片导航条（录制时按方向键即可切换画面）。</li>
+<li><strong>逻辑层</strong>：系统的调度中枢，由各类Hooks组成，负责管理状态和行为：</li>
+</ol>
+<ul class="content-list">
+<li>App.tsx（中央指挥）：约2000行代码，是整个应用的主文件，负责串联所有模块，管控录制全生命周期（预览→倒计时→录制→停止→导出），每秒30次合并白板画面和摄像头画面，保证输出视频流畅不卡顿。</li>
+<li>useSlides钩子：管理幻灯片的创建、切换、快捷键逻辑。</li>
+<li>useMediaDevices钩子：管理摄像头、麦克风的权限调用。</li>
+<li>AuthContext：校验用户登录状态、付费身份。</li>
+</ul>
+<ol class="content-list">
+<li><strong>服务层</strong>：底层能力引擎，负责执行具体的计算任务：包括视频录制器（实时压缩视频画面）、视频转换器（把画面打包成可播放的MP4文件）、美颜滤镜（人脸检测+磨皮，实时生效）、国际化模块（自动适配浏览器语言，支持中英双语）。</li>
+</ol></div>
+            
+        </div><div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">02</span>模块间协作逻辑的通俗拆解</h3>
+            <div class="sec-body"><p>为了让无编程基础的人理解各服务如何配合，作者用「群聊对话」的拟人化形式模拟了核心场景的请求流转路径，其中最典型的是录制视频的完整流程：</p>
+<ol class="content-list">
+<li>用户点击录制按钮，App.tsx作为总指挥发号施令：要求Excalidraw返回白板画面、摄像头返回画面，每秒叠加30次，保证最终视频流畅。</li>
+<li>Excalidraw响应指令，每秒返回30张白板截图。</li>
+<li>App把截图交给压缩工具WebCodecs（浏览器内置工具）进行压缩，把画面体积缩小几十倍，同时保证清晰度；如果用户浏览器版本过低不支持WebCodecs，会自动切换到备用服务MediaBunny完成压缩。</li>
+<li>用户点击停止录制后，App指令将压缩后的画面和音轨编排为标准MP4文件，生成下载链接提供给用户。</li>
+<li>PostHog在后台静默记录本次录制的时长、分辨率、文件大小等数据，用于后续产品数据分析。</li>
+</ol>
+<p>除此之外，登录、付费等场景也用同样的拟人化逻辑讲解：比如用户选择Google登录时，App先请求Google做身份验证，验证通过后通知Supabase创建用户账号，同时PostHog记录新用户注册事件，整个流程清晰易懂，完全不需要懂技术术语也能理解。</p></div>
+            
+        </div><div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">03</span>SaaS工具清单与成本核算</h3>
+            <div class="sec-body"><p>开发Excalicord全程不需要从零搭建底层能力，全部用现成SaaS服务，极大降低了开发门槛，共用到7款工具，详细信息如下：</p>
+<p>| 工具名称 | 核心用途 | 免费额度 | 付费价格 | 付费触发条件 |</p>
+<p>| --- | --- | --- | --- | --- |</p>
+<p>| Vercel | 网站部署与托管、自动构建分发到全球节点 | 每月100GB流量、100万次请求，仅支持个人非商用 | 20美元/人/月 | 产品商业化、需要团队协作功能时 |</p>
+<p>| Supabase | 后端即服务，提供数据库、用户认证、云函数能力 | 500MB数据库、1GB存储、5万月活用户、最多2个项目，无访问的项目会自动休眠 | 25美元/月/项目 | 存储超过500MB、需要多项目/高阶功能时 |</p>
+<p>| Stripe | 全球支付处理，支持收付款、订单管理、发票开具 | 开发、测试模式全免费 | 美国本土每笔2.9%+0.3美元，国际信用卡3.9%+0.3美元 | 仅产生实际用户交易时收费 |</p>
+<p>| Namecheap | 域名注册、DNS解析 | 无免费域名，自带WHOIS隐私保护（隐藏注册人信息） | .com域名首年约11美元，续费约18美元/年 | 购买域名时一次性支付 |</p>
+<p>| PostHog | 用户行为数据分析、埋点、会话回放 | 每月100万次事件、5000次会话回放、250份问卷回复，团队人数不限 | 超出后0.00005美元/事件、0.005美元/回放 | 月事件超过100万时付费，个人开发者基本够用 |</p>
+<p>| Google登录 | 第三方身份验证、OAuth登录 | 完全免费，登录次数无上限 | 无 | 永久免费 |</p>
+<p>| Claude Code | AI编程助手，可写代码、解读代码库、生成文档 | 免费版仅能使用Sonnet模型，用量极少，仅适合测试 | Pro版20美元/月，更高阶套餐100-200美元/月 | 日常开发写代码时需要，免费版功能不足以支撑正式开发 |</p>
+<strong>成本汇总</strong>：非商用阶段每月固定成本仅20-31美元（主要是Claude Code Pro费用+域名年付平摊），正式商用后再加Vercel Pro和Supabase Pro，每月成本约65-75美元，对于独立开发者来说成本极低。</div>
+            
+        </div><div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">04</span>用AI拆解代码库的实操方法</h3>
+            <div class="sec-body"><p>想要让Claude Code把你的代码库转换成小白易懂的可视化说明网页，只需要给AI明确的提示词要求即可，核心提示词示例如下：</p>
+<pre class="code-block"><code>把我的代码库做成一个交互式可视化网页，用浅色模式，面向完全没有编程经验的读者，让外行人也能看懂项目是怎么运转的。内容包括技术架构、用到的技术、各部分之间如何连接。
+<p>架构要做成层级的视觉效果，一眼能看出分层关系。</p>
+<p>用聊天对话的比喻来展示各个服务之间怎么通信，比如用户付款时，Stripe告诉Supabase这个人付了钱，给他开通许可证，像同事之间在群里传话一样。把最核心的功能场景排第一个。</p>
+<p>加一个SaaS工具板块，列出项目用到的所有第三方服务，包括每个服务的角色、它们之间的关联、免费额度包含什么、付费价格多少、什么情况下需要升级到付费版（上两档最新定价）。</p>
+<p>所有技术术语都要用大白话解释。读者不懂WebCodecs、FFmpeg、H.264、30fps、Mux、MP4这些词，每个概念第一次出现时用日常比喻说清楚。要有教育性也要有趣，但别用力过猛。</p>
+<p>全程说人话，像跟朋友聊天，不要像技术文档。</code></pre></p>
+<p>除了生成网页，也可以根据自己的需求让AI输出Markdown格式的架构文档，网页的优势是更直观、交互性更强，适合对外分享或者给非技术团队成员讲解。</p></div>
+            
+        </div>
+  </div>
+
+  <!-- Chapters -->
+  <div class="section-card">
+    <div class="section-label">Chapters</div>
+    <div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">0s</span>
+                    <span class="chapter-title">开篇介绍Coding Agent的双重作用</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">讲者建议大家把coding agent不仅当作工程师，也当作老师，它可以解释代码库帮助提升技术能力；自己的Excalicord录屏产品全程用Claude Code开发，完成后还让Claude Code生成了代码结构可视化网页，用大白话解释技术内容</div>
+                    <ul class="chapter-points"><li>Coding Agent可同时承担开发工具和学习工具的双重角色</li></ul>
+                </div>
+            </div>
+        </div>
+<div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">30s</span>
+                    <span class="chapter-title">Excalicord三层架构讲解</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">讲者介绍Excalicord采用分层架构，第一层是用户可见的界面层，包含画布、摄像头气泡等元素；第二层是逻辑层，由各类hooks组成；最底层是服务层，负责视频录制转换等执行工作，最核心的App.tsx是中央指挥部，串联所有模块运行</div>
+                    <ul class="chapter-points"><li>Excalicord采用界面层、逻辑层、服务层的三层经典Web产品架构</li></ul>
+                </div>
+            </div>
+        </div>
+<div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">65s</span>
+                    <span class="chapter-title">服务交互流程讲解（以录制视频为例）</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">讲者用群聊类比的方式讲解录制流程：点击录制后APP发指令收集画面和摄像头内容，每秒叠加30次生成流畅视频；Excalidraw每秒返回30张截图，交给WebCodecs压缩，浏览器不支持时用MediaBunny替代；用户停止录制后将内容打包成MP4提供下载，PostHog同步记录使用数据</div>
+                    <ul class="chapter-points"><li>产品各模块通过明确的指令交互完成业务流程，可用生活化类比降低理解门槛</li></ul>
+                </div>
+            </div>
+        </div>
+<div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">105s</span>
+                    <span class="chapter-title">登录流程与基础SaaS工具介绍</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">讲者表示群聊类比的方式可以很容易理解服务间的关联，随后介绍开发Web产品常用的基础SaaS工具：Vercel用于网页部署托管，Supabase作为数据库存储用户账号信息，Stripe用于支付收款，按交易收取手续费无需提前支付订阅费</div>
+                    <ul class="chapter-points"><li>开发Web产品可借助成熟SaaS工具快速实现部署、存储、支付等通用能力，无需从零开发</li></ul>
+                </div>
+            </div>
+        </div>
+<div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">140s</span>
+                    <span class="chapter-title">其他SaaS工具与功能说明</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">讲者介绍剩余的SaaS工具：Namecheap用于购买域名，普通域名价格低廉，热门域名成本更高；PostHog用于数据分析，统计用户使用情况，基本免费；Google登录作为账号认证能力完全免费；自己的产品全程使用Claude Code的付费版本开发</div>
+                    <ul class="chapter-points"><li>域名、数据分析、账号认证等通用能力都可通过对应SaaS工具低成本实现</li></ul>
+                </div>
+            </div>
+        </div>
+<div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">180s</span>
+                    <span class="chapter-title">Web产品开发成本核算</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">讲者核算面向用户的Web产品最低成本：主要支出是Claude Code Pro每月20美元，域名是每年约11美元的一次性支出，正式商用后再加Vercel和Supabase的付费版本，非商用阶段每月仅需几十美元即可跑通完整产品</div>
+                    <ul class="chapter-points"><li>借助SaaS工具和AI编码工具，个人开发者可以极低的成本跑通带登录、支付能力的完整Web产品</li></ul>
+                </div>
+            </div>
+        </div>
+<div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">215s</span>
+                    <span class="chapter-title">代码库拆解方法与AI工具价值总结</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">讲者说明让Claude Code生成代码库拆解网页的方法：用大白话描述需求，要求用聊天类比服务交互，明确说明SaaS工具的角色、关联、免费额度，所有技术术语用大白话解释；推荐大家把AI编码工具当作编程老师，它擅长把技术概念翻译成小白易懂的内容，可生成文档或可视化页面降低理解门槛</div>
+                    <ul class="chapter-points"><li>通过明确的prompt指令，可让AI编码工具生成易懂的代码库可视化拆解内容，辅助技术学习</li></ul>
+                </div>
+            </div>
+        </div>
+  </div>
+
+  <!-- Quotes -->
+  <div class="section-card">
+    <div class="section-label">Notable Quotes</div>
+    <div class="quote-card">
+            <div class="quote-text">AI编码工具不仅能辅助开发，还可用于理解代码库结构，提升技术认知</div>
+            <div class="quote-time">0s</div>
+        </div>
+<div class="quote-card">
+            <div class="quote-text">Web产品通用分层逻辑为：上层展示交互、中层控制逻辑、底层执行具体服务</div>
+            <div class="quote-time">30s</div>
+        </div>
+<div class="quote-card">
+            <div class="quote-text">白板录屏的核心逻辑是每秒采集30帧画面，压缩后封装为MP4格式输出</div>
+            <div class="quote-time">65s</div>
+        </div>
+<div class="quote-card">
+            <div class="quote-text">主流SaaS工具大多提供免费额度，个人开发者初期开发成本极低</div>
+            <div class="quote-time">105s</div>
+        </div>
+<div class="quote-card">
+            <div class="quote-text">账号体系、数据分析类SaaS工具对中小开发者大多提供长期免费额度</div>
+            <div class="quote-time">140s</div>
+        </div>
+  </div>
+
+  <!-- Takeaways -->
+  <div class="section-card">
+    <div class="section-label">Takeaways</div>
+    <ul class="takeaway-list">
+      <li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            用AI拆解代码库时不要只让输出技术文档，要求用拟人化、比喻的方式讲解逻辑，无编程基础的人也能看懂，方便后续团队协作、对外介绍产品。
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            个人独立开发者做SaaS产品前期尽量用SaaS服务的免费额度，Excalicord用到的服务中除了Claude Code和域名，其余在流量不大的阶段完全不需要付费，月成本可控制在150元人民币以内。
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            录屏类产品视频编码优先用浏览器内置的WebCodecs，压缩率高、速度快，不兼容时再降级用第三方服务，能大幅降低服务器成本。
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            让AI生成架构说明时优先选择生成可视化网页而非Markdown文档，交互性更强、展示更直观，也方便直接对外分享。
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            没有编程基础能照着这个流程开发自己的SaaS产品吗？
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            视频中提到的代码库可视化拆解方法适用于所有项目吗？
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            前期用户量不大的时候有没有必要升级SaaS服务的付费版？
+        </li>
+    </ul>
+  </div>
+
+  <!-- Resources -->
+  <div class="section-card">
+    <div class="section-label">Tools & Resources</div>
+    <table class="resource-table">
+      <thead><tr><th>Name</th><th>Description</th><th>Link</th></tr></thead>
+      <tbody>
+        <tr><td>Excalicord</td><td>无限白板+录屏结合的内容创作工具，可自动合成带摄像头悬浮的教学视频</td><td><span style="color:var(--text-muted)">--</span></td></tr>
+<tr><td>Claude Code</td><td>AI编程助手，可解读代码库、生成代码和可视化架构文档</td><td><span style="color:var(--text-muted)">--</span></td></tr>
+<tr><td>Vercel</td><td>前端网站部署托管平台，支持自动构建分发到全球CDN节点</td><td><a href="https://vercel.com" target="_blank" rel="noopener">Link</a></td></tr>
+<tr><td>Supabase</td><td>开源后端即服务平台，提供数据库、用户认证、云函数等能力</td><td><a href="https://supabase.com" target="_blank" rel="noopener">Link</a></td></tr>
+<tr><td>Stripe</td><td>全球支付处理平台，支持收付款、订单管理、订阅扣费等功能</td><td><a href="https://stripe.com" target="_blank" rel="noopener">Link</a></td></tr>
+<tr><td>Namecheap</td><td>域名注册服务平台，提供低价域名和DNS解析、WHOIS隐私保护服务</td><td><a href="https://www.namecheap.com" target="_blank" rel="noopener">Link</a></td></tr>
+<tr><td>PostHog</td><td>开源用户行为分析平台，支持埋点、会话回放、用户调研等功能</td><td><a href="https://posthog.com" target="_blank" rel="noopener">Link</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section-card">
+            <div class="section-label">FAQ</div>
+            <div class="faq-item">
+                <div class="faq-q">Q: 没有编程基础能照着这个流程开发自己的SaaS产品吗？</div>
+                <div class="faq-a"><p>完全可以，现在底层的部署、数据库、支付、登录能力都有现成的SaaS服务，你只需要用Claude Code这类AI编程助手写业务逻辑即可，不需要从零实现底层能力，本视频中的Excalicord就是作者完全用Claude Code开发完成的。</p></div>
+            </div><div class="faq-item">
+                <div class="faq-q">Q: 视频中提到的代码库可视化拆解方法适用于所有项目吗？</div>
+                <div class="faq-a"><p>适用于绝大多数Web项目，只需要把你的代码库导入Claude Code，加上对应提示词，AI就能自动分析架构、模块关联，生成本地的说明网页，不管是前端、后端还是全栈项目都支持。</p></div>
+            </div><div class="faq-item">
+                <div class="faq-q">Q: 前期用户量不大的时候有没有必要升级SaaS服务的付费版？</div>
+                <div class="faq-a"><p>完全没必要，Vercel免费版足够支持每月100万次请求，Supabase免费版能支撑5万月活用户，PostHog免费版支持每月100万次埋点事件，对于早期MVP验证阶段完全够用，等用户量到瓶颈再升级即可。</p></div>
+            </div>
+        </div>
+
+  <div class="section-card">
+            <div class="section-label">Summary</div>
+            <div class="summary-box"><p>本视频分享了独立开发者用AI辅助开发SaaS产品Excalicord的完整实践，最大亮点是演示了如何用Claude Code把复杂代码库转换成无编程基础也能看懂的可视化架构文档，用拟人化的方式讲清了Web产品三层架构和服务间协作逻辑，同时列出了开发一款完整SaaS产品需要用到的全部SaaS工具、免费额度和成本明细，早期非商用阶段月成本仅需20-31美元，大大降低了独立开发的门槛。看完后即使是零基础的用户也能理解一款Web产品从开发到上线的全链路构成，学会用AI作为编程辅助工具降低开发难度。</p></div>
+        </div>
+
+  <footer class="report-footer">
+    powered by video-learn
+  </footer>
+</div>
+
+<script>
+// Chapter accordion
+document.querySelectorAll('.chapter-header').forEach(header => {
+  header.addEventListener('click', () => {
+    header.parentElement.classList.toggle('open');
+  });
+});
+</script>
+</body>
+</html>
