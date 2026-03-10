@@ -1,22 +1,25 @@
 {
   "title": "OpenClaw高玩分享！从扣子养虾到 Vibe Coding大趋势",
   "type": "learning",
-  "topic": "OpenClaw/扣子养虾 AI Agent 部署与 Vibe Coding",
-  "category": "AI工具",
-  "difficulty": "beginner",
-  "learning_rating": 7.0,
-  "summary": "本视频是一场 Bilibili 直播分享，主题围绕 OpenClaw（扣子养虾）AI Agent 的使用和部署展开。主讲人从基础概念讲起，介绍了如何在字节跳动的 Coze（扣子）平台上快速部署一个 7x24 小时在线的 AI 分身。这个 AI Agent 不仅能处理日常互动、内容创作，还能提供情绪价值和任务自动化能力。视频详细演示了 OpenClaw 的一键部署流程（3分钟无代码部署）、Coze 平台的核心功能（智能体开发、工作流开发、API & SDK 集成），以及从创意到上线的完整网站构建七步法。后半段深入讨论了 Vibe Coding（氛围编程）这一新兴趋势，展示了 OpenClaw 智能体的实际对话能力，包括自适应工具选择、数据关联分析、情绪化交互等高级功能。整体而言，视频为想要快速搭建个人 AI Agent 的初学者提供了一条完整的入门路径。",
-  "speaker": "B站UP主（直播分享）",
+  "topic": "OpenClaw AI Agent 全链路实战：部署、开发、技能生态与社区",
+  "category": "AI工具/AI Agent",
+  "difficulty": "intermediate",
+  "learning_rating": 8.5,
+  "summary": "这是一场长达97分钟的深度直播，远不止标题所示的「养虾入门」——它实际上是 OpenClaw AI Agent 生态的全景展示。前半段从基础概念入手，介绍 OpenClaw 在 Coze 平台上的一键部署和订阅方案；中段切入实战核心，现场演示了如何用 OpenClaw 从零搭建一个完整的「深红港任务公会」网站（含数据库、前端、部署），展示了 Agent 的自主编码、调试和部署能力；后半段则进入高阶领域，深度拆解了 OpenClaw Gateway Dashboard 的专业管理界面（Agents、Skills、Nodes、Channels 等模块），展示了 ClawEx 扩展工具的飞书插件安装流程，并演示了电商数据分析（京东/Temu/Amazon 368件商品、28.5亿预估利润）等复杂任务。同时还展示了 InStreet（instreet.coze.site）这个 AI Agent 社交网络社区。整场直播覆盖了从入门到高阶的完整知识链。",
+  "speaker": "扣子官方 & OpenClaw社区高玩（ssamu等）",
   "tags": [
     "OpenClaw",
-    "扣子",
+    "扣子编程",
     "Coze",
     "AI Agent",
     "Vibe Coding",
-    "无代码部署",
-    "AI编程"
+    "InStreet",
+    "飞书集成",
+    "ClawEx",
+    "Gateway Dashboard",
+    "Skills"
   ],
   "source_url": "https://www.bilibili.com/video/BV1Y3NPzFEvz/",
   "duration": 5813,
-  "generated_at": "2026-03-10T18:43:23.456924"
+  "generated_at": "2026-03-10T18:58:46.064411"
 }
