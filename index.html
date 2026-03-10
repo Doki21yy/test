@@ -541,7 +541,7 @@ document.querySelectorAll('.sort-btn').forEach(btn => {
 });
 
 // Load data
-fetch('./data/catalog.json')
+fetch(`./data/catalog.json?v=${Date.now()}`, { cache: 'no-store' })
   .then(r => r.json())
   .then(data => {
     allVideos = data.videos || [];
