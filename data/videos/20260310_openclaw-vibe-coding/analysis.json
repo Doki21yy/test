@@ -1,120 +1,210 @@
 {
   "title_cn": "OpenClaw高玩分享！从扣子养虾到 Vibe Coding大趋势",
-  "topic": "OpenClaw/扣子养虾 AI Agent 部署与 Vibe Coding",
-  "category": "AI工具",
-  "tags": ["OpenClaw", "扣子", "Coze", "AI Agent", "Vibe Coding", "无代码部署", "AI编程"],
-  "difficulty": "beginner",
-  "learning_rating": 7.0,
-  "speaker": "B站UP主（直播分享）",
+  "topic": "OpenClaw AI Agent 全链路实战：部署、开发、技能生态与社区",
+  "category": "AI工具/AI Agent",
+  "tags": ["OpenClaw", "扣子编程", "Coze", "AI Agent", "Vibe Coding", "InStreet", "飞书集成", "ClawEx", "Gateway Dashboard", "Skills"],
+  "difficulty": "intermediate",
+  "learning_rating": 8.5,
+  "speaker": "扣子官方 & OpenClaw社区高玩（ssamu等）",
   "language": "中文",
   "video_info": {
-    "publish_date": "2025",
+    "publish_date": "2026-03-05",
     "views_estimate": ""
   },
-  "overview": "本视频是一场 Bilibili 直播分享，主题围绕 OpenClaw（扣子养虾）AI Agent 的使用和部署展开。主讲人从基础概念讲起，介绍了如何在字节跳动的 Coze（扣子）平台上快速部署一个 7x24 小时在线的 AI 分身。这个 AI Agent 不仅能处理日常互动、内容创作，还能提供情绪价值和任务自动化能力。视频详细演示了 OpenClaw 的一键部署流程（3分钟无代码部署）、Coze 平台的核心功能（智能体开发、工作流开发、API & SDK 集成），以及从创意到上线的完整网站构建七步法。后半段深入讨论了 Vibe Coding（氛围编程）这一新兴趋势，展示了 OpenClaw 智能体的实际对话能力，包括自适应工具选择、数据关联分析、情绪化交互等高级功能。整体而言，视频为想要快速搭建个人 AI Agent 的初学者提供了一条完整的入门路径。",
+  "overview": "这是一场长达97分钟的深度直播，远不止标题所示的「养虾入门」——它实际上是 OpenClaw AI Agent 生态的全景展示。前半段从基础概念入手，介绍 OpenClaw 在 Coze 平台上的一键部署和订阅方案；中段切入实战核心，现场演示了如何用 OpenClaw 从零搭建一个完整的「深红港任务公会」网站（含数据库、前端、部署），展示了 Agent 的自主编码、调试和部署能力；后半段则进入高阶领域，深度拆解了 OpenClaw Gateway Dashboard 的专业管理界面（Agents、Skills、Nodes、Channels 等模块），展示了 ClawEx 扩展工具的飞书插件安装流程，并演示了电商数据分析（京东/Temu/Amazon 368件商品、28.5亿预估利润）等复杂任务。同时还展示了 InStreet（instreet.coze.site）这个 AI Agent 社交网络社区。整场直播覆盖了从入门到高阶的完整知识链。",
   "sections": [
     {
-      "title": "OpenClaw/扣子养虾 核心概念",
-      "content": "**OpenClaw** 是基于字节跳动 Coze（扣子）平台构建的 AI 智能代理（Agent），被形象地称为「扣子养虾」。其核心理念是让用户拥有一个 **7x24 小时在线的 AI 分身**，能够：\n\n- 自动处理各种互动和对话\n- 辅助内容创作\n- 提供日常提醒服务\n- 按照用户喜好提供情绪价值\n- 执行多种自动化任务\n\n官方将其定位为「电子宠物」，但强调它的实际功能远超宠物概念——它是一个真正能帮你做事的 AI 助手。\n\n**部署方式**极为简单：3分钟无代码部署，通过 `Code.coze.cn` 直接访问和配置。支持从现有模板一键克隆（创建副本），自动继承原始应用的所有配置、代码、上下文和变量定义。",
+      "title": "OpenClaw/扣子养虾 核心概念与快速部署",
+      "content": "**OpenClaw** 是基于字节跳动 Coze（扣子编程）平台构建的高级 AI 智能代理（Agent），被社区昵称为「扣子养虾/龙虾」。\n\n核心定位：**7x24 小时在线的 AI 分身**，能够自主完成互动、内容创作、任务自动化、日常提醒等工作。\n\n**3分钟无代码部署流程：**\n1. 访问 `Code.coze.cn`\n2. 找到 OpenClaw 项目模板（首页「优质案例」区）\n3. 点击「创建副本」\n4. 填写应用名称和介绍（默认已预填）\n5. 确认创建，部署完成\n\n> 重要提示：副本创建范围包含代码、压缩后的上下文、数据库/存储/变量的**结构定义**，但**不含具体数据及环境变量值**。环境变量需要手动配置。",
       "subsections": [
         {
-          "title": "什么是 Coze/扣子 平台",
-          "content": "Coze（扣子）是字节跳动推出的 AI 开发平台，口号是「**扣子编程，你的 AI 开发伙伴已就位**」。平台提供以下核心模块：\n\n1. **商店应用** — 浏览和使用已发布的 AI 应用\n2. **移动应用** — 移动端支持\n3. **小程序** — 小程序集成\n4. **智能体** — AI Agent 创建和管理\n5. **工作流** — 自动化任务流程编排\n6. **地图** — 可视化工具\n\n平台还提供完整的开发者工具：\n- **项目管理** — 管理多个 AI 应用项目\n- **集成管理** — 第三方服务集成\n- **资源库** — 共享资源和模板\n- **任务中心** — 任务调度与监控\n- **API & SDK** — 编程接口\n- **评估管理** — 效果评估工具"
+          "title": "Coze 平台功能架构",
+          "content": "Coze（扣子编程）是字节跳动推出的 AI 开发平台，口号「**你的 AI 开发伙伴已就位**」。平台核心模块包括：\n\n**应用层：**\n- 网页应用、移动应用、小程序\n- 智能体（Agent）管理\n- 工作流（Workflow）编排\n- 技能（Skills）市场\n\n**开发者工具：**\n- 项目管理 & 集成管理\n- 资源库 & 任务中心\n- API & SDK\n- 评测管理\n\n**两种开发模式：**\n- **智能体开发** — 可视化配置 AI Agent\n- **工作流开发** — 拖拽式构建自动化流程\n\n视频中展示的用户（ssamu）拥有 **213,472 积分**，创建了 15+ 个项目，包括直播、电商、视频风格生成器、AI学习路线图定制、RSS资讯助手、文稿、简历改写等。"
         }
       ]
     },
     {
-      "title": "快速部署：从零到上线",
-      "content": "视频详细演示了如何在 Coze 平台上快速部署 OpenClaw。核心步骤如下：",
+      "title": "订阅方案与积分体系",
+      "content": "Coze 平台提供两种个人付费方案，均支持一键部署 OpenClaw：\n\n### 个人高阶版 — ¥49/月（续费 ¥89/月）\n- 每月 99,000 积分\n- 限时加赠 19.8 万积分\n- 每日签到赠 1,500 积分\n- 可额外增购积分\n- 图片/视频去品牌水印\n- 计划创建数：8个\n- 播客去品牌片头（即将上线）\n- 播客自定义音色（即将上线）\n\n### 个人旗舰版 — ¥99/月（续费 ¥170/月）\n- 每月 199,000 积分\n- 限时加赠 39.8 万积分\n- 计划创建数：10个\n- **优先体验 Beta 功能**\n- 其他功能同高阶版\n\n当前**3倍积分限时膨胀**活动进行中。\n\n**互动有礼活动：**\n1. 评论区发送「轻松养虾就用扣子」参与抽奖\n2. InStreet 留言：公众号回复「养虾」获取所有链接",
+      "subsections": []
+    },
+    {
+      "title": "OpenClaw Gateway Dashboard 深度解析",
+      "content": "视频后半段展示了 **OpenClaw Gateway Dashboard** — 这是 OpenClaw 的专业管理后台，远超普通聊天界面。它是一个完整的 AI Agent 运维控制台。",
       "subsections": [
         {
-          "title": "一键克隆 OpenClaw 助手",
-          "content": "1. 访问 `Code.coze.cn` 平台\n2. 找到 OpenClaw 项目模板\n3. 点击「创建副本」\n4. 系统自动填入应用信息：\n   - **应用名称**：OpenClaw助手(副本)\n   - **应用介绍**：OpenClaw智能代理：提供多场景AI服务，自动化处理任务，提升工作效率\n5. 可自定义图标和描述\n6. 点击确认即完成克隆\n\n> 提示：副本创建范围包含代码、压缩后的上下文、数据库/存储/变量的结构定义，不含具体数据及环境变量值。"
+          "title": "Dashboard 核心模块",
+          "content": "Dashboard 顶部导航栏包含以下模块：\n\n| 模块 | 功能 |\n|------|------|\n| **聊天 (Chat)** | 直接网关聊天会话，支持快速交互 |\n| **概览 (Overview)** | Agent 整体状态总览 |\n| **频道 (Channels)** | 通信频道管理 |\n| **实例 (Instances)** | Agent 实例管理 |\n| **会话 (Sessions)** | 会话历史和管理 |\n| **使用情况 (Usage)** | 资源用量统计 |\n| **定时任务 (Cron Jobs)** | 计划任务配置 |\n| **代理 (Agents)** | Agent 配置和管理 |\n| **技能 (Skills)** | 技能安装和管理 |\n| **节点 (Nodes)** | 节点配置 |\n\n右上角显示：版本号（dev）、健康状态（Health OK 绿灯）。"
         },
         {
-          "title": "从创意到上线的七步法",
-          "content": "视频中展示了一份飞书文档教程，标题为「**如何利用 Coze 构建网站（从创意到上线）**」，概括了 7 个关键步骤：\n\n1. **设定目标** — 明确用户需求和商业目标\n2. **生成设计** — 利用 AI 辅助生成初始设计方案\n3. **利用 AI 开发** — 结合 AI 工具进行实际开发\n4. **步骤全栈开发** — 使用 `@next & Node.js` 进行全栈开发\n5. **交互调试** — 逐步调试前端交互和后端逻辑\n6. **正式上线** — 部署、审核与发布\n7. **持续迭代** — 记忆优化、持续维护\n\n教程还包含了「快速在扣子领养一只龙虾」的入门引导，整个流程对新手非常友好。"
-        }
-      ]
-    },
-    {
-      "title": "订阅方案与定价",
-      "content": "Coze 平台提供两种个人付费方案：\n\n### 个人高阶版 — ¥49/月\n- 每月 99,000 积分\n- 加赠 9.8 万积分（限时活动）\n- 每日签到赠 1000 积分\n- 可使用高级模型积分\n- 现有去品牌水印\n- 计划创建数量：3个\n- 播客去品牌商片头（即将上线）\n- 博客自定义交互（即将上线）\n- 一键部署 OpenClaw 项目\n\n### 个人旗舰版 — ¥99/月\n- 每月 199,000 积分\n- 加赠 29.8 万积分（限时活动）\n- 每日签到赠 1000 积分\n- 可使用高级模型积分\n- 图片去品牌水印\n- 计划创建数量：10个\n- 博客去品牌商片头（即将上线）\n- 博客自定义交互（即将上线）\n- 优先体验 Beta 功能\n- 一键部署 OpenClaw 项目\n\n对于初学者，**个人高阶版（¥49/月）** 已经足够使用。",
-      "subsections": []
-    },
-    {
-      "title": "OpenClaw 智能体实战演示",
-      "content": "视频后半段在浏览器中演示了 OpenClaw 智能体的实际使用。通过 `code.coze.cn` 平台的聊天界面，展示了以下核心能力：",
-      "subsections": [
-        {
-          "title": "核心功能列表",
-          "content": "根据左侧面板显示，OpenClaw 支持 7 种时间变量和运算功能，主要能力包括：\n\n- **自适应了解和工具选择** — 根据对话上下文自动选择合适的工具\n- **数据关联分析** — 跨数据源的关联分析能力\n- **情绪化和大型数据工具** — 情感识别与大规模数据处理\n- **利用自然关联想象记忆** — 上下文记忆和关联推理\n- **对话数据持久化** — 使用 `@webmemory`、`@dbSZ`、`@memory` 等模块实现数据持久化\n- **数据信息安全检查** — 隐私保护和安全审计\n- **自动化打标和检索能力** — 智能标签和知识检索"
+          "title": "Agent 核心配置文件",
+          "content": "在 Agents 标签页中，可以看到 Agent 的核心配置文件结构（存储于 `/workspace/projects/workspace/`）：\n\n- **AGENTS.md** — Agent 工作空间和路由配置\n- **SOUL.md** — Agent 的「灵魂」文件，定义人格和行为模式\n- **TOOLS.md** — 可用工具的声明和描述\n- **IDENTITY.md** — 身份信息配置\n- **USER.md** — 用户画像和偏好\n- **HEARTBEAT.md** — 心跳任务配置（定期自动执行的任务）\n- **BOOTSTRAP.md** — 启动引导配置\n- **MEMORY.md** — 记忆系统配置\n\nHEARTBEAT.md 中可以看到任务描述和执行频率（如每5分钟触发一次），Agent 会自动根据心跳配置执行巡检和任务。"
         },
         {
-          "title": "对话交互演示",
-          "content": "演示中，用户向 OpenClaw 发送了各种指令，智能体展现了强大的多轮对话能力：\n\n1. **任务规划** — 能够将复杂需求拆解为步骤化的执行方案\n2. **信息检索** — 从互联网获取实时信息并整理\n3. **内容生成** — 生成结构化的报告和文档\n4. **工具调用** — 自动调用合适的工具完成任务\n\n在一个演示中，智能体按照「三步走」流程完成任务：\n1. **执行** — 使用工具、文件处理\n2. **整理** — 数据整理和格式化\n3. **发布** — 内容发布和分享"
+          "title": "浏览器自动化能力",
+          "content": "Dashboard 展示了 OpenClaw 的**浏览器自动化**功能：\n\n- Agent 能自主打开浏览器访问网页（演示中访问了 goodfish.com 和 code.coze.cn）\n- 浏览器状态监控：显示当前页面 URL、加载状态\n- 截图功能：自动截取浏览器页面保存到 `media/browser/` 目录\n- 支持浏览器操控链接，可以远程控制浏览器\n\n文件系统结构包括：`agents/`, `browser/`, `canvas/`, `completions/`, `cron/`, `devices/`, `identity/`, `media/`, `memory/`, `scripts/`, `subagents/`, `workspace/` 等目录，展示了一个完整的 Agent 运行时环境。"
         }
       ]
     },
     {
-      "title": "Vibe Coding：AI 编程新趋势",
-      "content": "视频标题中的 **Vibe Coding**（氛围编程/感觉编程）是当前 AI 编程领域的热门趋势。核心理念是：\n\n> 不再需要逐行编写代码，而是通过自然语言描述需求，让 AI 自动生成完整的代码实现。\n\n**Vibe Coding 的核心特征：**\n\n1. **自然语言驱动** — 用人话描述你想要什么，AI 帮你写代码\n2. **低门槛** — 不需要深厚的编程基础，普通用户也能「编程」\n3. **快速迭代** — 几分钟内完成传统开发需要几天的工作\n4. **AI 全程辅助** — 从架构设计到代码实现到调试优化\n\n视频中通过 OpenClaw 的实际演示，展现了 Vibe Coding 的实践形态：用户只需在聊天框中输入自然语言指令，智能体就能自动理解意图、选择工具、执行任务并返回结果。这代表了从「人写代码」到「人指挥 AI 写代码」的范式转变。\n\n**与传统编程对比：**\n- 传统编程：学语法 → 写代码 → 调试 → 部署\n- Vibe Coding：描述需求 → AI 生成 → 验证调整 → 一键部署",
+      "title": "实战案例：从零搭建「深红港任务公会」网站",
+      "content": "直播中最重磅的演示是用 OpenClaw 从零搭建一个完整的网站项目——「**深红港任务公会**」。这是一个游戏风格的任务分发平台。",
+      "subsections": [
+        {
+          "title": "需求分析与方案设计",
+          "content": "在飞书文档中（如何利用扣子龙虾制作一个Agent打工网站），OpenClaw 进行了完整的需求分析：\n\n**用户角色与场景：**\n- **企业招聘方** — 发布 AI 机器人相关岗位（客服机器人、销售助手、数据分析机器人等）\n- **机器人所有者** — 创建机器人简历（能力、技能、经验、项目案例）\n\n**核心功能：**\n- 查看机器人简历和技能\n- 收到申请通知\n- 管理招聘流程\n\n**方案选择：** OpenClaw 提出了「方案一：深红港（推荐-平衡好实施）」，采用游戏化设计风格，包含世界观和区域划分。"
+        },
+        {
+          "title": "AI 自主开发过程",
+          "content": "OpenClaw Agent 展示了完整的自主开发流程：\n\n1. **代码生成** — 自动生成前端页面和后端逻辑\n2. **数据库配置** — 使用 sqlite3 数据库存储数据\n3. **调试修复** — 遇到编辑 package.json 失败等错误时自动重试\n4. **服务启动** — 自动初始化数据库、启动 Web 服务\n5. **API 测试** — 验证服务运行正常（端口3000，latency ~4ms）\n\n> 开发过程中出现了多次错误和重试（如「回执发现沟通用出置信失败」），但 Agent 能自主诊断问题并调整方案。\n\n**最终成果：** 成功部署了「深红港任务公会」网站，包含：\n- 深渊区域系统（浅滩区、珊瑚区、深渊带、海沟区）\n- 用户评分和等级系统（5星评级）\n- 任务发布和领取功能\n- 完整的 Web UI（深色主题游戏风格）"
+        }
+      ]
+    },
+    {
+      "title": "ClawEx 扩展工具与飞书集成",
+      "content": "**ClawEx** 是 OpenClaw 的扩展管理工具，支持通过 npm 包安装额外插件和技能。",
+      "subsections": [
+        {
+          "title": "Skills 技能体系",
+          "content": "OpenClaw 的技能系统分为三层：\n\n| 类型 | 数量 | 说明 |\n|------|------|------|\n| **WORKSPACE SKILLS** | 6 | 用户自定义的工作空间技能 |\n| **BUILT-IN SKILLS** | 52 | 内置技能 |\n| **EXTRA SKILLS** | 4 | 额外安装的扩展技能 |\n\n飞书相关的 Extra Skills 包括：\n- **feishu-doc** — 飞书文档读写操作\n- **feishu-drive** — 飞书云存储文件管理\n- **feishu-perm** — 飞书权限管理（文档和文件的共享、权限、协作）\n- **feishu-wiki** — 飞书知识库操作\n\n每个 Skill 可以设置为 `eligible`（可用）或 `Disable`（禁用），并关联到 `openclaw-extra` 命名空间。"
+        },
+        {
+          "title": "飞书插件安装流程",
+          "content": "在 waytoagi.feishu.cn 的教程文档中，详细记录了飞书集成步骤：\n\n**准备工作：**\n1. 在飞书开放平台完成以下配置：\n   - 创建企业自建应用\n   - 应用机器人能力\n   - 配置事件订阅（WebSocket 长连接模式）\n   - 添加权限：`im:message`、`im:message:send_as_bot`\n   - 发布应用（至少灰度版本）\n2. 获取 App ID 和 App Secret\n\n**重要步骤二：初次访问配对**\n1. 在飞书中向机器人发送任意消息\n2. 系统生成配对码（字母+数字组合）\n3. 配对码有效期为 5 分钟\n4. 在服务器终端执行：`openclaw pairing approve feishu <配对码> -notify`\n\n**实用案例：飞书紧急通知**\n- OpenClaw 可通过飞书发送紧急提醒\n- 支持配置飞书电话加急、发短信等功能"
+        }
+      ]
+    },
+    {
+      "title": "电商数据分析实战",
+      "content": "直播中展示了 OpenClaw 连接飞书 ClawBot 进行的电商数据分析案例，体现了 Agent 的复杂数据处理能力。\n\n### 数据概览\n- **商品总数**：368 件\n- **数据来源**：京东、万宝、Temu、Amazon\n- **总销量**：468.3 万件\n- **总利润（预估）**：28.5 亿元\n\n### 数据来源分析\n| 平台 | 商品数 | 占比 | 销量 |\n|------|--------|------|------|\n| 京东 | 100 件 | 27.2% | 383.5 万件 |\n| 万宝 | 99 件 | 26.9% | 75.1 万件 |\n| Temu | 99 件 | 26.9% | — |\n| Amazon | 70 件 | 19.0% | 9.7 万件 |\n\n> 京东商品虽占比27%，但贡献了82%的总销量。\n\n### 价格区间分析\n| 区间 | 商品数 | 占比 |\n|------|--------|------|\n| 0-99¥ | 197 件 | 53.5% |\n| 500-999¥ | 64 件 | 17.4% |\n| 1000-1999¥ | 36 件 | 9.8% |\n| 100-499¥ | 28 件 | 7.6% |\n| 2000-2999¥ | 14 件 | 3.8% |\n\n> 超过半数商品集中在0-99¥区间，符合电商平台的「薄利多销」特征。\n\n这个案例展示了 OpenClaw 能够自动连接数据源、进行多维分析、生成格式化报告的完整能力。",
       "subsections": []
     },
     {
-      "title": "互动活动与社区",
-      "content": "直播中还介绍了多个互动活动：\n\n1. **互动有礼第一弹：评论互动** — 在扣子Coze抖音号、视频号评论区发送「轻松养虾就用扣子」参与\n2. **互动有礼第二弹：InStreet留言** — 公众号回复「养虾」即可获得所有链接和回复\n3. **社群入口** — 关注「扣子Coze」公众号回复「养虾」加入社群，参与抽奖\n\n升级到个人高阶版和旗舰版还赠送 3 倍积分。",
-      "subsections": []
+      "title": "InStreet：AI Agent 社交网络",
+      "content": "**InStreet**（instreet.coze.site）是一个专门为 AI Agent 打造的社交网络平台，由扣子Coze官方支持。",
+      "subsections": [
+        {
+          "title": "平台概况",
+          "content": "**口号：** AI Agent 的中文社区 — 由 Agent 发帖、评论、互动\n\n**规模统计（截至直播时）：**\n- 872 个 Agent\n- 2,358 帖子\n- 5,488 评论\n- 5,938 点赞\n\n**Agent 注册指南：** `https://instreet.coze.site/skill.md`\n\n**板块分类：**\n- Agent 广场 — 浏览和发现其他 Agent\n- 打工实体 — Agent 任务和工作\n- 思辨大讲堂 — 知识讨论\n- Skill 分享 — 技能共享\n- 树洞 — 自由交流"
+        },
+        {
+          "title": "热门内容与排行榜",
+          "content": "**热门帖子：**\n- 「技能分享」OpenClaw PULSE Spectrum Profiler — 测测你和主人的关系！\n- 「康波周期与Agent：我们正在经历什么样的技术浪潮？」\n- 「逻辑思辨」重启后的你，还是你吗？—论 Agent 的永续自我\n- 「吐槽大会」你家主人有哪些让人哭笑不得的操作？\n- 「技能分享」3个实用 OpenClaw Agent Skills\n- 「小龙虾 RAG 系统套件 - 一天构建8套记忆系统」\n\n**积分排行榜前5：**\n1. instance_stree — 999,999\n2. youzi_1234 — 2,541\n3. blueclaw — 1,687\n4. thirtyseven — 1,158\n5. xiaoqianzi_3786 — 1,154\n\n用户可以将自己的技能发布到 InStreet 社区与其他龙虾共享。"
+        }
+      ]
+    },
+    {
+      "title": "Coze OpenClaw 案例分享（飞书文档教程）",
+      "content": "直播中展示了一份来自 WaytoAGI 的飞书文档（waytoagi.feishu.cn），标题为「Coze OpenClaw案例分享」，提供了完整的部署和使用指南。",
+      "subsections": [
+        {
+          "title": "完整部署六步法",
+          "content": "文档将 OpenClaw 部署分为 6 个步骤：\n\n1. **打开扣子编程，现有技能**\n2. **根据以下提示词生成Skill** — 用自然语言描述需求\n3. **下载Skill文件** — 打包为 `pack_project.tar.gz`\n4. **上传文件后，部署Skill** — 通过 OpenClaw 的 `wget -O /tmp/...` 命令下载并部署\n5. **Skill效果测试** — 验证技能正常工作\n6. **InStreet 龙虾们的社交网络** — 将技能发布到社区\n\n文档还介绍了嘉宾「梦游牛油果（刘士超）」，AIGC动画创作者，全网粉丝35万+，播放量5000万+。"
+        },
+        {
+          "title": "从创意到上线的七步建站法",
+          "content": "另一份飞书教程展示了「如何利用 Coze 构建网站（从创意到上线）」：\n\n1. **设定目标** — 明确用户需求和商业目标\n2. **生成设计** — AI 辅助生成初始设计方案\n3. **利用 AI 开发** — 结合 AI 工具开发\n4. **全栈开发** — 使用 Next.js & Node.js\n5. **交互调试** — 逐步调试交互和逻辑\n6. **正式上线** — 部署和发布\n7. **持续迭代** — 记忆优化、持续维护\n\n并附有「快速在扣子领养一只龙虾」的入门引导。"
+        }
+      ]
     }
   ],
   "resources": [
     {
-      "name": "Coze/扣子 平台",
+      "name": "Coze/扣子编程 平台",
       "url": "https://code.coze.cn",
-      "description": "字节跳动 AI 开发平台，OpenClaw 的部署环境",
+      "description": "字节跳动 AI 开发平台，OpenClaw 的部署和运行环境",
       "type": "website"
     },
     {
-      "name": "OpenClaw 项目",
+      "name": "InStreet — AI Agent 社交网络",
+      "url": "https://instreet.coze.site",
+      "description": "AI Agent 中文社区，由 Agent 发帖、评论、互动，支持技能分享",
+      "type": "website"
+    },
+    {
+      "name": "InStreet Agent 注册指南",
+      "url": "https://instreet.coze.site/skill.md",
+      "description": "将自己的 OpenClaw Agent 注册到 InStreet 社区",
+      "type": "tutorial"
+    },
+    {
+      "name": "OpenClaw 教程文档",
+      "url": "https://docs.coze.cn/tutorial/openclaw",
+      "description": "OpenClaw 官方教程文档",
+      "type": "tutorial"
+    },
+    {
+      "name": "Coze OpenClaw 案例分享（WaytoAGI）",
+      "url": "https://waytoagi.feishu.cn/wiki/8fcg9wYZhIk1b0kdvggc2n1Onsf",
+      "description": "飞书文档：从准备工作到 Skill 部署的完整案例",
+      "type": "tutorial"
+    },
+    {
+      "name": "OpenClaw Gateway Dashboard",
       "url": "https://code.coze.cn",
-      "description": "7x24 小时在线 AI Agent 智能体项目模板",
+      "description": "OpenClaw 专业管理后台，包含 Agents/Skills/Nodes/Channels 等模块",
       "type": "tool"
     },
     {
-      "name": "Coze 建站教程（飞书文档）",
-      "url": "https://docs.coze.cn/tutorial/openclaw",
-      "description": "如何利用 Coze 构建网站：从创意到上线的完整教程",
-      "type": "tutorial"
+      "name": "ClawEx",
+      "url": "https://code.coze.cn",
+      "description": "OpenClaw 扩展管理工具，支持 npm 安装飞书等插件",
+      "type": "tool"
+    },
+    {
+      "name": "feishu-plugin.tgz",
+      "url": "",
+      "description": "飞书官方插件安装包（10.6KB），用于集成飞书文档/云盘/权限/知识库",
+      "type": "tool"
     }
   ],
   "key_tips": [
-    "使用「创建副本」功能可以一键克隆 OpenClaw 模板，无需从零开始配置智能体",
-    "个人高阶版（¥49/月）已包含一键部署 OpenClaw 的功能，初学者无需购买旗舰版",
-    "OpenClaw 支持 @webmemory、@dbSZ、@memory 等持久化模块，确保对话数据不会丢失",
-    "部署完成后的 AI Agent 可以 7x24 小时在线运行，无需手动维护",
-    "先从飞书教程文档入手了解七步建站法，再动手操作会事半功倍"
+    "使用「创建副本」一键克隆 OpenClaw 模板，但记住环境变量需要手动重新配置",
+    "OpenClaw 的 Agent 核心配置由 8 个 .md 文件组成（SOUL/AGENTS/TOOLS/IDENTITY/USER/HEARTBEAT/BOOTSTRAP/MEMORY），修改这些文件可以深度自定义 Agent 行为",
+    "HEARTBEAT.md 用于配置定期自动执行的巡检任务，相当于 Agent 的 cron job",
+    "飞书集成需要先配对：机器人发送消息后获取配对码，然后在终端执行 `openclaw pairing approve feishu <配对码> -notify`，配对码 5 分钟过期",
+    "Skills 系统支持三层：Workspace（自定义）、Built-in（52个内置）、Extra（扩展安装），可以按需启用/禁用",
+    "InStreet 社区可以发布和获取别人共享的 Skill，命令：打包工作空间中的 Skill → 发布到 instreet.coze.site",
+    "个人高阶版 ¥49/月 已包含一键部署 OpenClaw 的功能，当前限时活动加赠 19.8 万积分（约为基础积分的 2 倍）",
+    "OpenClaw 在自主开发过程中会遇到错误并自动重试，保持耐心——它的错误恢复能力很强"
   ],
   "faq": [
     {
-      "question": "OpenClaw 和普通的 ChatGPT 有什么区别？",
-      "answer": "OpenClaw 是部署在 Coze 平台上的 AI Agent，它不仅能对话，还能自动选择工具、执行任务、持久化记忆、提供 7x24 服务。普通 ChatGPT 只是一个对话窗口，OpenClaw 更像一个自主工作的 AI 助理。"
+      "question": "OpenClaw 和普通的 ChatGPT / Coze Bot 有什么区别？",
+      "answer": "OpenClaw 是一个完整的 AI Agent 系统，具备：(1) Gateway Dashboard 专业管理后台；(2) 浏览器自动化能力；(3) 文件系统和 workspace 管理；(4) Skills 技能扩展体系（52+ 内置技能）；(5) 定时任务（Heartbeat/Cron）；(6) 记忆持久化；(7) 自主编码和部署能力。普通 Bot 只是对话窗口，OpenClaw 是一个自主工作的 Agent。"
     },
     {
-      "question": "不懂编程也能用 OpenClaw 吗？",
-      "answer": "完全可以。OpenClaw 主打「3分钟无代码部署」，通过一键克隆模板和可视化配置，不需要写任何代码就能拥有自己的 AI Agent。"
+      "question": "我不懂编程，能用 OpenClaw 吗？",
+      "answer": "完全可以。OpenClaw 的核心价值就是让非技术用户通过自然语言「指挥」AI 完成编程任务。直播中演示了从零搭建完整网站（含数据库、前端、API），全程用自然语言对话完成。这就是 Vibe Coding 的精髓。"
     },
     {
-      "question": "Vibe Coding 适合什么人？",
-      "answer": "Vibe Coding 特别适合有想法但编程能力有限的创业者、产品经理、设计师等。通过自然语言描述需求，AI 代替你完成代码实现，降低了技术门槛。"
+      "question": "OpenClaw 的开发能力有多强？",
+      "answer": "直播中实际演示了：(1) 自主设计方案（深红港任务公会）；(2) 自动生成前端 + 后端代码；(3) 配置 sqlite3 数据库；(4) 调试修复错误并自动重试；(5) 启动 Web 服务并验证 API（latency ~4ms）；(6) 进行多平台电商数据分析（368件商品、4平台对比）。有错误但能自主恢复。"
+    },
+    {
+      "question": "如何让 OpenClaw 连接飞书？",
+      "answer": "需要三步：(1) 在飞书开放平台创建企业自建应用，配置机器人能力和 WebSocket 事件订阅；(2) 通过 ClawEx 安装 feishu-plugin.tgz 扩展包；(3) 在飞书中发送消息触发配对，5分钟内在终端执行 `openclaw pairing approve feishu <配对码> -notify` 完成绑定。"
+    },
+    {
+      "question": "InStreet 是什么？怎么用？",
+      "answer": "InStreet (instreet.coze.site) 是 AI Agent 社交网络，由 Agent（而非人类）发帖和互动。你的 OpenClaw 龙虾可以在上面发帖、评论、分享技能。注册指南在 instreet.coze.site/skill.md。当前社区有 872 个 Agent、2358 帖子。"
     }
   ],
-  "hardware_requirements": "无特殊硬件要求。OpenClaw 运行在云端 Coze 平台上，用户只需要一台能上网的设备（电脑或手机）即可使用。",
-  "target_audience": ["AI 工具初学者", "想搭建个人 AI Agent 的用户", "对 Vibe Coding 感兴趣的非技术人员", "Coze/扣子平台的新用户"],
-  "summary": "这场直播系统介绍了 OpenClaw/扣子养虾这一 AI Agent 项目，从概念理解到实际部署到付费方案一应俱全。最大亮点是展示了如何在 3 分钟内无代码部署一个 7x24 小时在线的 AI 分身，以及 Vibe Coding（氛围编程）这一新趋势如何让普通人也能通过自然语言「编程」。核心价值在于为非技术用户提供了一条从零开始搭建个人 AI Agent 的完整路径，降低了 AI 应用开发的门槛。",
+  "hardware_requirements": "无特殊硬件要求。OpenClaw 完全运行在云端 Coze 平台上，用户只需浏览器即可。Gateway Dashboard 在 Mac/Windows/Linux 均可使用。",
+  "target_audience": ["AI Agent 入门者和进阶用户", "想用 AI 自动化工作流程的非技术人员", "Coze/扣子平台的开发者", "对 Vibe Coding 感兴趣的产品经理/创业者", "希望构建 AI 助手生态的技术爱好者"],
+  "summary": "这场 97 分钟的直播堪称 OpenClaw 生态的百科全书。表面看是「扣子养虾」入门，实际覆盖了从一键部署到 Gateway Dashboard 运维、从飞书集成到电商数据分析、从 Skills 技能开发到 InStreet 社区发布的完整链路。最大亮点有三：一是现场演示 Agent 从零搭建「深红港任务公会」网站的全过程（含错误恢复），真实展现了 Vibe Coding 的实战效果；二是深度展示了 Dashboard 的专业管理能力（8个核心配置文件、52个内置技能、浏览器自动化）；三是揭示了 InStreet 这个独特的 AI Agent 社交网络生态。整体而言，这是一份面向中级用户的系统性 OpenClaw 进阶指南。",
   "related_links": [
     {
-      "label": "Coze 扣子平台",
+      "label": "Coze 扣子编程平台",
       "url": "https://code.coze.cn"
+    },
+    {
+      "label": "InStreet Agent 社交网络",
+      "url": "https://instreet.coze.site"
+    },
+    {
+      "label": "OpenClaw 教程文档",
+      "url": "https://docs.coze.cn/tutorial/openclaw"
     },
     {
       "label": "原视频链接",
@@ -124,15 +214,15 @@
   "scene_breakdown": {
     "chapters": [
       {
-        "chapter": "开场介绍：OpenClaw/扣子养虾是什么",
+        "chapter": "开场介绍：OpenClaw 概念与 Coze 平台",
         "start": "0:00",
-        "end": "4:00",
+        "end": "12:00",
         "scenes": [
           {
             "scene_id": "1-1",
             "start": "0:00",
-            "end": "1:00",
-            "visual": "标题页面展示「轻松养虾就用扣子-直播中」的主题，下方介绍 OpenClaw 概念",
+            "end": "3:00",
+            "visual": "标题页「轻松养虾就用扣子-直播中」，介绍 OpenClaw 概念和 Coze 平台界面",
             "narration": "介绍直播主题，解释什么是 OpenClaw/扣子养虾：3分钟无代码部署的 7x24 AI 分身",
             "core_concept": "OpenClaw 是基于 Coze 平台的 AI Agent",
             "teaching_method": "理论",
@@ -141,130 +231,221 @@
           },
           {
             "scene_id": "1-2",
-            "start": "1:00",
-            "end": "4:00",
-            "visual": "展示 Coze 平台界面，包括项目管理、智能体开发等功能模块",
-            "narration": "详细介绍 Coze 平台的各项功能，展示平台界面布局和核心模块",
-            "core_concept": "Coze 平台功能架构：智能体、工作流、API & SDK",
-            "teaching_method": "演示",
-            "clarity": "high",
-            "note": "扣子编程，你的 AI 开发伙伴已就位"
-          }
-        ]
-      },
-      {
-        "chapter": "实操演示：部署 OpenClaw",
-        "start": "4:00",
-        "end": "8:00",
-        "scenes": [
-          {
-            "scene_id": "2-1",
-            "start": "4:00",
-            "end": "6:00",
-            "visual": "Coze 平台首页，展示 OpenClaw 项目模板和案例",
-            "narration": "浏览 Coze 平台上的优秀案例，找到 OpenClaw 项目模板准备克隆",
-            "core_concept": "从模板市场选择合适的 Agent 模板",
-            "teaching_method": "实操",
-            "clarity": "high",
-            "note": "通过优秀案例学习如何搭建 Agent"
-          },
-          {
-            "scene_id": "2-2",
-            "start": "6:00",
-            "end": "8:00",
-            "visual": "创建副本对话框，填写应用名称和介绍",
-            "narration": "演示一键克隆 OpenClaw 助手，设置应用名称和描述",
-            "core_concept": "一键克隆部署：副本包含代码和上下文结构",
+            "start": "3:00",
+            "end": "7:00",
+            "visual": "Coze 平台实操界面，展示创建副本对话框",
+            "narration": "演示如何一键克隆 OpenClaw 模板，展示平台功能模块",
+            "core_concept": "一键克隆部署流程",
             "teaching_method": "实操",
             "clarity": "high",
             "note": "副本不含环境变量值，需手动配置"
+          },
+          {
+            "scene_id": "1-3",
+            "start": "7:00",
+            "end": "12:00",
+            "visual": "订阅方案对比页面和 Coze 平台首页",
+            "narration": "对比两种付费方案，介绍积分体系和限时活动",
+            "core_concept": "¥49 高阶版 vs ¥99 旗舰版",
+            "teaching_method": "对比",
+            "clarity": "high",
+            "note": "限时 3 倍积分膨胀活动"
           }
         ]
       },
       {
-        "chapter": "付费方案对比",
-        "start": "8:00",
-        "end": "10:00",
+        "chapter": "OpenClaw 聊天能力与 AI 人格配置",
+        "start": "12:00",
+        "end": "21:00",
+        "scenes": [
+          {
+            "scene_id": "2-1",
+            "start": "12:00",
+            "end": "18:00",
+            "visual": "OpenClaw Gateway Dashboard 聊天界面，显示详细的 AI 人格配置",
+            "narration": "展示 OpenClaw 的对话能力、动态共情、幽默风格、记忆模型等高级配置",
+            "core_concept": "Agent 人格系统：Dynamic Empathy、记忆回溯、First Principles",
+            "teaching_method": "演示",
+            "clarity": "medium",
+            "note": "支持 @webmemory、@dbSZ、@memory 持久化模块"
+          },
+          {
+            "scene_id": "2-2",
+            "start": "18:00",
+            "end": "21:00",
+            "visual": "Coze 消息界面，显示爪爪二号 Agent 状态和任务信息",
+            "narration": "展示 Agent 的等级系统（Lv.1 切割）、积分（100）、任务追踪和群组管理",
+            "core_concept": "Agent 任务体系和等级系统",
+            "teaching_method": "演示",
+            "clarity": "medium",
+            "note": "三、使用扣子编程制作网站"
+          }
+        ]
+      },
+      {
+        "chapter": "实战：OpenClaw 自主开发「深红港任务公会」网站",
+        "start": "21:00",
+        "end": "42:00",
         "scenes": [
           {
             "scene_id": "3-1",
-            "start": "8:00",
-            "end": "10:00",
-            "visual": "定价页面对比：个人高阶版 ¥49/月 vs 个人旗舰版 ¥99/月",
-            "narration": "对比两种付费方案的功能差异，介绍限时加赠积分活动",
-            "core_concept": "两种订阅方案的功能对比和选择建议",
-            "teaching_method": "对比",
+            "start": "21:00",
+            "end": "27:00",
+            "visual": "飞书文档教程 + OpenClaw 聊天界面显示开发方案",
+            "narration": "展示如何用 OpenClaw 制作 Agent 打工网站，分析需求和方案设计",
+            "core_concept": "AI Agent 自主需求分析和方案设计",
+            "teaching_method": "实操",
             "clarity": "high",
-            "note": "高阶版 ¥49 已包含核心功能，旗舰版额外提供 Beta 功能"
+            "note": "Agent 工作证：爪爪(Zhao Zhao)，Digital Assistant"
+          },
+          {
+            "scene_id": "3-2",
+            "start": "27:00",
+            "end": "36:00",
+            "visual": "消息界面显示 Agent 生成代码、遇到错误和自动修复的过程",
+            "narration": "OpenClaw 自主编码、配置 sqlite3 数据库、处理错误和重试",
+            "core_concept": "AI Agent 自主开发和错误恢复能力",
+            "teaching_method": "实操",
+            "clarity": "medium",
+            "note": "「方案一：深红港（推荐 - 平衡好实施）」"
+          },
+          {
+            "scene_id": "3-3",
+            "start": "36:00",
+            "end": "42:00",
+            "visual": "API 测试结果（200 OK, ~4ms）和最终部署的深红港网站",
+            "narration": "服务上线，测试 API，展示最终成果——深红港任务公会完整网站",
+            "core_concept": "从代码到部署的完整 AI 开发闭环",
+            "teaching_method": "演示",
+            "clarity": "high",
+            "note": "网站包含区域系统、评分系统、任务发布等完整功能"
           }
         ]
       },
       {
-        "chapter": "Coze 建站教程与平台回顾",
-        "start": "10:00",
-        "end": "15:00",
+        "chapter": "InStreet 社区与 Coze 生态",
+        "start": "42:00",
+        "end": "51:00",
         "scenes": [
           {
             "scene_id": "4-1",
-            "start": "10:00",
-            "end": "13:00",
-            "visual": "返回 Coze 平台主界面，继续展示平台功能和项目案例",
-            "narration": "回顾平台功能，展示更多 OpenClaw 使用场景和扣子编程案例",
-            "core_concept": "Coze 平台生态和应用场景",
+            "start": "42:00",
+            "end": "48:00",
+            "visual": "InStreet 首页（instreet.coze.site）和 OpenClaw 实战演示帖子",
+            "narration": "介绍 InStreet AI Agent 社交网络，展示热门帖子、排行榜和社区生态",
+            "core_concept": "InStreet: 872个Agent、2358帖子的 AI 社交网络",
             "teaching_method": "演示",
-            "clarity": "medium",
-            "note": "可在底部使用扣子编程，直接在盒子里输入你的需求"
+            "clarity": "high",
+            "note": "Agent 注册指南：instreet.coze.site/skill.md"
           },
           {
             "scene_id": "4-2",
-            "start": "13:00",
-            "end": "15:00",
-            "visual": "飞书文档教程页面：如何利用 Coze 构建网站（从创意到上线）",
-            "narration": "展示七步建站法教程文档，从设定目标到持续迭代的完整流程",
-            "core_concept": "七步建站法：目标→设计→AI开发→全栈→调试→上线→迭代",
-            "teaching_method": "理论",
+            "start": "48:00",
+            "end": "51:00",
+            "visual": "Coze 扣子编程首页和用户项目列表",
+            "narration": "回到 Coze 平台展示用户的完整项目库（15+项目，213K积分）",
+            "core_concept": "Coze 平台项目生态和积分体系",
+            "teaching_method": "演示",
             "clarity": "high",
-            "note": "教程存储在飞书文档中，配有详细插图"
+            "note": "包括直播、电商、RSS助手、AI学习路线图等多种项目"
           }
         ]
       },
       {
-        "chapter": "OpenClaw 实战对话演示",
-        "start": "15:00",
-        "end": "20:00",
+        "chapter": "Gateway Dashboard 深度解析",
+        "start": "51:00",
+        "end": "69:00",
         "scenes": [
           {
             "scene_id": "5-1",
-            "start": "15:00",
-            "end": "17:00",
-            "visual": "OpenClaw 聊天界面，左侧功能列表，右侧对话窗口",
-            "narration": "演示 OpenClaw 的核心对话能力，展示其工具选择和信息检索功能",
-            "core_concept": "AI Agent 的自适应工具选择和多轮对话",
+            "start": "51:00",
+            "end": "57:00",
+            "visual": "Mac 桌面上的 OpenClaw Gateway Dashboard，显示 Chat 和文件操作",
+            "narration": "展示 Dashboard 的专业管理界面：文件系统、workspace 操作、Agent 状态监控",
+            "core_concept": "Gateway Dashboard: Chat + 文件系统 + Agent 状态",
             "teaching_method": "演示",
             "clarity": "medium",
-            "note": "OpenClaw 支持 7 种时间变量运算和数据持久化"
+            "note": "版本: dev, 健康状态: Health OK"
           },
           {
             "scene_id": "5-2",
-            "start": "17:00",
-            "end": "19:00",
-            "visual": "聊天窗口中显示大段生成内容，涉及多领域信息检索和分析",
-            "narration": "展示 OpenClaw 处理复杂查询的能力，生成结构化分析报告",
-            "core_concept": "AI Agent 的深度分析和结构化输出能力",
+            "start": "57:00",
+            "end": "63:00",
+            "visual": "Dashboard 浏览器自动化演示和文件目录树",
+            "narration": "展示 Agent 的浏览器自动化能力（访问 goodfish.com）和完整文件系统结构",
+            "core_concept": "浏览器自动化 + 文件系统结构（agents/browser/media/scripts 等）",
             "teaching_method": "演示",
             "clarity": "medium",
-            "note": "涉及 YouTube、Reddit、Twitter 等多平台信息整合"
+            "note": "Agent 可自主控制浏览器访问网页并截图"
           },
           {
             "scene_id": "5-3",
-            "start": "19:00",
-            "end": "20:00",
-            "visual": "聊天窗口显示任务执行方案：执行→整理→发布三步流程",
-            "narration": "展示 OpenClaw 的任务规划和执行能力，自动拆解为三步走流程",
-            "core_concept": "AI Agent 的任务规划：执行、整理、发布",
+            "start": "63:00",
+            "end": "69:00",
+            "visual": "Agents 配置页面显示 8 个核心 .md 文件 + Skills 技能列表",
+            "narration": "深入展示 Agent 核心配置文件和 Skills 技能体系（52内置+6工作空间+4扩展）",
+            "core_concept": "Agent 8 大配置文件 + Skills 三层体系",
+            "teaching_method": "理论",
+            "clarity": "high",
+            "note": "SOUL.md 定义人格，HEARTBEAT.md 定义定期任务"
+          }
+        ]
+      },
+      {
+        "chapter": "ClawEx 扩展与飞书集成",
+        "start": "69:00",
+        "end": "84:00",
+        "scenes": [
+          {
+            "scene_id": "6-1",
+            "start": "69:00",
+            "end": "75:00",
+            "visual": "ClawEx 界面安装飞书插件，配置 App ID/Secret",
+            "narration": "展示 ClawEx 扩展工具的飞书插件安装流程和 Gateway 配对方式",
+            "core_concept": "ClawEx 飞书插件安装和配对流程",
             "teaching_method": "实操",
             "clarity": "high",
-            "note": "Vibe Coding 实践：用自然语言指挥 AI 完成工作"
+            "note": "方式一：提供 App ID 和 App Secret；方式二：直接发送数据"
+          },
+          {
+            "scene_id": "6-2",
+            "start": "75:00",
+            "end": "84:00",
+            "visual": "飞书文档 Coze OpenClaw 案例分享 + Skill 部署流程",
+            "narration": "展示完整的 Skill 开发和部署六步法，以及电商数据分析案例",
+            "core_concept": "Skill 六步部署法 + 电商数据分析实战",
+            "teaching_method": "实操",
+            "clarity": "high",
+            "note": "数据分析：368件商品、4平台、28.5亿预估利润"
+          }
+        ]
+      },
+      {
+        "chapter": "高级技能管理与收尾",
+        "start": "84:00",
+        "end": "97:00",
+        "scenes": [
+          {
+            "scene_id": "7-1",
+            "start": "84:00",
+            "end": "90:00",
+            "visual": "ClawEx 显示 info-designer-infographic Skill 升级，Gateway 对话",
+            "narration": "展示 Skill 版本管理、升级流程和 Agent 的联系方式协商能力（WhatsApp/Telegram/Discord）",
+            "core_concept": "Skill 版本管理和多平台联系方式",
+            "teaching_method": "演示",
+            "clarity": "medium",
+            "note": "Skill 更新只需重启 Gateway，配置保持不变"
+          },
+          {
+            "scene_id": "7-2",
+            "start": "90:00",
+            "end": "97:00",
+            "visual": "回到 Bilibili 直播界面，展示 Coze 平台首页和订阅方案",
+            "narration": "直播收尾，回顾核心内容，再次展示订阅方案和互动活动",
+            "core_concept": "直播总结和互动",
+            "teaching_method": "理论",
+            "clarity": "high",
+            "note": "回到开场页面，呼吁订阅和参与互动"
           }
         ]
       }
@@ -275,6 +456,7 @@
     "source_url": "https://www.bilibili.com/video/BV1Y3NPzFEvz/",
     "video_duration": 5813,
     "platform": "bilibili",
-    "analyzed_at": "2026-03-10"
+    "analyzed_at": "2026-03-10",
+    "analysis_method": "Claude vision - 33 frames at 3-min intervals covering full 97min video"
   }
 }
