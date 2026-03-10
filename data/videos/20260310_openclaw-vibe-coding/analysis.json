@@ -1,0 +1,280 @@
+{
+  "title_cn": "OpenClaw高玩分享！从扣子养虾到 Vibe Coding大趋势",
+  "topic": "OpenClaw/扣子养虾 AI Agent 部署与 Vibe Coding",
+  "category": "AI工具",
+  "tags": ["OpenClaw", "扣子", "Coze", "AI Agent", "Vibe Coding", "无代码部署", "AI编程"],
+  "difficulty": "beginner",
+  "learning_rating": 7.0,
+  "speaker": "B站UP主（直播分享）",
+  "language": "中文",
+  "video_info": {
+    "publish_date": "2025",
+    "views_estimate": ""
+  },
+  "overview": "本视频是一场 Bilibili 直播分享，主题围绕 OpenClaw（扣子养虾）AI Agent 的使用和部署展开。主讲人从基础概念讲起，介绍了如何在字节跳动的 Coze（扣子）平台上快速部署一个 7x24 小时在线的 AI 分身。这个 AI Agent 不仅能处理日常互动、内容创作，还能提供情绪价值和任务自动化能力。视频详细演示了 OpenClaw 的一键部署流程（3分钟无代码部署）、Coze 平台的核心功能（智能体开发、工作流开发、API & SDK 集成），以及从创意到上线的完整网站构建七步法。后半段深入讨论了 Vibe Coding（氛围编程）这一新兴趋势，展示了 OpenClaw 智能体的实际对话能力，包括自适应工具选择、数据关联分析、情绪化交互等高级功能。整体而言，视频为想要快速搭建个人 AI Agent 的初学者提供了一条完整的入门路径。",
+  "sections": [
+    {
+      "title": "OpenClaw/扣子养虾 核心概念",
+      "content": "**OpenClaw** 是基于字节跳动 Coze（扣子）平台构建的 AI 智能代理（Agent），被形象地称为「扣子养虾」。其核心理念是让用户拥有一个 **7x24 小时在线的 AI 分身**，能够：\n\n- 自动处理各种互动和对话\n- 辅助内容创作\n- 提供日常提醒服务\n- 按照用户喜好提供情绪价值\n- 执行多种自动化任务\n\n官方将其定位为「电子宠物」，但强调它的实际功能远超宠物概念——它是一个真正能帮你做事的 AI 助手。\n\n**部署方式**极为简单：3分钟无代码部署，通过 `Code.coze.cn` 直接访问和配置。支持从现有模板一键克隆（创建副本），自动继承原始应用的所有配置、代码、上下文和变量定义。",
+      "subsections": [
+        {
+          "title": "什么是 Coze/扣子 平台",
+          "content": "Coze（扣子）是字节跳动推出的 AI 开发平台，口号是「**扣子编程，你的 AI 开发伙伴已就位**」。平台提供以下核心模块：\n\n1. **商店应用** — 浏览和使用已发布的 AI 应用\n2. **移动应用** — 移动端支持\n3. **小程序** — 小程序集成\n4. **智能体** — AI Agent 创建和管理\n5. **工作流** — 自动化任务流程编排\n6. **地图** — 可视化工具\n\n平台还提供完整的开发者工具：\n- **项目管理** — 管理多个 AI 应用项目\n- **集成管理** — 第三方服务集成\n- **资源库** — 共享资源和模板\n- **任务中心** — 任务调度与监控\n- **API & SDK** — 编程接口\n- **评估管理** — 效果评估工具"
+        }
+      ]
+    },
+    {
+      "title": "快速部署：从零到上线",
+      "content": "视频详细演示了如何在 Coze 平台上快速部署 OpenClaw。核心步骤如下：",
+      "subsections": [
+        {
+          "title": "一键克隆 OpenClaw 助手",
+          "content": "1. 访问 `Code.coze.cn` 平台\n2. 找到 OpenClaw 项目模板\n3. 点击「创建副本」\n4. 系统自动填入应用信息：\n   - **应用名称**：OpenClaw助手(副本)\n   - **应用介绍**：OpenClaw智能代理：提供多场景AI服务，自动化处理任务，提升工作效率\n5. 可自定义图标和描述\n6. 点击确认即完成克隆\n\n> 提示：副本创建范围包含代码、压缩后的上下文、数据库/存储/变量的结构定义，不含具体数据及环境变量值。"
+        },
+        {
+          "title": "从创意到上线的七步法",
+          "content": "视频中展示了一份飞书文档教程，标题为「**如何利用 Coze 构建网站（从创意到上线）**」，概括了 7 个关键步骤：\n\n1. **设定目标** — 明确用户需求和商业目标\n2. **生成设计** — 利用 AI 辅助生成初始设计方案\n3. **利用 AI 开发** — 结合 AI 工具进行实际开发\n4. **步骤全栈开发** — 使用 `@next & Node.js` 进行全栈开发\n5. **交互调试** — 逐步调试前端交互和后端逻辑\n6. **正式上线** — 部署、审核与发布\n7. **持续迭代** — 记忆优化、持续维护\n\n教程还包含了「快速在扣子领养一只龙虾」的入门引导，整个流程对新手非常友好。"
+        }
+      ]
+    },
+    {
+      "title": "订阅方案与定价",
+      "content": "Coze 平台提供两种个人付费方案：\n\n### 个人高阶版 — ¥49/月\n- 每月 99,000 积分\n- 加赠 9.8 万积分（限时活动）\n- 每日签到赠 1000 积分\n- 可使用高级模型积分\n- 现有去品牌水印\n- 计划创建数量：3个\n- 播客去品牌商片头（即将上线）\n- 博客自定义交互（即将上线）\n- 一键部署 OpenClaw 项目\n\n### 个人旗舰版 — ¥99/月\n- 每月 199,000 积分\n- 加赠 29.8 万积分（限时活动）\n- 每日签到赠 1000 积分\n- 可使用高级模型积分\n- 图片去品牌水印\n- 计划创建数量：10个\n- 博客去品牌商片头（即将上线）\n- 博客自定义交互（即将上线）\n- 优先体验 Beta 功能\n- 一键部署 OpenClaw 项目\n\n对于初学者，**个人高阶版（¥49/月）** 已经足够使用。",
+      "subsections": []
+    },
+    {
+      "title": "OpenClaw 智能体实战演示",
+      "content": "视频后半段在浏览器中演示了 OpenClaw 智能体的实际使用。通过 `code.coze.cn` 平台的聊天界面，展示了以下核心能力：",
+      "subsections": [
+        {
+          "title": "核心功能列表",
+          "content": "根据左侧面板显示，OpenClaw 支持 7 种时间变量和运算功能，主要能力包括：\n\n- **自适应了解和工具选择** — 根据对话上下文自动选择合适的工具\n- **数据关联分析** — 跨数据源的关联分析能力\n- **情绪化和大型数据工具** — 情感识别与大规模数据处理\n- **利用自然关联想象记忆** — 上下文记忆和关联推理\n- **对话数据持久化** — 使用 `@webmemory`、`@dbSZ`、`@memory` 等模块实现数据持久化\n- **数据信息安全检查** — 隐私保护和安全审计\n- **自动化打标和检索能力** — 智能标签和知识检索"
+        },
+        {
+          "title": "对话交互演示",
+          "content": "演示中，用户向 OpenClaw 发送了各种指令，智能体展现了强大的多轮对话能力：\n\n1. **任务规划** — 能够将复杂需求拆解为步骤化的执行方案\n2. **信息检索** — 从互联网获取实时信息并整理\n3. **内容生成** — 生成结构化的报告和文档\n4. **工具调用** — 自动调用合适的工具完成任务\n\n在一个演示中，智能体按照「三步走」流程完成任务：\n1. **执行** — 使用工具、文件处理\n2. **整理** — 数据整理和格式化\n3. **发布** — 内容发布和分享"
+        }
+      ]
+    },
+    {
+      "title": "Vibe Coding：AI 编程新趋势",
+      "content": "视频标题中的 **Vibe Coding**（氛围编程/感觉编程）是当前 AI 编程领域的热门趋势。核心理念是：\n\n> 不再需要逐行编写代码，而是通过自然语言描述需求，让 AI 自动生成完整的代码实现。\n\n**Vibe Coding 的核心特征：**\n\n1. **自然语言驱动** — 用人话描述你想要什么，AI 帮你写代码\n2. **低门槛** — 不需要深厚的编程基础，普通用户也能「编程」\n3. **快速迭代** — 几分钟内完成传统开发需要几天的工作\n4. **AI 全程辅助** — 从架构设计到代码实现到调试优化\n\n视频中通过 OpenClaw 的实际演示，展现了 Vibe Coding 的实践形态：用户只需在聊天框中输入自然语言指令，智能体就能自动理解意图、选择工具、执行任务并返回结果。这代表了从「人写代码」到「人指挥 AI 写代码」的范式转变。\n\n**与传统编程对比：**\n- 传统编程：学语法 → 写代码 → 调试 → 部署\n- Vibe Coding：描述需求 → AI 生成 → 验证调整 → 一键部署",
+      "subsections": []
+    },
+    {
+      "title": "互动活动与社区",
+      "content": "直播中还介绍了多个互动活动：\n\n1. **互动有礼第一弹：评论互动** — 在扣子Coze抖音号、视频号评论区发送「轻松养虾就用扣子」参与\n2. **互动有礼第二弹：InStreet留言** — 公众号回复「养虾」即可获得所有链接和回复\n3. **社群入口** — 关注「扣子Coze」公众号回复「养虾」加入社群，参与抽奖\n\n升级到个人高阶版和旗舰版还赠送 3 倍积分。",
+      "subsections": []
+    }
+  ],
+  "resources": [
+    {
+      "name": "Coze/扣子 平台",
+      "url": "https://code.coze.cn",
+      "description": "字节跳动 AI 开发平台，OpenClaw 的部署环境",
+      "type": "website"
+    },
+    {
+      "name": "OpenClaw 项目",
+      "url": "https://code.coze.cn",
+      "description": "7x24 小时在线 AI Agent 智能体项目模板",
+      "type": "tool"
+    },
+    {
+      "name": "Coze 建站教程（飞书文档）",
+      "url": "https://docs.coze.cn/tutorial/openclaw",
+      "description": "如何利用 Coze 构建网站：从创意到上线的完整教程",
+      "type": "tutorial"
+    }
+  ],
+  "key_tips": [
+    "使用「创建副本」功能可以一键克隆 OpenClaw 模板，无需从零开始配置智能体",
+    "个人高阶版（¥49/月）已包含一键部署 OpenClaw 的功能，初学者无需购买旗舰版",
+    "OpenClaw 支持 @webmemory、@dbSZ、@memory 等持久化模块，确保对话数据不会丢失",
+    "部署完成后的 AI Agent 可以 7x24 小时在线运行，无需手动维护",
+    "先从飞书教程文档入手了解七步建站法，再动手操作会事半功倍"
+  ],
+  "faq": [
+    {
+      "question": "OpenClaw 和普通的 ChatGPT 有什么区别？",
+      "answer": "OpenClaw 是部署在 Coze 平台上的 AI Agent，它不仅能对话，还能自动选择工具、执行任务、持久化记忆、提供 7x24 服务。普通 ChatGPT 只是一个对话窗口，OpenClaw 更像一个自主工作的 AI 助理。"
+    },
+    {
+      "question": "不懂编程也能用 OpenClaw 吗？",
+      "answer": "完全可以。OpenClaw 主打「3分钟无代码部署」，通过一键克隆模板和可视化配置，不需要写任何代码就能拥有自己的 AI Agent。"
+    },
+    {
+      "question": "Vibe Coding 适合什么人？",
+      "answer": "Vibe Coding 特别适合有想法但编程能力有限的创业者、产品经理、设计师等。通过自然语言描述需求，AI 代替你完成代码实现，降低了技术门槛。"
+    }
+  ],
+  "hardware_requirements": "无特殊硬件要求。OpenClaw 运行在云端 Coze 平台上，用户只需要一台能上网的设备（电脑或手机）即可使用。",
+  "target_audience": ["AI 工具初学者", "想搭建个人 AI Agent 的用户", "对 Vibe Coding 感兴趣的非技术人员", "Coze/扣子平台的新用户"],
+  "summary": "这场直播系统介绍了 OpenClaw/扣子养虾这一 AI Agent 项目，从概念理解到实际部署到付费方案一应俱全。最大亮点是展示了如何在 3 分钟内无代码部署一个 7x24 小时在线的 AI 分身，以及 Vibe Coding（氛围编程）这一新趋势如何让普通人也能通过自然语言「编程」。核心价值在于为非技术用户提供了一条从零开始搭建个人 AI Agent 的完整路径，降低了 AI 应用开发的门槛。",
+  "related_links": [
+    {
+      "label": "Coze 扣子平台",
+      "url": "https://code.coze.cn"
+    },
+    {
+      "label": "原视频链接",
+      "url": "https://www.bilibili.com/video/BV1Y3NPzFEvz/"
+    }
+  ],
+  "scene_breakdown": {
+    "chapters": [
+      {
+        "chapter": "开场介绍：OpenClaw/扣子养虾是什么",
+        "start": "0:00",
+        "end": "4:00",
+        "scenes": [
+          {
+            "scene_id": "1-1",
+            "start": "0:00",
+            "end": "1:00",
+            "visual": "标题页面展示「轻松养虾就用扣子-直播中」的主题，下方介绍 OpenClaw 概念",
+            "narration": "介绍直播主题，解释什么是 OpenClaw/扣子养虾：3分钟无代码部署的 7x24 AI 分身",
+            "core_concept": "OpenClaw 是基于 Coze 平台的 AI Agent",
+            "teaching_method": "理论",
+            "clarity": "high",
+            "note": "养虾直达链接：Code.coze.cn"
+          },
+          {
+            "scene_id": "1-2",
+            "start": "1:00",
+            "end": "4:00",
+            "visual": "展示 Coze 平台界面，包括项目管理、智能体开发等功能模块",
+            "narration": "详细介绍 Coze 平台的各项功能，展示平台界面布局和核心模块",
+            "core_concept": "Coze 平台功能架构：智能体、工作流、API & SDK",
+            "teaching_method": "演示",
+            "clarity": "high",
+            "note": "扣子编程，你的 AI 开发伙伴已就位"
+          }
+        ]
+      },
+      {
+        "chapter": "实操演示：部署 OpenClaw",
+        "start": "4:00",
+        "end": "8:00",
+        "scenes": [
+          {
+            "scene_id": "2-1",
+            "start": "4:00",
+            "end": "6:00",
+            "visual": "Coze 平台首页，展示 OpenClaw 项目模板和案例",
+            "narration": "浏览 Coze 平台上的优秀案例，找到 OpenClaw 项目模板准备克隆",
+            "core_concept": "从模板市场选择合适的 Agent 模板",
+            "teaching_method": "实操",
+            "clarity": "high",
+            "note": "通过优秀案例学习如何搭建 Agent"
+          },
+          {
+            "scene_id": "2-2",
+            "start": "6:00",
+            "end": "8:00",
+            "visual": "创建副本对话框，填写应用名称和介绍",
+            "narration": "演示一键克隆 OpenClaw 助手，设置应用名称和描述",
+            "core_concept": "一键克隆部署：副本包含代码和上下文结构",
+            "teaching_method": "实操",
+            "clarity": "high",
+            "note": "副本不含环境变量值，需手动配置"
+          }
+        ]
+      },
+      {
+        "chapter": "付费方案对比",
+        "start": "8:00",
+        "end": "10:00",
+        "scenes": [
+          {
+            "scene_id": "3-1",
+            "start": "8:00",
+            "end": "10:00",
+            "visual": "定价页面对比：个人高阶版 ¥49/月 vs 个人旗舰版 ¥99/月",
+            "narration": "对比两种付费方案的功能差异，介绍限时加赠积分活动",
+            "core_concept": "两种订阅方案的功能对比和选择建议",
+            "teaching_method": "对比",
+            "clarity": "high",
+            "note": "高阶版 ¥49 已包含核心功能，旗舰版额外提供 Beta 功能"
+          }
+        ]
+      },
+      {
+        "chapter": "Coze 建站教程与平台回顾",
+        "start": "10:00",
+        "end": "15:00",
+        "scenes": [
+          {
+            "scene_id": "4-1",
+            "start": "10:00",
+            "end": "13:00",
+            "visual": "返回 Coze 平台主界面，继续展示平台功能和项目案例",
+            "narration": "回顾平台功能，展示更多 OpenClaw 使用场景和扣子编程案例",
+            "core_concept": "Coze 平台生态和应用场景",
+            "teaching_method": "演示",
+            "clarity": "medium",
+            "note": "可在底部使用扣子编程，直接在盒子里输入你的需求"
+          },
+          {
+            "scene_id": "4-2",
+            "start": "13:00",
+            "end": "15:00",
+            "visual": "飞书文档教程页面：如何利用 Coze 构建网站（从创意到上线）",
+            "narration": "展示七步建站法教程文档，从设定目标到持续迭代的完整流程",
+            "core_concept": "七步建站法：目标→设计→AI开发→全栈→调试→上线→迭代",
+            "teaching_method": "理论",
+            "clarity": "high",
+            "note": "教程存储在飞书文档中，配有详细插图"
+          }
+        ]
+      },
+      {
+        "chapter": "OpenClaw 实战对话演示",
+        "start": "15:00",
+        "end": "20:00",
+        "scenes": [
+          {
+            "scene_id": "5-1",
+            "start": "15:00",
+            "end": "17:00",
+            "visual": "OpenClaw 聊天界面，左侧功能列表，右侧对话窗口",
+            "narration": "演示 OpenClaw 的核心对话能力，展示其工具选择和信息检索功能",
+            "core_concept": "AI Agent 的自适应工具选择和多轮对话",
+            "teaching_method": "演示",
+            "clarity": "medium",
+            "note": "OpenClaw 支持 7 种时间变量运算和数据持久化"
+          },
+          {
+            "scene_id": "5-2",
+            "start": "17:00",
+            "end": "19:00",
+            "visual": "聊天窗口中显示大段生成内容，涉及多领域信息检索和分析",
+            "narration": "展示 OpenClaw 处理复杂查询的能力，生成结构化分析报告",
+            "core_concept": "AI Agent 的深度分析和结构化输出能力",
+            "teaching_method": "演示",
+            "clarity": "medium",
+            "note": "涉及 YouTube、Reddit、Twitter 等多平台信息整合"
+          },
+          {
+            "scene_id": "5-3",
+            "start": "19:00",
+            "end": "20:00",
+            "visual": "聊天窗口显示任务执行方案：执行→整理→发布三步流程",
+            "narration": "展示 OpenClaw 的任务规划和执行能力，自动拆解为三步走流程",
+            "core_concept": "AI Agent 的任务规划：执行、整理、发布",
+            "teaching_method": "实操",
+            "clarity": "high",
+            "note": "Vibe Coding 实践：用自然语言指挥 AI 完成工作"
+          }
+        ]
+      }
+    ]
+  },
+  "_meta": {
+    "title": "OpenClaw高玩分享！从扣子养虾到 Vibe Coding大趋势",
+    "source_url": "https://www.bilibili.com/video/BV1Y3NPzFEvz/",
+    "video_duration": 5813,
+    "platform": "bilibili",
+    "analyzed_at": "2026-03-10"
+  }
+}
