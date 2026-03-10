@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenClaw高玩分享！从扣子养虾到 Vibe Coding大趋势 - Learning Archive</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg-deep: #06060B;
+  --bg-surface: #0D0D14;
+  --bg-card: #12121C;
+  --bg-card-hover: #181826;
+  --border-subtle: rgba(99, 102, 241, 0.08);
+  --border-hover: rgba(99, 102, 241, 0.2);
+  --text-primary: #E8E8ED;
+  --text-secondary: #7A7A8E;
+  --text-muted: #4A4A5E;
+  --accent: #6366F1;
+  --accent-glow: rgba(99, 102, 241, 0.15);
+  --accent-soft: #818CF8;
+  --radius: 12px;
+  --font-heading: 'DM Sans', -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: var(--font-heading);
+  font-weight: 400;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: -200px; left: 50%;
+  transform: translateX(-50%);
+  width: 800px; height: 600px;
+  background: radial-gradient(ellipse, rgba(99, 102, 241, 0.05) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 24px;
+  position: relative;
+  z-index: 1;
+}
+
+a { color: var(--accent-soft); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Back Nav */
+.back-nav { padding: 24px 0; }
+.back-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--text-muted); text-decoration: none;
+  font-family: var(--font-mono); font-size: 0.78rem;
+  transition: color 0.2s;
+}
+.back-link:hover { color: var(--accent-soft); text-decoration: none; }
+.back-link svg { width: 16px; height: 16px; }
+
+/* Hero */
+.hero { padding-bottom: 40px; }
+
+.video-embed {
+  width: 100%; aspect-ratio: 16/9;
+  border-radius: var(--radius); overflow: hidden;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  margin-bottom: 28px;
+}
+.video-embed iframe { width: 100%; height: 100%; border: none; }
+.video-embed .video-link-fallback {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 12px;
+  color: var(--text-secondary); text-decoration: none;
+}
+.video-embed .video-link-fallback:hover { color: var(--accent-soft); }
+.video-embed .video-link-fallback svg { width: 48px; height: 48px; opacity: 0.5; }
+
+.hero-title {
+  font-family: var(--font-heading);
+  font-weight: 900;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  letter-spacing: -0.02em; line-height: 1.25;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+
+.hero-meta {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+}
+
+.meta-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 12px; border-radius: 6px;
+  font-family: var(--font-mono); font-size: 0.72rem;
+  font-weight: 500; letter-spacing: 0.03em;
+}
+.meta-badge.platform {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+}
+.meta-badge.platform .p-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+}
+.meta-badge.score {
+  background: var(--accent-glow);
+  border: 1px solid rgba(99, 102, 241, 0.15);
+  color: var(--accent-soft);
+}
+.meta-badge.duration, .meta-badge.date {
+  color: var(--text-muted);
+  font-family: var(--font-mono); font-size: 0.72rem;
+}
+
+/* Section Cards */
+.section-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  margin-bottom: 16px;
+}
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem; font-weight: 500;
+  color: var(--accent-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+}
+.section-heading {
+  font-family: var(--font-heading);
+  font-weight: 700; font-size: 1.15rem;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+.section-text {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+
+/* Tags */
+.tag-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.tag-pill {
+  padding: 3px 10px; border-radius: 4px;
+  font-family: var(--font-mono); font-size: 0.7rem; font-weight: 500;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+}
+.tag-pill.difficulty-beginner { border-color: rgba(34, 197, 94, 0.2); color: #4ADE80; }
+.tag-pill.difficulty-intermediate { border-color: rgba(250, 204, 21, 0.2); color: #FACC15; }
+.tag-pill.difficulty-advanced { border-color: rgba(239, 68, 68, 0.2); color: #F87171; }
+
+/* Knowledge Points */
+.knowledge-list { list-style: none; }
+.knowledge-item { padding: 14px 0; border-bottom: 1px solid var(--border-subtle); }
+.knowledge-item:last-child { border-bottom: none; }
+.knowledge-concept {
+  font-family: var(--font-heading); font-weight: 700;
+  font-size: 0.9rem; color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.knowledge-explain {
+  font-size: 0.84rem; color: var(--text-secondary); line-height: 1.65;
+}
+
+/* Chapters Accordion */
+.chapter-item { border-bottom: 1px solid var(--border-subtle); }
+.chapter-item:last-child { border-bottom: none; }
+.chapter-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 0; cursor: pointer; user-select: none;
+  transition: color 0.2s;
+}
+.chapter-header:hover { color: var(--accent-soft); }
+.chapter-header-left {
+  display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0;
+}
+.chapter-time {
+  font-family: var(--font-mono); font-size: 0.72rem;
+  color: var(--accent-soft); white-space: nowrap; flex-shrink: 0;
+}
+.chapter-title {
+  font-family: var(--font-heading); font-weight: 600;
+  font-size: 0.9rem; color: var(--text-primary);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.chapter-arrow {
+  color: var(--text-muted);
+  transition: transform 0.3s ease; flex-shrink: 0;
+}
+.chapter-item.open .chapter-arrow { transform: rotate(180deg); }
+.chapter-content { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+.chapter-item.open .chapter-content { max-height: 500px; }
+.chapter-inner { padding: 0 0 20px 0; }
+.chapter-summary {
+  font-size: 0.85rem; color: var(--text-secondary);
+  margin-bottom: 12px; line-height: 1.7;
+}
+.chapter-points { list-style: none; padding: 0; }
+.chapter-points li {
+  position: relative; padding-left: 16px;
+  margin-bottom: 6px; font-size: 0.82rem; color: var(--text-secondary);
+}
+.chapter-points li::before {
+  content: ''; position: absolute; left: 0; top: 9px;
+  width: 4px; height: 4px; border-radius: 50%; background: var(--accent);
+}
+
+/* Quotes */
+.quote-card {
+  position: relative; padding: 20px 24px;
+  margin-bottom: 12px;
+  border-left: 2px solid var(--accent);
+  background: rgba(99, 102, 241, 0.03);
+  border-radius: 0 8px 8px 0;
+}
+.quote-card:last-child { margin-bottom: 0; }
+.quote-text {
+  font-size: 0.9rem; color: var(--text-primary);
+  font-style: italic; line-height: 1.65; margin-bottom: 8px;
+}
+.quote-time {
+  font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent-soft);
+}
+
+/* Takeaways */
+.takeaway-list { list-style: none; }
+.takeaway-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 8px 0; font-size: 0.88rem; color: var(--text-secondary);
+}
+.takeaway-check {
+  width: 18px; height: 18px;
+  border: 1.5px solid var(--border-hover);
+  border-radius: 4px; flex-shrink: 0; margin-top: 2px;
+  display: flex; align-items: center; justify-content: center;
+}
+.takeaway-check svg {
+  width: 12px; height: 12px; color: var(--accent-soft);
+}
+
+/* Resources Table */
+.resource-table { width: 100%; border-collapse: collapse; }
+.resource-table th {
+  text-align: left; font-family: var(--font-mono);
+  font-size: 0.7rem; font-weight: 500; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.06em;
+  padding: 10px 0; border-bottom: 1px solid var(--border-subtle);
+}
+.resource-table td {
+  padding: 10px 0; font-size: 0.84rem;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.resource-table tr:last-child td { border-bottom: none; }
+.resource-table a { color: var(--accent-soft); text-decoration: none; }
+.resource-table a:hover { text-decoration: underline; }
+
+/* Detailed Content Sections */
+.section-block {
+  margin-bottom: 20px;
+  background: rgba(99, 102, 241, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+}
+.sec-title {
+  font-family: var(--font-heading);
+  font-size: 1rem; font-weight: 700;
+  margin-bottom: 14px; display: flex; align-items: center; gap: 10px;
+  color: var(--text-primary);
+}
+.sec-num {
+  font-family: var(--font-mono); font-size: 0.68rem;
+  color: #fff; background: var(--accent);
+  width: 24px; height: 24px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.sec-body { color: var(--text-secondary); line-height: 1.8; font-size: 0.88rem; }
+.sec-body p { margin-bottom: 10px; }
+.sec-body strong { color: var(--text-primary); font-weight: 600; }
+.subsection { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border-subtle); }
+.subsec-title { font-size: 0.92rem; font-weight: 600; margin-bottom: 8px; color: var(--text-primary); }
+.subsec-body { color: var(--text-secondary); font-size: 0.86rem; }
+.subsec-body p { margin-bottom: 8px; }
+.content-list { margin: 10px 0; padding-left: 22px; }
+.content-list li { margin-bottom: 5px; line-height: 1.65; }
+.content-h4 { font-size: 0.95rem; font-weight: 600; margin: 14px 0 8px; color: var(--text-primary); }
+.content-h5 { font-size: 0.88rem; font-weight: 600; margin: 10px 0 6px; color: var(--text-secondary); }
+.code-block {
+  background: #0D0D14; color: #CDD6F4;
+  padding: 14px 18px; border-radius: 8px;
+  overflow-x: auto; font-family: var(--font-mono);
+  font-size: 0.8rem; line-height: 1.6; margin: 10px 0;
+  border: 1px solid var(--border-subtle);
+}
+.inline-code {
+  background: var(--accent-glow); color: var(--accent-soft);
+  padding: 1px 6px; border-radius: 4px;
+  font-family: var(--font-mono); font-size: 0.85em;
+}
+
+/* FAQ */
+.faq-item {
+  margin-bottom: 14px; padding: 16px 20px;
+  background: rgba(99, 102, 241, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+}
+.faq-q { font-weight: 600; color: var(--accent-soft); margin-bottom: 8px; font-size: 0.9rem; }
+.faq-a { color: var(--text-secondary); font-size: 0.86rem; }
+.faq-a p { margin-bottom: 6px; }
+
+/* Summary Box */
+.summary-box {
+  background: rgba(99, 102, 241, 0.04);
+  border: 1px solid rgba(99, 102, 241, 0.1);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+}
+.summary-box p { color: var(--text-secondary); line-height: 1.85; font-size: 0.92rem; }
+
+/* Footer */
+.report-footer {
+  padding: 48px 0 32px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.section-card { animation: fadeInUp 0.5s ease both; }
+.section-card:nth-child(1) { animation-delay: 0.1s; }
+.section-card:nth-child(2) { animation-delay: 0.15s; }
+.section-card:nth-child(3) { animation-delay: 0.2s; }
+.section-card:nth-child(4) { animation-delay: 0.25s; }
+.section-card:nth-child(5) { animation-delay: 0.3s; }
+.section-card:nth-child(6) { animation-delay: 0.35s; }
+
+/* Responsive */
+@media (max-width: 640px) {
+  .container { padding: 0 16px; }
+  .section-card { padding: 20px 18px; }
+  .hero-title { font-size: 1.4rem; }
+  .section-block { padding: 18px 16px; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <nav class="back-nav">
+    <a href="../../../" class="back-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Archive
+    </a>
+  </nav>
+
+  <section class="hero">
+    <div class="video-embed">
+      <iframe src="//player.bilibili.com/player.html?bvid=BV1Y3NPzFEvz&high_quality=1&danmaku=0" allowfullscreen="true" frameborder="0"></iframe>
+    </div>
+
+    <h1 class="hero-title">OpenClaw高玩分享！从扣子养虾到 Vibe Coding大趋势</h1>
+
+    <div class="hero-meta">
+      <span class="meta-badge platform"><span class="p-dot" style="background:#00A1D6"></span>Bilibili</span>
+      <span class="meta-badge score">7.0/10</span>
+      <span class="meta-badge duration">96:53</span>
+      <span class="meta-badge date">2026-03-10</span>
+    </div>
+  </section>
+
+  <!-- Overview -->
+  <div class="section-card">
+    <div class="section-label">Overview</div>
+    <div class="tag-row">
+      <span class="tag-pill difficulty-beginner">Beginner</span>
+      <span class="tag-pill">AI工具</span>
+      <span class="tag-pill">B站UP主（直播分享）</span>
+    </div>
+    <div class="section-text">本视频是一场 Bilibili 直播分享，主题围绕 OpenClaw（扣子养虾）AI Agent 的使用和部署展开。主讲人从基础概念讲起，介绍了如何在字节跳动的 Coze（扣子）平台上快速部署一个 7x24 小时在线的 AI 分身。这个 AI Agent 不仅能处理日常互动、内容创作，还能提供情绪价值和任务自动化能力。视频详细演示了 OpenClaw 的一键部署流程（3分钟无代码部署）、Coze 平台的核心功能（智能体开发、工作流开发、API &amp; SDK 集成），以及从创意到上线的完整网站构建七步法。后半段深入讨论了 Vibe Coding（氛围编程）这一新兴趋势，展示了 OpenClaw 智能体的实际对话能力，包括自适应工具选择、数据关联分析、情绪化交互等高级功能。整体而言，视频为想要快速搭建个人 AI Agent 的初学者提供了一条完整的入门路径。</div>
+  </div>
+
+  <!-- Key Knowledge Points -->
+  <div class="section-card">
+    <div class="section-label">Key Knowledge</div>
+    <ul class="knowledge-list">
+      <li class="knowledge-item">
+            <div class="knowledge-concept">OpenClaw/扣子养虾 核心概念</div>
+            <div class="knowledge-explain">**OpenClaw** 是基于字节跳动 Coze（扣子）平台构建的 AI 智能代理（Agent），被形象地称为「扣子养虾」。其核心理念是让用户拥有一个 **7x24 小时在线的 AI 分身**，能够：</div>
+        </li>
+<li class="knowledge-item">
+            <div class="knowledge-concept">快速部署：从零到上线</div>
+            <div class="knowledge-explain">视频详细演示了如何在 Coze 平台上快速部署 OpenClaw。核心步骤如下：</div>
+        </li>
+<li class="knowledge-item">
+            <div class="knowledge-concept">订阅方案与定价</div>
+            <div class="knowledge-explain">Coze 平台提供两种个人付费方案：</div>
+        </li>
+<li class="knowledge-item">
+            <div class="knowledge-concept">OpenClaw 智能体实战演示</div>
+            <div class="knowledge-explain">视频后半段在浏览器中演示了 OpenClaw 智能体的实际使用。通过 `code.coze.cn` 平台的聊天界面，展示了以下核心能力：</div>
+        </li>
+<li class="knowledge-item">
+            <div class="knowledge-concept">Vibe Coding：AI 编程新趋势</div>
+            <div class="knowledge-explain">视频标题中的 **Vibe Coding**（氛围编程/感觉编程）是当前 AI 编程领域的热门趋势。核心理念是：</div>
+        </li>
+<li class="knowledge-item">
+            <div class="knowledge-concept">互动活动与社区</div>
+            <div class="knowledge-explain">直播中还介绍了多个互动活动：</div>
+        </li>
+    </ul>
+  </div>
+
+  <!-- Detailed Content -->
+  <div class="section-card">
+    <div class="section-label">Detailed Content</div>
+    <div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">01</span>OpenClaw/扣子养虾 核心概念</h3>
+            <div class="sec-body"><strong>OpenClaw</strong> 是基于字节跳动 Coze（扣子）平台构建的 AI 智能代理（Agent），被形象地称为「扣子养虾」。其核心理念是让用户拥有一个 <strong>7x24 小时在线的 AI 分身</strong>，能够：
+<ul class="content-list">
+<li>自动处理各种互动和对话</li>
+<li>辅助内容创作</li>
+<li>提供日常提醒服务</li>
+<li>按照用户喜好提供情绪价值</li>
+<li>执行多种自动化任务</li>
+</ul>
+<p>官方将其定位为「电子宠物」，但强调它的实际功能远超宠物概念——它是一个真正能帮你做事的 AI 助手。</p>
+<strong>部署方式</strong>极为简单：3分钟无代码部署，通过 <code class="inline-code">Code.coze.cn</code> 直接访问和配置。支持从现有模板一键克隆（创建副本），自动继承原始应用的所有配置、代码、上下文和变量定义。</div>
+            <div class="subsection">
+                    <h4 class="subsec-title">什么是 Coze/扣子 平台</h4>
+                    <div class="subsec-body"><p>Coze（扣子）是字节跳动推出的 AI 开发平台，口号是「<strong>扣子编程，你的 AI 开发伙伴已就位</strong>」。平台提供以下核心模块：</p>
+<ol class="content-list">
+<li><strong>商店应用</strong> — 浏览和使用已发布的 AI 应用</li>
+<li><strong>移动应用</strong> — 移动端支持</li>
+<li><strong>小程序</strong> — 小程序集成</li>
+<li><strong>智能体</strong> — AI Agent 创建和管理</li>
+<li><strong>工作流</strong> — 自动化任务流程编排</li>
+<li><strong>地图</strong> — 可视化工具</li>
+</ol>
+<p>平台还提供完整的开发者工具：</p>
+<ul class="content-list">
+<li><strong>项目管理</strong> — 管理多个 AI 应用项目</li>
+<li><strong>集成管理</strong> — 第三方服务集成</li>
+<li><strong>资源库</strong> — 共享资源和模板</li>
+<li><strong>任务中心</strong> — 任务调度与监控</li>
+<li><strong>API & SDK</strong> — 编程接口</li>
+<li><strong>评估管理</strong> — 效果评估工具</li>
+</ul></div>
+                </div>
+        </div><div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">02</span>快速部署：从零到上线</h3>
+            <div class="sec-body"><p>视频详细演示了如何在 Coze 平台上快速部署 OpenClaw。核心步骤如下：</p></div>
+            <div class="subsection">
+                    <h4 class="subsec-title">一键克隆 OpenClaw 助手</h4>
+                    <div class="subsec-body"><ol class="content-list">
+<li>访问 <code class="inline-code">Code.coze.cn</code> 平台</li>
+<li>找到 OpenClaw 项目模板</li>
+<li>点击「创建副本」</li>
+<li>系统自动填入应用信息：</li>
+</ol>
+<ul class="content-list">
+<li><strong>应用名称</strong>：OpenClaw助手(副本)</li>
+<li><strong>应用介绍</strong>：OpenClaw智能代理：提供多场景AI服务，自动化处理任务，提升工作效率</li>
+</ul>
+<ol class="content-list">
+<li>可自定义图标和描述</li>
+<li>点击确认即完成克隆</li>
+</ol>
+<p>> 提示：副本创建范围包含代码、压缩后的上下文、数据库/存储/变量的结构定义，不含具体数据及环境变量值。</p></div>
+                </div><div class="subsection">
+                    <h4 class="subsec-title">从创意到上线的七步法</h4>
+                    <div class="subsec-body"><p>视频中展示了一份飞书文档教程，标题为「<strong>如何利用 Coze 构建网站（从创意到上线）</strong>」，概括了 7 个关键步骤：</p>
+<ol class="content-list">
+<li><strong>设定目标</strong> — 明确用户需求和商业目标</li>
+<li><strong>生成设计</strong> — 利用 AI 辅助生成初始设计方案</li>
+<li><strong>利用 AI 开发</strong> — 结合 AI 工具进行实际开发</li>
+<li><strong>步骤全栈开发</strong> — 使用 <code class="inline-code">@next & Node.js</code> 进行全栈开发</li>
+<li><strong>交互调试</strong> — 逐步调试前端交互和后端逻辑</li>
+<li><strong>正式上线</strong> — 部署、审核与发布</li>
+<li><strong>持续迭代</strong> — 记忆优化、持续维护</li>
+</ol>
+<p>教程还包含了「快速在扣子领养一只龙虾」的入门引导，整个流程对新手非常友好。</p></div>
+                </div>
+        </div><div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">03</span>订阅方案与定价</h3>
+            <div class="sec-body"><p>Coze 平台提供两种个人付费方案：</p>
+<h4 class="content-h4">个人高阶版 — ¥49/月</h4>
+<ul class="content-list">
+<li>每月 99,000 积分</li>
+<li>加赠 9.8 万积分（限时活动）</li>
+<li>每日签到赠 1000 积分</li>
+<li>可使用高级模型积分</li>
+<li>现有去品牌水印</li>
+<li>计划创建数量：3个</li>
+<li>播客去品牌商片头（即将上线）</li>
+<li>博客自定义交互（即将上线）</li>
+<li>一键部署 OpenClaw 项目</li>
+</ul>
+<h4 class="content-h4">个人旗舰版 — ¥99/月</h4>
+<ul class="content-list">
+<li>每月 199,000 积分</li>
+<li>加赠 29.8 万积分（限时活动）</li>
+<li>每日签到赠 1000 积分</li>
+<li>可使用高级模型积分</li>
+<li>图片去品牌水印</li>
+<li>计划创建数量：10个</li>
+<li>博客去品牌商片头（即将上线）</li>
+<li>博客自定义交互（即将上线）</li>
+<li>优先体验 Beta 功能</li>
+<li>一键部署 OpenClaw 项目</li>
+</ul>
+<p>对于初学者，<strong>个人高阶版（¥49/月）</strong> 已经足够使用。</p></div>
+            
+        </div><div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">04</span>OpenClaw 智能体实战演示</h3>
+            <div class="sec-body"><p>视频后半段在浏览器中演示了 OpenClaw 智能体的实际使用。通过 <code class="inline-code">code.coze.cn</code> 平台的聊天界面，展示了以下核心能力：</p></div>
+            <div class="subsection">
+                    <h4 class="subsec-title">核心功能列表</h4>
+                    <div class="subsec-body"><p>根据左侧面板显示，OpenClaw 支持 7 种时间变量和运算功能，主要能力包括：</p>
+<ul class="content-list">
+<li><strong>自适应了解和工具选择</strong> — 根据对话上下文自动选择合适的工具</li>
+<li><strong>数据关联分析</strong> — 跨数据源的关联分析能力</li>
+<li><strong>情绪化和大型数据工具</strong> — 情感识别与大规模数据处理</li>
+<li><strong>利用自然关联想象记忆</strong> — 上下文记忆和关联推理</li>
+<li><strong>对话数据持久化</strong> — 使用 <code class="inline-code">@webmemory</code>、<code class="inline-code">@dbSZ</code>、<code class="inline-code">@memory</code> 等模块实现数据持久化</li>
+<li><strong>数据信息安全检查</strong> — 隐私保护和安全审计</li>
+<li><strong>自动化打标和检索能力</strong> — 智能标签和知识检索</li>
+</ul></div>
+                </div><div class="subsection">
+                    <h4 class="subsec-title">对话交互演示</h4>
+                    <div class="subsec-body"><p>演示中，用户向 OpenClaw 发送了各种指令，智能体展现了强大的多轮对话能力：</p>
+<ol class="content-list">
+<li><strong>任务规划</strong> — 能够将复杂需求拆解为步骤化的执行方案</li>
+<li><strong>信息检索</strong> — 从互联网获取实时信息并整理</li>
+<li><strong>内容生成</strong> — 生成结构化的报告和文档</li>
+<li><strong>工具调用</strong> — 自动调用合适的工具完成任务</li>
+</ol>
+<p>在一个演示中，智能体按照「三步走」流程完成任务：</p>
+<ol class="content-list">
+<li><strong>执行</strong> — 使用工具、文件处理</li>
+<li><strong>整理</strong> — 数据整理和格式化</li>
+<li><strong>发布</strong> — 内容发布和分享</li>
+</ol></div>
+                </div>
+        </div><div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">05</span>Vibe Coding：AI 编程新趋势</h3>
+            <div class="sec-body"><p>视频标题中的 <strong>Vibe Coding</strong>（氛围编程/感觉编程）是当前 AI 编程领域的热门趋势。核心理念是：</p>
+<p>> 不再需要逐行编写代码，而是通过自然语言描述需求，让 AI 自动生成完整的代码实现。</p>
+<strong>Vibe Coding 的核心特征：</strong>
+<ol class="content-list">
+<li><strong>自然语言驱动</strong> — 用人话描述你想要什么，AI 帮你写代码</li>
+<li><strong>低门槛</strong> — 不需要深厚的编程基础，普通用户也能「编程」</li>
+<li><strong>快速迭代</strong> — 几分钟内完成传统开发需要几天的工作</li>
+<li><strong>AI 全程辅助</strong> — 从架构设计到代码实现到调试优化</li>
+</ol>
+<p>视频中通过 OpenClaw 的实际演示，展现了 Vibe Coding 的实践形态：用户只需在聊天框中输入自然语言指令，智能体就能自动理解意图、选择工具、执行任务并返回结果。这代表了从「人写代码」到「人指挥 AI 写代码」的范式转变。</p>
+<strong>与传统编程对比：</strong>
+<ul class="content-list">
+<li>传统编程：学语法 → 写代码 → 调试 → 部署</li>
+<li>Vibe Coding：描述需求 → AI 生成 → 验证调整 → 一键部署</li>
+</ul></div>
+            
+        </div><div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">06</span>互动活动与社区</h3>
+            <div class="sec-body"><p>直播中还介绍了多个互动活动：</p>
+<ol class="content-list">
+<li><strong>互动有礼第一弹：评论互动</strong> — 在扣子Coze抖音号、视频号评论区发送「轻松养虾就用扣子」参与</li>
+<li><strong>互动有礼第二弹：InStreet留言</strong> — 公众号回复「养虾」即可获得所有链接和回复</li>
+<li><strong>社群入口</strong> — 关注「扣子Coze」公众号回复「养虾」加入社群，参与抽奖</li>
+</ol>
+<p>升级到个人高阶版和旗舰版还赠送 3 倍积分。</p></div>
+            
+        </div>
+  </div>
+
+  <!-- Chapters -->
+  <div class="section-card">
+    <div class="section-label">Chapters</div>
+    <div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">0:00</span>
+                    <span class="chapter-title">开场介绍：OpenClaw/扣子养虾是什么</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">介绍直播主题，解释什么是 OpenClaw/扣子养虾：3分钟无代码部署的 7x24 AI 分身. 详细介绍 Coze 平台的各项功能，展示平台界面布局和核心模块</div>
+                    <ul class="chapter-points"><li>OpenClaw 是基于 Coze 平台的 AI Agent</li><li>Coze 平台功能架构：智能体、工作流、API &amp; SDK</li></ul>
+                </div>
+            </div>
+        </div>
+<div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">4:00</span>
+                    <span class="chapter-title">实操演示：部署 OpenClaw</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">浏览 Coze 平台上的优秀案例，找到 OpenClaw 项目模板准备克隆. 演示一键克隆 OpenClaw 助手，设置应用名称和描述</div>
+                    <ul class="chapter-points"><li>从模板市场选择合适的 Agent 模板</li><li>一键克隆部署：副本包含代码和上下文结构</li></ul>
+                </div>
+            </div>
+        </div>
+<div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">8:00</span>
+                    <span class="chapter-title">付费方案对比</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">对比两种付费方案的功能差异，介绍限时加赠积分活动</div>
+                    <ul class="chapter-points"><li>两种订阅方案的功能对比和选择建议</li></ul>
+                </div>
+            </div>
+        </div>
+<div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">10:00</span>
+                    <span class="chapter-title">Coze 建站教程与平台回顾</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">回顾平台功能，展示更多 OpenClaw 使用场景和扣子编程案例. 展示七步建站法教程文档，从设定目标到持续迭代的完整流程</div>
+                    <ul class="chapter-points"><li>Coze 平台生态和应用场景</li><li>七步建站法：目标→设计→AI开发→全栈→调试→上线→迭代</li></ul>
+                </div>
+            </div>
+        </div>
+<div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">15:00</span>
+                    <span class="chapter-title">OpenClaw 实战对话演示</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">演示 OpenClaw 的核心对话能力，展示其工具选择和信息检索功能. 展示 OpenClaw 处理复杂查询的能力，生成结构化分析报告. 展示 OpenClaw 的任务规划和执行能力，自动拆解为三步走流程</div>
+                    <ul class="chapter-points"><li>AI Agent 的自适应工具选择和多轮对话</li><li>AI Agent 的深度分析和结构化输出能力</li><li>AI Agent 的任务规划：执行、整理、发布</li></ul>
+                </div>
+            </div>
+        </div>
+  </div>
+
+  <!-- Quotes -->
+  <div class="section-card">
+    <div class="section-label">Notable Quotes</div>
+    <div class="quote-card">
+            <div class="quote-text">高阶版 ¥49 已包含核心功能，旗舰版额外提供 Beta 功能</div>
+            <div class="quote-time">8:00</div>
+        </div>
+<div class="quote-card">
+            <div class="quote-text">可在底部使用扣子编程，直接在盒子里输入你的需求</div>
+            <div class="quote-time">10:00</div>
+        </div>
+<div class="quote-card">
+            <div class="quote-text">OpenClaw 支持 7 种时间变量运算和数据持久化</div>
+            <div class="quote-time">15:00</div>
+        </div>
+<div class="quote-card">
+            <div class="quote-text">涉及 YouTube、Reddit、Twitter 等多平台信息整合</div>
+            <div class="quote-time">17:00</div>
+        </div>
+<div class="quote-card">
+            <div class="quote-text">Vibe Coding 实践：用自然语言指挥 AI 完成工作</div>
+            <div class="quote-time">19:00</div>
+        </div>
+  </div>
+
+  <!-- Takeaways -->
+  <div class="section-card">
+    <div class="section-label">Takeaways</div>
+    <ul class="takeaway-list">
+      <li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            使用「创建副本」功能可以一键克隆 OpenClaw 模板，无需从零开始配置智能体
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            个人高阶版（¥49/月）已包含一键部署 OpenClaw 的功能，初学者无需购买旗舰版
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            OpenClaw 支持 @webmemory、@dbSZ、@memory 等持久化模块，确保对话数据不会丢失
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            部署完成后的 AI Agent 可以 7x24 小时在线运行，无需手动维护
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            先从飞书教程文档入手了解七步建站法，再动手操作会事半功倍
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            OpenClaw 和普通的 ChatGPT 有什么区别？
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            不懂编程也能用 OpenClaw 吗？
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            Vibe Coding 适合什么人？
+        </li>
+    </ul>
+  </div>
+
+  <!-- Resources -->
+  <div class="section-card">
+    <div class="section-label">Tools & Resources</div>
+    <table class="resource-table">
+      <thead><tr><th>Name</th><th>Description</th><th>Link</th></tr></thead>
+      <tbody>
+        <tr><td>Coze/扣子 平台</td><td>字节跳动 AI 开发平台，OpenClaw 的部署环境</td><td><a href="https://code.coze.cn" target="_blank" rel="noopener">Link</a></td></tr>
+<tr><td>OpenClaw 项目</td><td>7x24 小时在线 AI Agent 智能体项目模板</td><td><a href="https://code.coze.cn" target="_blank" rel="noopener">Link</a></td></tr>
+<tr><td>Coze 建站教程（飞书文档）</td><td>如何利用 Coze 构建网站：从创意到上线的完整教程</td><td><a href="https://docs.coze.cn/tutorial/openclaw" target="_blank" rel="noopener">Link</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section-card">
+            <div class="section-label">FAQ</div>
+            <div class="faq-item">
+                <div class="faq-q">Q: OpenClaw 和普通的 ChatGPT 有什么区别？</div>
+                <div class="faq-a"><p>OpenClaw 是部署在 Coze 平台上的 AI Agent，它不仅能对话，还能自动选择工具、执行任务、持久化记忆、提供 7x24 服务。普通 ChatGPT 只是一个对话窗口，OpenClaw 更像一个自主工作的 AI 助理。</p></div>
+            </div><div class="faq-item">
+                <div class="faq-q">Q: 不懂编程也能用 OpenClaw 吗？</div>
+                <div class="faq-a"><p>完全可以。OpenClaw 主打「3分钟无代码部署」，通过一键克隆模板和可视化配置，不需要写任何代码就能拥有自己的 AI Agent。</p></div>
+            </div><div class="faq-item">
+                <div class="faq-q">Q: Vibe Coding 适合什么人？</div>
+                <div class="faq-a"><p>Vibe Coding 特别适合有想法但编程能力有限的创业者、产品经理、设计师等。通过自然语言描述需求，AI 代替你完成代码实现，降低了技术门槛。</p></div>
+            </div>
+        </div>
+
+  <div class="section-card">
+            <div class="section-label">Summary</div>
+            <div class="summary-box"><p>这场直播系统介绍了 OpenClaw/扣子养虾这一 AI Agent 项目，从概念理解到实际部署到付费方案一应俱全。最大亮点是展示了如何在 3 分钟内无代码部署一个 7x24 小时在线的 AI 分身，以及 Vibe Coding（氛围编程）这一新趋势如何让普通人也能通过自然语言「编程」。核心价值在于为非技术用户提供了一条从零开始搭建个人 AI Agent 的完整路径，降低了 AI 应用开发的门槛。</p></div>
+        </div>
+
+  <footer class="report-footer">
+    powered by video-learn
+  </footer>
+</div>
+
+<script>
+// Chapter accordion
+document.querySelectorAll('.chapter-header').forEach(header => {
+  header.addEventListener('click', () => {
+    header.parentElement.classList.toggle('open');
+  });
+});
+</script>
+</body>
+</html>
