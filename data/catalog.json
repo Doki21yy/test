@@ -1,12 +1,12 @@
 {
-  "last_updated": "2026-03-10T18:45:38Z",
+  "last_updated": "2026-03-10T19:00:08Z",
   "total_videos": 10,
   "videos": [
     {
       "slug": "20260310_openclaw-vibe-coding",
       "title": "OpenClaw高玩分享！从扣子养虾到 Vibe Coding大趋势",
-      "score": 7,
-      "summary": "本视频是一场 Bilibili 直播分享，系统介绍了 OpenClaw/扣子养虾 AI Agent 的部署和使用，从概念到实操一应俱全。展示了如何在 Coze 平台上 3 分钟无代码部署 7x24 小时在线的 AI 分身，详解了订阅方案、七步建站法、以及 OpenClaw 智能体的实战对话能力，后半段讨论了 Vibe Coding（氛围编程）新趋势。",
+      "score": 8.5,
+      "summary": "97分钟深度直播，从入门到高阶完整覆盖：OpenClaw 一键部署、Gateway Dashboard 深度解析（8大核心配置文件、52内置技能）、现场搭建「深红港任务公会」网站全过程、ClawEx 飞书集成、电商数据分析（368件商品/28.5亿利润）、InStreet AI Agent 社交网络。Vibe Coding 实战典范。",
       "duration": 5813,
       "date": "2026-03-10",
       "generated_at": "2026-03-10T18:43:00.000000",
@@ -15,10 +15,10 @@
       "thumbnail": "data/videos/20260310_openclaw-vibe-coding/thumbnail.jpg",
       "report": "data/videos/20260310_openclaw-vibe-coding/report-lite.html",
       "type": "learning",
-      "topic": "OpenClaw/扣子养虾 AI Agent 部署与 Vibe Coding",
+      "topic": "OpenClaw AI Agent 全链路实战：部署、开发、技能生态与社区",
       "category": "AI工具",
-      "difficulty": "beginner",
-      "learning_rating": 7
+      "difficulty": "intermediate",
+      "learning_rating": 8.5
     },
     {
       "slug": "20260310_zpajfpj4hm",
