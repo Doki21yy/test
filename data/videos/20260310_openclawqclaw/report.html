@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenClaw（小龙虾）零基础部署&amp;使用全教程：一键安装工具Qclaw使用指南 - Learning Archive</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg-deep: #06060B;
+  --bg-surface: #0D0D14;
+  --bg-card: #12121C;
+  --bg-card-hover: #181826;
+  --border-subtle: rgba(99, 102, 241, 0.08);
+  --border-hover: rgba(99, 102, 241, 0.2);
+  --text-primary: #E8E8ED;
+  --text-secondary: #7A7A8E;
+  --text-muted: #4A4A5E;
+  --accent: #6366F1;
+  --accent-glow: rgba(99, 102, 241, 0.15);
+  --accent-soft: #818CF8;
+  --radius: 12px;
+  --font-heading: 'DM Sans', -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: var(--font-heading);
+  font-weight: 400;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: -200px; left: 50%;
+  transform: translateX(-50%);
+  width: 800px; height: 600px;
+  background: radial-gradient(ellipse, rgba(99, 102, 241, 0.05) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 24px;
+  position: relative;
+  z-index: 1;
+}
+
+a { color: var(--accent-soft); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Back Nav */
+.back-nav { padding: 24px 0; }
+.back-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--text-muted); text-decoration: none;
+  font-family: var(--font-mono); font-size: 0.78rem;
+  transition: color 0.2s;
+}
+.back-link:hover { color: var(--accent-soft); text-decoration: none; }
+.back-link svg { width: 16px; height: 16px; }
+
+/* Hero */
+.hero { padding-bottom: 40px; }
+
+.video-embed {
+  width: 100%; aspect-ratio: 16/9;
+  border-radius: var(--radius); overflow: hidden;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  margin-bottom: 28px;
+}
+.video-embed iframe { width: 100%; height: 100%; border: none; }
+.video-embed .video-link-fallback {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 12px;
+  color: var(--text-secondary); text-decoration: none;
+}
+.video-embed .video-link-fallback:hover { color: var(--accent-soft); }
+.video-embed .video-link-fallback svg { width: 48px; height: 48px; opacity: 0.5; }
+.source-link-row { margin-top: -14px; margin-bottom: 18px; text-align: center; font-size: 12px; color: var(--text-muted); }
+.source-link-row a { color: var(--accent); text-decoration: none; word-break: break-all; }
+.source-link-row a:hover { text-decoration: underline; }
+
+.hero-title {
+  font-family: var(--font-heading);
+  font-weight: 900;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  letter-spacing: -0.02em; line-height: 1.25;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+
+.hero-meta {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+}
+
+.meta-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 12px; border-radius: 6px;
+  font-family: var(--font-mono); font-size: 0.72rem;
+  font-weight: 500; letter-spacing: 0.03em;
+}
+.meta-badge.platform {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+}
+.meta-badge.platform .p-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+}
+.meta-badge.score {
+  background: var(--accent-glow);
+  border: 1px solid rgba(99, 102, 241, 0.15);
+  color: var(--accent-soft);
+}
+.meta-badge.duration, .meta-badge.date {
+  color: var(--text-muted);
+  font-family: var(--font-mono); font-size: 0.72rem;
+}
+
+/* Section Cards */
+.section-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  margin-bottom: 16px;
+}
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem; font-weight: 500;
+  color: var(--accent-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+}
+.section-heading {
+  font-family: var(--font-heading);
+  font-weight: 700; font-size: 1.15rem;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+.section-text {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+
+/* Tags */
+.tag-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.tag-pill {
+  padding: 3px 10px; border-radius: 4px;
+  font-family: var(--font-mono); font-size: 0.7rem; font-weight: 500;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+}
+.tag-pill.difficulty-beginner { border-color: rgba(34, 197, 94, 0.2); color: #4ADE80; }
+.tag-pill.difficulty-intermediate { border-color: rgba(250, 204, 21, 0.2); color: #FACC15; }
+.tag-pill.difficulty-advanced { border-color: rgba(239, 68, 68, 0.2); color: #F87171; }
+
+/* Knowledge Points */
+.knowledge-list { list-style: none; }
+.knowledge-item { padding: 14px 0; border-bottom: 1px solid var(--border-subtle); }
+.knowledge-item:last-child { border-bottom: none; }
+.knowledge-concept {
+  font-family: var(--font-heading); font-weight: 700;
+  font-size: 0.9rem; color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.knowledge-explain {
+  font-size: 0.84rem; color: var(--text-secondary); line-height: 1.65;
+}
+
+/* Chapters Accordion */
+.chapter-item { border-bottom: 1px solid var(--border-subtle); }
+.chapter-item:last-child { border-bottom: none; }
+.chapter-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 0; cursor: pointer; user-select: none;
+  transition: color 0.2s;
+}
+.chapter-header:hover { color: var(--accent-soft); }
+.chapter-header-left {
+  display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0;
+}
+.chapter-time {
+  font-family: var(--font-mono); font-size: 0.72rem;
+  color: var(--accent-soft); white-space: nowrap; flex-shrink: 0;
+}
+.chapter-title {
+  font-family: var(--font-heading); font-weight: 600;
+  font-size: 0.9rem; color: var(--text-primary);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.chapter-arrow {
+  color: var(--text-muted);
+  transition: transform 0.3s ease; flex-shrink: 0;
+}
+.chapter-item.open .chapter-arrow { transform: rotate(180deg); }
+.chapter-content { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+.chapter-item.open .chapter-content { max-height: 500px; }
+.chapter-inner { padding: 0 0 20px 0; }
+.chapter-summary {
+  font-size: 0.85rem; color: var(--text-secondary);
+  margin-bottom: 12px; line-height: 1.7;
+}
+.chapter-points { list-style: none; padding: 0; }
+.chapter-points li {
+  position: relative; padding-left: 16px;
+  margin-bottom: 6px; font-size: 0.82rem; color: var(--text-secondary);
+}
+.chapter-points li::before {
+  content: ''; position: absolute; left: 0; top: 9px;
+  width: 4px; height: 4px; border-radius: 50%; background: var(--accent);
+}
+
+/* Quotes */
+.quote-card {
+  position: relative; padding: 20px 24px;
+  margin-bottom: 12px;
+  border-left: 2px solid var(--accent);
+  background: rgba(99, 102, 241, 0.03);
+  border-radius: 0 8px 8px 0;
+}
+.quote-card:last-child { margin-bottom: 0; }
+.quote-text {
+  font-size: 0.9rem; color: var(--text-primary);
+  font-style: italic; line-height: 1.65; margin-bottom: 8px;
+}
+.quote-time {
+  font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent-soft);
+}
+
+/* Takeaways */
+.takeaway-list { list-style: none; }
+.takeaway-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 8px 0; font-size: 0.88rem; color: var(--text-secondary);
+}
+.takeaway-check {
+  width: 18px; height: 18px;
+  border: 1.5px solid var(--border-hover);
+  border-radius: 4px; flex-shrink: 0; margin-top: 2px;
+  display: flex; align-items: center; justify-content: center;
+}
+.takeaway-check svg {
+  width: 12px; height: 12px; color: var(--accent-soft);
+}
+
+/* Resources Table */
+.resource-table { width: 100%; border-collapse: collapse; }
+.resource-table th {
+  text-align: left; font-family: var(--font-mono);
+  font-size: 0.7rem; font-weight: 500; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.06em;
+  padding: 10px 0; border-bottom: 1px solid var(--border-subtle);
+}
+.resource-table td {
+  padding: 10px 0; font-size: 0.84rem;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.resource-table tr:last-child td { border-bottom: none; }
+.resource-table a { color: var(--accent-soft); text-decoration: none; }
+.resource-table a:hover { text-decoration: underline; }
+
+/* Detailed Content Sections */
+.section-block {
+  margin-bottom: 20px;
+  background: rgba(99, 102, 241, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+}
+.sec-title {
+  font-family: var(--font-heading);
+  font-size: 1rem; font-weight: 700;
+  margin-bottom: 14px; display: flex; align-items: center; gap: 10px;
+  color: var(--text-primary);
+}
+.sec-num {
+  font-family: var(--font-mono); font-size: 0.68rem;
+  color: #fff; background: var(--accent);
+  width: 24px; height: 24px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.sec-body { color: var(--text-secondary); line-height: 1.8; font-size: 0.88rem; }
+.sec-body p { margin-bottom: 10px; }
+.sec-body strong { color: var(--text-primary); font-weight: 600; }
+.subsection { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border-subtle); }
+.subsec-title { font-size: 0.92rem; font-weight: 600; margin-bottom: 8px; color: var(--text-primary); }
+.subsec-body { color: var(--text-secondary); font-size: 0.86rem; }
+.subsec-body p { margin-bottom: 8px; }
+.content-list { margin: 10px 0; padding-left: 22px; }
+.content-list li { margin-bottom: 5px; line-height: 1.65; }
+.content-h4 { font-size: 0.95rem; font-weight: 600; margin: 14px 0 8px; color: var(--text-primary); }
+.content-h5 { font-size: 0.88rem; font-weight: 600; margin: 10px 0 6px; color: var(--text-secondary); }
+.code-block {
+  background: #0D0D14; color: #CDD6F4;
+  padding: 14px 18px; border-radius: 8px;
+  overflow-x: auto; font-family: var(--font-mono);
+  font-size: 0.8rem; line-height: 1.6; margin: 10px 0;
+  border: 1px solid var(--border-subtle);
+}
+.inline-code {
+  background: var(--accent-glow); color: var(--accent-soft);
+  padding: 1px 6px; border-radius: 4px;
+  font-family: var(--font-mono); font-size: 0.85em;
+}
+
+/* FAQ */
+.faq-item {
+  margin-bottom: 14px; padding: 16px 20px;
+  background: rgba(99, 102, 241, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+}
+.faq-q { font-weight: 600; color: var(--accent-soft); margin-bottom: 8px; font-size: 0.9rem; }
+.faq-a { color: var(--text-secondary); font-size: 0.86rem; }
+.faq-a p { margin-bottom: 6px; }
+
+/* Summary Box */
+.summary-box {
+  background: rgba(99, 102, 241, 0.04);
+  border: 1px solid rgba(99, 102, 241, 0.1);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+}
+.summary-box p { color: var(--text-secondary); line-height: 1.85; font-size: 0.92rem; }
+
+/* Footer */
+.report-footer {
+  padding: 48px 0 32px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.section-card { animation: fadeInUp 0.5s ease both; }
+.section-card:nth-child(1) { animation-delay: 0.1s; }
+.section-card:nth-child(2) { animation-delay: 0.15s; }
+.section-card:nth-child(3) { animation-delay: 0.2s; }
+.section-card:nth-child(4) { animation-delay: 0.25s; }
+.section-card:nth-child(5) { animation-delay: 0.3s; }
+.section-card:nth-child(6) { animation-delay: 0.35s; }
+
+/* Responsive */
+@media (max-width: 640px) {
+  .container { padding: 0 16px; }
+  .section-card { padding: 20px 18px; }
+  .hero-title { font-size: 1.4rem; }
+  .section-block { padding: 18px 16px; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <nav class="back-nav">
+    <a href="../../../" class="back-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Archive
+    </a>
+  </nav>
+
+  <section class="hero">
+    <div class="video-embed">
+      <iframe src="//player.bilibili.com/player.html?bvid=BV1mYPSzmEkV&high_quality=1&danmaku=0" allowfullscreen="true" frameborder="0"></iframe>
+    </div>
+    <div class="source-link-row">原视频链接：<a href="https://www.bilibili.com/video/BV1mYPSzmEkV?buvid=Y640506C430BF1594D40A43C9803C5C96770&amp;from_spmid=search.search-result.0.0&amp;is_story_h5=false&amp;mid=djMShVIkpYUbbuFaSH6tig%3D%3D&amp;p=1&amp;plat_id=116&amp;share_from=ugc&amp;share_medium=iphone&amp;share_plat=ios&amp;share_session_id=00570BD6-3AD3-4F74-821F-FAC0477AD91D&amp;share_source=GENERIC&amp;share_tag=s_i&amp;spmid=united.player-video-detail.0.0&amp;timestamp=1773153452&amp;unique_k=DatySyH&amp;up_id=385670211" target="_blank" rel="noopener">https://www.bilibili.com/video/BV1mYPSzmEkV?buvid=Y640506C430BF1594D40A43C9803C5C96770&amp;from_spmid=search.search-result.0.0&amp;is_story_h5=false&amp;mid=djMShVIkpYUbbuFaSH6tig%3D%3D&amp;p=1&amp;plat_id=116&amp;share_from=ugc&amp;share_medium=iphone&amp;share_plat=ios&amp;share_session_id=00570BD6-3AD3-4F74-821F-FAC0477AD91D&amp;share_source=GENERIC&amp;share_tag=s_i&amp;spmid=united.player-video-detail.0.0&amp;timestamp=1773153452&amp;unique_k=DatySyH&amp;up_id=385670211</a></div>
+
+    <h1 class="hero-title">OpenClaw（小龙虾）零基础部署&amp;使用全教程：一键安装工具Qclaw使用指南</h1>
+
+    <div class="hero-meta">
+      <span class="meta-badge platform"><span class="p-dot" style="background:#00A1D6"></span>Bilibili</span>
+      <span class="meta-badge score">9.0/10</span>
+      <span class="meta-badge duration">17:45</span>
+      <span class="meta-badge date">2026-03-10</span>
+    </div>
+  </section>
+
+  <!-- Overview -->
+  <div class="section-card">
+    <div class="section-label">Overview</div>
+    <div class="tag-row">
+      <span class="tag-pill difficulty-beginner">Beginner</span>
+      <span class="tag-pill">AI工具/AI智能体</span>
+      <span class="tag-pill">秋艺2046</span>
+    </div>
+    <div class="section-text">近期爆火的高权限AI智能体OpenClaw（俗称小龙虾）凭借极强的落地能力受到广泛关注，但复杂的命令行安装流程拦住了大量普通用户。UP主秋艺2046耗时半个月开发了免费可视化工具Qclaw（龙虾管家），彻底降低了OpenClaw的使用门槛，无需代码基础即可完成全流程部署。本教程首先介绍了OpenClaw的6大核心能力，讲解了部署所需的设备、模型选型方案，接着一步步演示了通过Qclaw一键安装OpenClaw、对接飞书等通讯工具的完整流程，还介绍了Qclaw可视化面板的日常管理功能，最后分享了定时任务、信息采集、办公流程自动化、智能家居联动等5类高频实用玩法，同时附带了整理好的技能包和使用文档，普通用户也能快速上手利用AI智能体提升效率。</div>
+  </div>
+
+  <!-- Key Knowledge Points -->
+  <div class="section-card">
+    <div class="section-label">Key Knowledge</div>
+    <ul class="knowledge-list">
+      <li class="knowledge-item">
+            <div class="knowledge-concept">OpenClaw核心能力概述</div>
+            <div class="knowledge-explain">OpenClaw是一款拥有本地系统高权限的AI智能体（Agent），相比普通AI助手拥有更强的自主执行能力，核心具备6大能力：</div>
+        </li>
+<li class="knowledge-item">
+            <div class="knowledge-concept">部署前准备：设备与模型选型</div>
+            <div class="knowledge-explain">部署前需完成设备和模型的选择，平衡体验、效果和成本，无需高端硬件即可流畅运行。</div>
+        </li>
+<li class="knowledge-item">
+            <div class="knowledge-concept">Qclaw一键部署OpenClaw详细步骤</div>
+            <div class="knowledge-explain">Qclaw（龙虾管家）是专为降低OpenClaw部署门槛开发的可视化工具，完全免费、无需邀请码，无需手动处理任何环境依赖，全程图形化操作，步骤如下：</div>
+        </li>
+<li class="knowledge-item">
+            <div class="knowledge-concept">Qclaw日常管理面板使用指南</div>
+            <div class="knowledge-explain">Qclaw提供了完整的OpenClaw可视化管理能力，分为小窗模式和大屏模式两种，无需命令行即可完成所有运维操作：</div>
+        </li>
+<li class="knowledge-item">
+            <div class="knowledge-concept">OpenClaw高频实用玩法</div>
+            <div class="knowledge-explain">OpenClaw的使用场景非常灵活，以下是5类经过验证的高频实用玩法，所需的Skill均已整理到配套文档中：</div>
+        </li>
+    </ul>
+  </div>
+
+  <!-- Detailed Content -->
+  <div class="section-card">
+    <div class="section-label">Detailed Content</div>
+    <div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">01</span>OpenClaw核心能力概述</h3>
+            <div class="sec-body"><p>OpenClaw是一款拥有本地系统高权限的AI智能体（Agent），相比普通AI助手拥有更强的自主执行能力，核心具备6大能力：</p>
+<ol class="content-list">
+<li><strong>全权限操作</strong>：可直接操控设备的命令行、浏览器、桌面应用，跨端解决各类问题，操作权限远高于普通对话式AI产品。</li>
+<li><strong>永久记忆</strong>：所有交互数据和知识以文件形式存储在本地，使用越久越了解用户习惯，不会出现普通大模型的会话遗忘问题。</li>
+<li><strong>自我进化</strong>：运行中产生的错误会主动记录到本地文件，下次执行同类任务时自动规避，无需用户反复纠正。</li>
+<li><strong>7×24小时运行</strong>：默认每30分钟自动巡检本地文件和任务状态，支持设置定时任务，可不间断执行自动化工作。</li>
+<li><strong>技能生态庞大</strong>：支持一键安装各类扩展技能（Skill），可快速拓展文件处理、代码开发、第三方工具对接等能力。</li>
+<li><strong>多端指挥</strong>：支持对接飞书、QQ、钉钉等主流通讯软件，用户可随时通过聊天软件下发指令，无需停留在特定客户端。</li>
+</ol>
+<p>普通用户无需深入理解底层架构，部署完成后可直接询问OpenClaw自身的运行逻辑和架构信息。</p></div>
+            
+        </div><div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">02</span>部署前准备：设备与模型选型</h3>
+            <div class="sec-body"><p>部署前需完成设备和模型的选择，平衡体验、效果和成本，无需高端硬件即可流畅运行。</p></div>
+            <div class="subsection">
+                    <h4 class="subsec-title">设备选型建议</h4>
+                    <div class="subsec-body"><p>OpenClaw对部署设备的兼容性极强，Mac、Windows电脑、云服务器、安卓手机、树莓派均可运行，按体验优先级推荐如下：</p>
+<ol class="content-list">
+<li>闲置Mac/Mac mini：本地部署体验最佳，系统权限限制少，运行稳定。</li>
+<li>老旧Windows电脑：只要能正常开机即可部署，适合有闲置设备的用户。</li>
+<li>折扣云服务器：适合需要对外提供服务的场景，无需占用本地设备资源。</li>
+<li>老旧安卓手机：适合尝鲜用户，性能相对有限。</li>
+</ol>
+<p>优先选择本地设备部署，所有数据存储在本地，隐私性更强，操作权限也更高。</p></div>
+                </div><div class="subsection">
+                    <h4 class="subsec-title">模型选型建议</h4>
+                    <div class="subsec-body"><p>OpenClaw的任务执行效果高度依赖背后的大模型，推荐采用「顶尖模型主理+国产包月模型干杂活」的搭配方案，平衡效果和成本：</p>
+<ol class="content-list">
+<li>主理模型优先选择GPT-4o、Claude 3.5 Sonnet这类顶尖模型，复杂任务的完成率远高于普通开源模型；若有GPT会员可直接使用Codex的免费额度作为主模型，大幅降低成本。</li>
+<li>杂活模型选择国产包月大模型（如豆包、MiniMax等），用来处理简单的信息整理、格式转换等低难度任务，避免浪费顶尖模型的Token（令牌）额度。</li>
+<li>可安装官方的按需切模Skill，让OpenClaw根据任务难度自动切换对应模型，进一步降低使用成本。如果大模型厂商提供专属API折扣，可直接配置到Qclaw中一键调用。</li>
+</ol></div>
+                </div>
+        </div><div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">03</span>Qclaw一键部署OpenClaw详细步骤</h3>
+            <div class="sec-body"><p>Qclaw（龙虾管家）是专为降低OpenClaw部署门槛开发的可视化工具，完全免费、无需邀请码，无需手动处理任何环境依赖，全程图形化操作，步骤如下：</p>
+<ol class="content-list">
+<li><strong>下载安装Qclaw</strong>：访问Qclaw官网，根据自己的操作系统（Windows/Mac）下载对应安装包，双击安装包按照指引完成安装，和普通软件安装流程完全一致。</li>
+<li><strong>初始化配置</strong>：</li>
+</ol>
+<ul class="content-list">
+<li>打开Qclaw，软件会自动检测当前设备是否已安装OpenClaw，若已安装可一键迁移原有配置，未安装则点击「出发」按钮。</li>
+<li>确认风险提示（OpenClaw拥有系统高权限，请勿执行来源不明的指令），勾选同意后进入下一步，Qclaw会自动安装nodejs、homebrew、git等所有所需的环境依赖，无需用户手动操作。</li>
+<li>选择模型服务商：支持主流云服务模型、本地模型、自定义模型，选择对应的服务商后填入API Key（接口密钥）即可；若没有API Key可点击界面上的「获取API Key」按钮直接跳转到对应厂商的购买页面。若使用Coding Plan类套餐，需在界面中选择对应套餐完成登录，避免额外扣费。</li>
+</ul>
+<ol class="content-list">
+<li><strong>对接通讯工具（以飞书为例）</strong>：</li>
+</ol>
+<ul class="content-list">
+<li>选择需要对接的通讯工具（支持飞书、Telegram、Discord、微信等），选择飞书后会要求填写APP ID和APP Secret。</li>
+<li>点击界面上的教程按钮，按照弹窗内的带图指引操作：打开飞书开放平台创建企业自建应用，添加机器人能力，发布应用版本后在「凭证与基础信息」页面复制APP ID和APP Secret，粘贴到Qclaw对应输入框中。</li>
+<li>选择群聊策略：可选择所有群均可交互、仅指定群可交互、仅私聊可交互，根据自己的使用需求选择即可。</li>
+</ul>
+<ol class="content-list">
+<li><strong>技能与扩展配置</strong>：</li>
+</ol>
+<ul class="content-list">
+<li>选择需要预装的Skill（扩展技能），Qclaw已将所有技能的名称和用途翻译成中文，可按需勾选，推荐必装苹果备忘录/提醒事项对接、ClawHub（后续安装其他技能的中心）、Mac UI/浏览器控制三类基础技能。</li>
+<li>勾选Qclaw推荐的省钱Skill（按任务难度自动切模）和安全Skill（拦截恶意Skill），进一步降低使用风险和成本。</li>
+<li>配置Hooks（扩展钩子），每个选项悬浮后都会显示中文解释，建议全部开启，可实现聊天总结、扩展功能增强、会话记忆增强等能力。</li>
+</ul>
+<ol class="content-list">
+<li><strong>启动并配对</strong>：</li>
+</ol>
+<ul class="content-list">
+<li>配置完成后Qclaw会自动启动OpenClaw，待启动完成后可先在Qclaw的对话框中测试交互，确认运行正常。</li>
+<li>若需在飞书等通讯工具中使用，按照指引完成配对：回到飞书开放平台的应用权限管理页面，批量导入Qclaw提供的权限配置JSON，开启消息接收权限，发布新版本后给飞书机器人发送任意消息，获取配对码并填入Qclaw中即可完成对接。</li>
+</ul></div>
+            
+        </div><div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">04</span>Qclaw日常管理面板使用指南</h3>
+            <div class="sec-body"><p>Qclaw提供了完整的OpenClaw可视化管理能力，分为小窗模式和大屏模式两种，无需命令行即可完成所有运维操作：</p>
+<ol class="content-list">
+<li><strong>小窗模式（高频使用）</strong>：</li>
+</ol>
+<p>打开Qclaw默认显示小窗面板，可直观查看OpenClaw的运行状态、当日Token消耗量、当前会话数三类核心数据。面板提供6个快捷操作按钮：</p>
+<ul class="content-list">
+<li>重启网关：OpenClaw无响应、消息发送失败时点击，可快速恢复连接。</li>
+<li>自动修复：OpenClaw配置错误、运行异常时点击，自动修复90%以上常见配置问题。</li>
+<li>回滚配置：若OpenClaw自行修改配置导致出错，点击可恢复到上一个正常配置版本。</li>
+<li>停止任务：发现OpenClaw执行任务偏离预期、无意义消耗Token时，可一键停止当前所有任务，避免成本浪费。</li>
+<li>切换模型：可随时切换主理模型，新增模型API配置。</li>
+<li>限额设置：可设置每日Token消耗上限，超出后自动停止任务，避免超额消费。</li>
+</ul>
+<ol class="content-list">
+<li><strong>大屏模式（详细管理）</strong>：</li>
+</ol>
+<p>点击「更多」按钮进入大屏管理界面，可实现更细粒度的管理：</p>
+<ul class="content-list">
+<li>会话管理：查看所有历史会话，可删除、导出会话记录。</li>
+<li>技能管理：安装、卸载、启用/禁用OpenClaw的各类扩展Skill，无需使用命令行操作。</li>
+<li>记忆管理：查看、编辑OpenClaw存储的本地记忆文件，可手动补充知识、删除错误记忆。</li>
+</ul>
+<p>若使用过程中遇到问题，可点击面板左下角的反馈按钮加入用户群反馈需求或bug，工具会持续迭代更新。</p></div>
+            
+        </div><div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">05</span>OpenClaw高频实用玩法</h3>
+            <div class="sec-body"><p>OpenClaw的使用场景非常灵活，以下是5类经过验证的高频实用玩法，所需的Skill均已整理到配套文档中：</p>
+<ol class="content-list">
+<li><strong>定时任务</strong>：</li>
+</ol>
+<p>无需复杂配置，直接用自然语言设置定时任务，例如「每天早上8点查看秋艺2046的B站主页是否更新视频，更新的话把链接发给我」。还可对接日历、待办事项工具，实现每日早晚报推送、行程自动安排、待办事项提醒等功能，所有任务均在本地运行，无需依赖第三方云服务。</p>
+<ol class="content-list">
+<li><strong>信息采集</strong>：</li>
+</ol>
+<p>利用内置的浏览器自动化工具Browsers，无需额外安装Skill即可实现网页信息爬取，例如「实时爬取我这条B站视频的所有评论，整理成表格后发给我」，可用来做竞品调研、舆情监控、内容素材收集等工作，采集到的信息可自动整理成结构化文档存储。</p>
+<ol class="content-list">
+<li><strong>后台开发</strong>：</li>
+</ol>
+<p>可辅助完成完整的软件项目开发，例如「帮我用Codex开发一个素材批量质检工具，支持文字、图片、视频的合规性检测，开发完成后自动提交到GitHub并本地运行，最后给我发一份运行报告」，全程无需人工干预，OpenClaw会自主完成代码编写、调试、部署的全流程。</p>
+<ol class="content-list">
+<li><strong>流程自动化</strong>：</li>
+</ol>
+<p>可接入企业办公群，处理标准化的流程工作，例如员工发送“我要报销”并上传发票图片后，OpenClaw自动识别发票信息，按照公司报销规则审核，审核通过后自动将信息录入飞书表格，完成报销台账的更新。类似的还可实现立项、采购、请假等办公流程的自动化，大幅降低行政工作成本。</p>
+<ol class="content-list">
+<li><strong>智能家居联动</strong>：</li>
+</ol>
+<p>告知OpenClaw你家里的智能设备品牌，它会自动下载对应的控制Skill，实现语音控制智能家居，例如「帮我播放适合吃饭的歌」「22点自动关闭客厅的灯」，支持语音输入指令，也可让OpenClaw用语音回复，内置免费的TTS能力，交互体验更自然。</p></div>
+            
+        </div>
+  </div>
+
+  <!-- Chapters -->
+  <div class="section-card">
+    <div class="section-label">Chapters</div>
+    <div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">00:00</span>
+                    <span class="chapter-title">Qclaw龙虾管家产品介绍</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">讲者说明OpenClaw近期热度很高，但很多人被复杂的安装流程卡住，自己爆肝半个月开发了免费的Qclaw龙虾管家，用户三连即可永久免费获取. 讲者介绍Qclaw的核心功能：一键安装OpenClaw、可视化配置管理、快捷接入通讯软件、支持重启/修复/换模型/看费用等操作，后续还会分享OpenClaw使用心得和配套文档</div>
+                    <ul class="chapter-points"><li>Qclaw是降低OpenClaw使用门槛的免费管理工具</li><li>Qclaw覆盖OpenClaw全生命周期的管理需求</li></ul>
+                </div>
+            </div>
+        </div>
+<div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">01:15</span>
+                    <span class="chapter-title">OpenClaw核心能力讲解</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">讲者讲解OpenClaw前四项核心能力：全权限操作电脑跨端解决问题、记忆本地存储越用越懂用户、主动复盘纠错实现自我进化、7*24小时定时运行主动巡检. 讲者讲解后两项能力：拥有庞大的技能生态可一键扩展、可对接飞书/QQ等主流通讯软件随时发指令指挥，建议用户安装完成后可直接询问OpenClaw自身架构相关问题</div>
+                    <ul class="chapter-points"><li>OpenClaw的四项基础核心特性</li><li>OpenClaw的生态扩展和交互能力</li></ul>
+                </div>
+            </div>
+        </div>
+<div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">02:33</span>
+                    <span class="chapter-title">OpenClaw部署设备选择</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">讲者说明OpenClaw支持的部署设备包括Mac、Windows、云服务器、安卓手机、树莓派，推荐排序为闲置Mac&gt;老Windows电脑&gt;打折云服务器&gt;老安卓手机，优先本地部署体验更好. 讲者说明云服务器更适合部署对外提供服务的OpenClaw，后续会测试国产云厂商的适配性并推出对应的教程</div>
+                    <ul class="chapter-points"><li>OpenClaw部署的设备选型推荐</li><li>不同部署设备的适用场景</li></ul>
+                </div>
+            </div>
+        </div>
+<div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">03:22</span>
+                    <span class="chapter-title">OpenClaw所用模型选择</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">讲者说明模型选择逻辑：至少需要1个顶尖模型负责主事，搭配国产包月模型处理杂活降低成本，纯用Claude使用成本过高，欢迎模型厂商提供粉丝专属折扣. 讲者给出具体搭配建议：有GPT会员可用Codex免费额度做主模型，搭配打折Claude和Coding plan处理杂活，配合按需切模的Skill可进一步节省Token消耗</div>
+                    <ul class="chapter-points"><li>OpenClaw的模型搭配降本逻辑</li><li>具体的模型组合和降本技巧</li></ul>
+                </div>
+            </div>
+        </div>
+<div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">04:19</span>
+                    <span class="chapter-title">Qclaw安装OpenClaw步骤讲解</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">讲者演示第一步：前往Qclaw官网下载对应系统安装包，像普通软件一样双击安装，安装后自动检测环境，无需手动配置nodejs、homebrew等依赖，还可一键接管原有OpenClaw的配置. 讲者演示第二步：选择要用的模型，支持云模型、本地模型、自定义模型，没有API Key可点击跳转对应厂商的获取页面，使用Coding plan套餐需要单独登录避免额外扣费. 讲者演示第三步：选择要对接的通讯软件，以飞书为例，Qclaw内置带图的详细教程，按教程操作获取飞书应用的APP ID和APP Secret填入，还可选择群聊响应策略. 讲者演示Skill选择：Qclaw已翻译所有内置Skill的作用，用户</div>
+                    <ul class="chapter-points"><li>Qclaw的安装和环境自动配置功能</li><li>Qclaw中模型和API Key的配置方法</li><li>通讯软件与Qclaw的对接方法</li><li>Skill和Hook的配置方法</li><li>OpenClaw启动与初步测试方法</li></ul>
+                </div>
+            </div>
+        </div>
+<div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">09:51</span>
+                    <span class="chapter-title">飞书机器人配对教程</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">讲者演示飞书配对步骤：回到飞书开放平台之前创建的应用，在权限管理中批量导入Qclaw提供的JSON配置，开通对应权限后添加消息接收回调事件，发布新版本应用. 讲者演示在飞书中搜索创建的机器人，发送消息获取配对码，填入Qclaw完成配对，即可在飞书内使用OpenClaw；遇到问题可在Qclaw对话中求助已经运行的OpenClaw解决</div>
+                    <ul class="chapter-points"><li>飞书应用的权限和回调配置方法</li><li>飞书配对完成和问题解决方法</li></ul>
+                </div>
+            </div>
+        </div>
+<div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">11:22</span>
+                    <span class="chapter-title">Qclaw日常管理面板使用</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">讲者介绍Qclaw小窗模式：可查看OpenClaw运行状态、Token消耗、会话数，支持重启网关、自动修复、回滚配置、停止异常任务，还可以切换模型、设置每日Token限额避免浪费. 讲者介绍大屏模式支持会话管理、技能管理、记忆管理等更精细的操作；目前Qclaw是Beta版，遇到问题可以通过内置入口进群反馈、提出新需求，共同迭代产品</div>
+                    <ul class="chapter-points"><li>Qclaw小窗面板的常用运维功能</li><li>Qclaw大屏模式功能和反馈渠道</li></ul>
+                </div>
+            </div>
+        </div>
+<div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">13:16</span>
+                    <span class="chapter-title">OpenClaw常见玩法介绍</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">讲者介绍前两类玩法：定时任务（监控博主更新、联动日历待办、发送早晚报、安排行程）、信息采集（抓取视频评论、公开网页信息），信息采集只用内置Browser工具即可实现，无需额外Skill. 讲者介绍后两类玩法：后台开发（自动写代码、提交到GitHub、本地运行项目、完成后发送报告）、流程自动化（拉到公司群实现报销、立项、采购等流程自动处理）. 讲者介绍第五类玩法：智能家居联动，安装对应Skill即可控制智能设备，支持语音输入对话和语音回复；同时提示不要把日常使用的OpenClaw放到公开群，避免提示词注入泄露隐私，更多玩法可查看配套文档</div>
+                    <ul class="chapter-points"><li>OpenClaw的定时任务和信息采集玩法</li><li>OpenClaw的开发和办公自动化玩法</li><li>智能家居玩法和使用安全提示</li></ul>
+                </div>
+            </div>
+        </div>
+<div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">16:10</span>
+                    <span class="chapter-title">使用感悟与价值总结</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">讲者分享使用OpenClaw的感悟：虽然存在权限风险、烧钱、折腾的问题，但可以实现很多过去做不到的事，包括Qclaw本身和OpenClaw项目都是借助AI辅助开发完成的. 讲者说明AI Agent时代让有想法的普通人获得了实现创意的机会，能力边界会被上百倍放大，鼓励大家带着勇气尝试，遇到问题可以反馈，最后提醒用户点赞收藏关注</div>
+                    <ul class="chapter-points"><li>OpenClaw的实际使用价值</li><li>AI Agent的普惠价值</li></ul>
+                </div>
+            </div>
+        </div>
+  </div>
+
+  <!-- Quotes -->
+  <div class="section-card">
+    <div class="section-label">Notable Quotes</div>
+    <div class="quote-card">
+            <div class="quote-text">Qclaw可免费获取，能够解决OpenClaw安装难的痛点</div>
+            <div class="quote-time">00:00</div>
+        </div>
+<div class="quote-card">
+            <div class="quote-text">Qclaw支持OpenClaw从安装到日常管理的全流程操作，无需复杂命令行</div>
+            <div class="quote-time">00:35</div>
+        </div>
+<div class="quote-card">
+            <div class="quote-text">OpenClaw具备高系统权限、本地永久记忆、自主纠错、定时运行四项核心基础能力</div>
+            <div class="quote-time">01:15</div>
+        </div>
+<div class="quote-card">
+            <div class="quote-text">OpenClaw技能生态丰富，可对接常用通讯工具，直接通过自然语言发指令</div>
+            <div class="quote-time">01:55</div>
+        </div>
+<div class="quote-card">
+            <div class="quote-text">优先选择本地闲置电脑部署OpenClaw，使用体验最佳</div>
+            <div class="quote-time">02:33</div>
+        </div>
+  </div>
+
+  <!-- Takeaways -->
+  <div class="section-card">
+    <div class="section-label">Takeaways</div>
+    <ul class="takeaway-list">
+      <li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            日常和OpenClaw交互时尽量避免无意义的回复（如“不错”“嗯”“OK”），每一次交互都会消耗Token，无意义回复会造成不必要的成本浪费。
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            不建议将日常使用的OpenClaw接入公开群聊或第三方Agent社区，即使设置了安全防护，也存在提示词注入导致隐私泄露的风险。
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            若使用过程中出现对接失败、配置错误等问题，无需手动修改代码，直接点击Qclaw面板的「自动修复」按钮即可解决90%以上的常见问题。
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            建议开启每日Token限额，根据自己的使用需求设置合理的阈值，避免OpenClaw执行异常任务时产生高额费用。
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            安装Qclaw时需要手动安装nodejs、git等环境依赖吗？
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            没有高端显卡能不能运行OpenClaw？
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            对接飞书时提示权限不足怎么办？
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            OpenClaw的记忆会上传到云端吗？
+        </li>
+    </ul>
+  </div>
+
+  <!-- Resources -->
+  <div class="section-card">
+    <div class="section-label">Tools & Resources</div>
+    <table class="resource-table">
+      <thead><tr><th>Name</th><th>Description</th><th>Link</th></tr></thead>
+      <tbody>
+        <tr><td>Qclaw（龙虾管家）官网</td><td>OpenClaw可视化一键部署与管理工具的官方下载地址，支持Windows和Mac系统</td><td><span style="color:var(--text-muted)">--</span></td></tr>
+<tr><td>OpenClaw使用场景与Skill包文档</td><td>UP主整理的OpenClaw高频玩法、实用Skill包汇总文档，包含详细使用说明</td><td><span style="color:var(--text-muted)">--</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section-card">
+            <div class="section-label">FAQ</div>
+            <div class="faq-item">
+                <div class="faq-q">Q: 安装Qclaw时需要手动安装nodejs、git等环境依赖吗？</div>
+                <div class="faq-a"><p>不需要，Qclaw会自动检测并安装所有所需的环境依赖，全程无需用户执行任何命令行操作，按照图形化指引点击即可完成安装。</p></div>
+            </div><div class="faq-item">
+                <div class="faq-q">Q: 没有高端显卡能不能运行OpenClaw？</div>
+                <div class="faq-a"><p>可以，OpenClaw本身不需要本地显卡运行，所有模型推理都通过调用大模型API完成，只要设备能正常联网即可运行，老旧电脑也能正常部署。</p></div>
+            </div><div class="faq-item">
+                <div class="faq-q">Q: 对接飞书时提示权限不足怎么办？</div>
+                <div class="faq-a"><p>按照Qclaw提供的权限配置JSON，在飞书开放平台的权限管理页面批量导入所有权限，开启消息接收能力后重新发布应用版本即可，Qclaw的弹窗教程中有完整的步骤演示。</p></div>
+            </div><div class="faq-item">
+                <div class="faq-q">Q: OpenClaw的记忆会上传到云端吗？</div>
+                <div class="faq-a"><p>不会，OpenClaw的所有记忆文件都存储在本地设备上，不会上传到任何第三方服务器，隐私性有保障，也可手动在Qclaw的记忆管理面板中编辑删除记忆内容。</p></div>
+            </div>
+        </div>
+
+  <div class="section-card">
+            <div class="section-label">Summary</div>
+            <div class="summary-box"><p>本教程针对爆火的AI智能体OpenClaw安装门槛高的痛点，详细介绍了免费工具Qclaw的使用方法，零基础用户无需命令行操作即可一键完成OpenClaw的部署、通讯工具对接、技能扩展全流程。教程还提供了明确的设备、模型选型方案，平衡使用效果和成本，同时汇总了定时任务、信息采集、办公流程自动化、智能家居联动等5类经过验证的高频实用玩法，普通用户也能快速上手，利用高权限AI智能体放大自身能力，实现工作生活效率的大幅提升。工具完全免费无门槛，鼓励有想法的用户大胆尝试，探索更多AI落地场景。</p></div>
+        </div>
+
+  <footer class="report-footer">
+    powered by video-learn
+  </footer>
+</div>
+
+<script>
+// Chapter accordion
+document.querySelectorAll('.chapter-header').forEach(header => {
+  header.addEventListener('click', () => {
+    header.parentElement.classList.toggle('open');
+  });
+});
+</script>
+</body>
+</html>
