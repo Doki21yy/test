@@ -1,0 +1,20 @@
+{
+  "title": "OpenClaw（小龙虾）零基础部署&使用全教程：一键安装工具Qclaw使用指南",
+  "type": "learning",
+  "topic": "高权限AI智能体OpenClaw的一键部署、可视化管理及实用玩法教学",
+  "category": "AI工具/AI智能体",
+  "difficulty": "beginner",
+  "learning_rating": 9.0,
+  "summary": "近期爆火的高权限AI智能体OpenClaw（俗称小龙虾）凭借极强的落地能力受到广泛关注，但复杂的命令行安装流程拦住了大量普通用户。UP主秋艺2046耗时半个月开发了免费可视化工具Qclaw（龙虾管家），彻底降低了OpenClaw的使用门槛，无需代码基础即可完成全流程部署。本教程首先介绍了OpenClaw的6大核心能力，讲解了部署所需的设备、模型选型方案，接着一步步演示了通过Qclaw一键安装OpenClaw、对接飞书等通讯工具的完整流程，还介绍了Qclaw可视化面板的日常管理功能，最后分享了定时任务、信息采集、办公流程自动化、智能家居联动等5类高频实用玩法，同时附带了整理好的技能包和使用文档，普通用户也能快速上手利用AI智能体提升效率。",
+  "speaker": "秋艺2046",
+  "tags": [
+    "OpenClaw",
+    "Qclaw",
+    "AI智能体",
+    "Agent部署",
+    "效率工具"
+  ],
+  "source_url": "https://www.bilibili.com/video/BV1mYPSzmEkV?buvid=Y640506C430BF1594D40A43C9803C5C96770&from_spmid=search.search-result.0.0&is_story_h5=false&mid=djMShVIkpYUbbuFaSH6tig%3D%3D&p=1&plat_id=116&share_from=ugc&share_medium=iphone&share_plat=ios&share_session_id=00570BD6-3AD3-4F74-821F-FAC0477AD91D&share_source=GENERIC&share_tag=s_i&spmid=united.player-video-detail.0.0&timestamp=1773153452&unique_k=DatySyH&up_id=385670211",
+  "duration": 1065.733333,
+  "generated_at": "2026-03-10T22:53:54.362051"
+}
