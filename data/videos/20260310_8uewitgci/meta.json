@@ -1,0 +1,22 @@
+{
+  "title": "8UEWit__gCI",
+  "type": "learning",
+  "topic": "讲解如何结合Claude Code与开源工具Remotion制作高质量代码动画，涵盖配套动画库用法、效果优化技巧与进阶拓展方案",
+  "category": "AI工具/动效设计/编程",
+  "difficulty": "beginner",
+  "learning_rating": 8.5,
+  "summary": "本视频围绕GitHub星标达36000+的开源代码动画工具Remotion展开，解决了普通用户直接用提示词生成Remotion动画效果差、达不到专业水准的核心痛点。首先讲解了单提示词生成效果差的根本原因是初始项目缺乏预设模块，AI需要从零搭建所有元素，给出了第一步优化方案：导入官方预设Skills模块，可大幅提升基础生成质量。之后重点介绍了Remotion搭配GSAP、D3.js、Lottie、Three.js、Canvas类库等不同前端动画库的适用场景和实际效果，分别适配幻灯片式动效、数据可视化动画、轻量化动效、3D场景动画等不同需求。还分享了动效路径控制、透明通道渲染等实用技巧，以及Remotion联动Blender实现专业3D动画的实验效果，零基础用户也能快速生成接近专业水准的代码动画，可广泛应用于营销视频、数据演示、创意动效等多个场景。",
+  "speaker": "未知",
+  "tags": [
+    "Remotion",
+    "Claude Code",
+    "代码动画",
+    "GSAP",
+    "D3.js",
+    "Lottie",
+    "Three.js"
+  ],
+  "source_url": "https://www.youtube.com/watch?v=8UEWit__gCI",
+  "duration": 322,
+  "generated_at": "2026-03-10T21:48:30.007455"
+}
