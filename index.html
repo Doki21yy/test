@@ -510,8 +510,10 @@ function filterAndSort() {
   if (currentSort === 'score') {
     filtered.sort((a, b) => getScore(b) - getScore(a));
   } else {
-    // latest: date desc, then slug desc (保证同一天内最新任务在前)
+    // latest: generated_at desc, then date desc, then slug desc
     filtered.sort((a, b) => {
+      const g = (b.generated_at || '').localeCompare(a.generated_at || '');
+      if (g !== 0) return g;
       const d = (b.date || '').localeCompare(a.date || '');
       if (d !== 0) return d;
       return (b.slug || '').localeCompare(a.slug || '');
