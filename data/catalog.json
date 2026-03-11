@@ -1,21 +1,21 @@
 {
-  "last_updated": "2026-03-10T19:00:08Z",
-  "total_videos": 10,
+  "last_updated": "2026-03-11T11:46:26.386376",
+  "total_videos": 11,
   "videos": [
     {
-      "slug": "20260310_openclaw-vibe-coding",
-      "title": "OpenClaw高玩分享！从扣子养虾到 Vibe Coding大趋势",
+      "slug": "20260311_ltx23-ai",
+      "title": "LTX2.3 首尾帧/首中尾帧AI视频生成工作流实战教程",
       "score": 8.5,
-      "summary": "97分钟深度直播，从入门到高阶完整覆盖：OpenClaw 一键部署、Gateway Dashboard 深度解析（8大核心配置文件、52内置技能）、现场搭建「深红港任务公会」网站全过程、ClawEx 飞书集成、电商数据分析（368件商品/28.5亿利润）、InStreet AI Agent 社交网络。Vibe Coding 实战典范。",
-      "duration": 5813,
-      "date": "2026-03-10",
-      "generated_at": "2026-03-10T18:43:00.000000",
+      "summary": "本视频首先对往期教程的两个误区做了勘误：一是明确CFG=1时蒸馏模型的负面提示词不生效，修正了之前的错误表述；二是说明此前的去字幕方法仅对横版视频有效，竖版视频暂未找到高概率去字幕的方案。核心内容为讲解基于LTX2.3模型，在ComfyUI中替换官方节点为KJ节点，实现首尾帧、首中尾帧多参考图控制的AI视频生成工作流，详细拆解了KJ节点的参数含义、多参考帧的位置与强度设置方法，给出了中间帧强度的最佳调参范围，解决了多参考帧生成时画面卡顿、跳转不自然的问题，最终可生成画面连贯、符合参考帧设定的短剧情AI视频，同时给出了后续优化方向和问题解决技巧。",
+      "duration": 518.87288,
+      "date": "2026-03-11",
+      "generated_at": "2026-03-11T11:46:07.866268",
       "platform": "Bilibili",
-      "source_url": "https://www.bilibili.com/video/BV1Y3NPzFEvz/",
-      "thumbnail": "data/videos/20260310_openclaw-vibe-coding/thumbnail.jpg",
-      "report": "data/videos/20260310_openclaw-vibe-coding/report-lite.html",
+      "source_url": "https://www.bilibili.com/video/BV17ocQzFEcU",
+      "thumbnail": "data/videos/20260311_ltx23-ai/thumbnail.jpg",
+      "report": "data/videos/20260311_ltx23-ai/report.html",
       "type": "learning",
-      "topic": "OpenClaw AI Agent 全链路实战：部署、开发、技能生态与社区",
+      "topic": "基于LTX2.3模型使用KJ节点实现多参考帧控制的AI视频生成方法教学",
       "category": "AI工具",
       "difficulty": "intermediate",
       "learning_rating": 8.5
@@ -41,7 +41,7 @@
     {
       "slug": "20260310_openclawqclaw",
       "title": "OpenClaw（小龙虾）零基础部署&使用全教程：一键安装工具Qclaw使用指南",
-      "score": 9,
+      "score": 9.0,
       "summary": "近期爆火的高权限AI智能体OpenClaw（俗称小龙虾）凭借极强的落地能力受到广泛关注，但复杂的命令行安装流程拦住了大量普通用户。UP主秋艺2046耗时半个月开发了免费可视化工具Qclaw（龙虾管家），彻底降低了OpenClaw的使用门槛，无需代码基础即可完成全流程部署。本教程首先介绍了OpenClaw的6大核心能力，讲解了部署所需的设备、模型选型方案，接着一步步演示了通过Qclaw一键安装OpenClaw、对接飞书等通讯工具的完整流程，还介绍了Qclaw可视化面板的日常管理功能，最后分享了定时任务、信息采集、办公流程自动化、智能家居联动等5类高频实用玩法，同时附带了整理好的技能包和使用文档，普通用户也能快速上手利用AI智能体提升效率。",
       "duration": 1065.733333,
       "date": "2026-03-10",
@@ -54,7 +54,7 @@
       "topic": "高权限AI智能体OpenClaw的一键部署、可视化管理及实用玩法教学",
       "category": "AI工具/AI智能体",
       "difficulty": "beginner",
-      "learning_rating": 9
+      "learning_rating": 9.0
     },
     {
       "slug": "20260310_coding-agent--",
@@ -113,7 +113,7 @@
     {
       "slug": "20260308_bv1plpgzoeu1",
       "title": "数字人视频不再僵硬，Comfyui-Dnode强化数字人临场感",
-      "score": 8,
+      "score": 8.0,
       "summary": "本视频介绍了一款轻量实用的ComfyUI插件ComfyUI-Dnode，核心功能是为已生成的数字人视频添加类似真实手持拍摄的自然镜头呼吸感，解决传统数字人视频镜头固定、观感生硬、缺乏临场感的痛点。该插件基于利萨茹（Lissajous）曲线实现平滑的镜头运动模拟，属于纯后处理工具，不需要在视频生成前做任何前置调整，任意成品视频都可以直接导入处理。视频详细讲解了插件唯一核心节点Lissajous Camera Shake（V1）的参数含义、不同参数组合的效果差异，还展示了完整的实操配置流程，用户仅需调整运动强度、缩放系数两个核心参数，就可以快速获得从轻微自然呼吸感到大幅度镜头晃动的不同效果。同时插件通过自动缩放机制实现边缘保护，避免镜头移动时出现画面边缘拉伸、黑边等问题，运行速度极快，配置门槛极低，能以极低的成本大幅提升数字人视频的真实感。",
       "duration": 234.12,
       "date": "2026-03-08",
@@ -126,12 +126,30 @@
       "topic": "介绍ComfyUI的Dnode插件，为数字人等视频添加自然镜头呼吸感，解决视频镜头僵硬问题",
       "category": "AI工具",
       "difficulty": "beginner",
-      "learning_rating": 8
+      "learning_rating": 8.0
+    },
+    {
+      "slug": "20260310_openclaw-vibe-coding",
+      "title": "OpenClaw高玩分享！从扣子养虾到 Vibe Coding大趋势",
+      "score": 8.5,
+      "summary": "这是一场长达97分钟的深度直播，远不止标题所示的「养虾入门」——它实际上是 OpenClaw AI Agent 生态的全景展示。前半段从基础概念入手，介绍 OpenClaw 在 Coze 平台上的一键部署和订阅方案；中段切入实战核心，现场演示了如何用 OpenClaw 从零搭建一个完整的「深红港任务公会」网站（含数据库、前端、部署），展示了 Agent 的自主编码、调试和部署能力；后半段则进入高阶领域，深度拆解了 OpenClaw Gateway Dashboard 的专业管理界面（Agents、Skills、Nodes、Channels 等模块），展示了 ClawEx 扩展工具的飞书插件安装流程，并演示了电商数据分析（京东/Temu/Amazon 368件商品、28.5亿预估利润）等复杂任务。同时还展示了 InStreet（instreet.coze.site）这个 AI Agent 社交网络社区。整场直播覆盖了从入门到高阶的完整知识链。",
+      "duration": 5813,
+      "date": "2026-03-10",
+      "generated_at": "2026-03-10T18:58:46.064411",
+      "platform": "Bilibili",
+      "source_url": "https://www.bilibili.com/video/BV1Y3NPzFEvz/",
+      "thumbnail": "data/videos/20260310_openclaw-vibe-coding/thumbnail.jpg",
+      "report": "data/videos/20260310_openclaw-vibe-coding/report.html",
+      "type": "learning",
+      "topic": "OpenClaw AI Agent 全链路实战：部署、开发、技能生态与社区",
+      "category": "AI工具/AI Agent",
+      "difficulty": "intermediate",
+      "learning_rating": 8.5
     },
     {
       "slug": "20260309_ltx23-12g",
       "title": "开源视频新希望 LTX2.3 全方面提升 最低12G显存可运行",
-      "score": 8,
+      "score": 8.0,
       "summary": "本视频是UP主Work-Fisher针对最新发布的LTX2.3多模态大模型打造的优化版工作流教程。对比2.0版本，LTX2.3在人物动态自然度、面部细节稳定性、口型匹配精度上均有大幅提升，解决了旧版本长视频生成中人物面部褶皱异常增多的问题。视频核心是讲解经过UP主调试优化的图生/文生一体化工作流的使用方法，包含模型选型逻辑、核心参数配置、两类提示词模板的适用场景、分辨率和帧数设置规则，同时给出了本地化部署和云端运行的双方案，适配不同硬件配置的用户。UP主还提供了预调试完成的工作流文件和相关模型资源，大幅降低了用户的使用门槛，配合后处理超分工具即可生成高质量的AI视频内容。",
       "duration": 587.903667,
       "date": "2026-03-09",
@@ -144,12 +162,12 @@
       "topic": "LTX2.3多模态大模型升级详解与配套AI视频生成工作流实操教学",
       "category": "AI工具",
       "difficulty": "intermediate",
-      "learning_rating": 8
+      "learning_rating": 8.0
     },
     {
       "slug": "20260308_3smoothmix-remix-dasiwa-wan22",
       "title": "3大视频模型全套精简工作流SmoothMix Remix Dasiwa Wan2.2",
-      "score": 9,
+      "score": 9.0,
       "summary": "本教程系统性分享了基于ComfyUI的文生图转视频全流程高阶工作流，针对当前AI生成视频连贯性差、风格不稳定、后期处理繁琐、内容合规风险等痛点，提供了SmoothMix、Remix、Dasiwa三款主流生成模型的适配整合工作流，同时内置MMAudio视频加声模块与NSFW内容本地优化方案。所有工作流均完成预设参数调试与节点整合，无需复杂配置即可直接使用。教程不仅展示了工作流的整体框架、节点连接逻辑，还详细讲解了关键参数的调整方法、不同模型的适用场景、文生提示词的书写规范，同时通过实操对比展示了不同参数配置下的生成效果差异，最终可以实现从单张图/文本提示词到带声音的完整AI短视频的全链路产出，无需切换多个工具，大幅降低了AI短视频的制作门槛，适合内容创作者、AI爱好者快速落地商业或个人创作需求。",
       "duration": 3122,
       "date": "2026-03-08",
@@ -162,7 +180,7 @@
       "topic": "基于ComfyUI的文生图转视频全流程工作流搭建与实操，包含多模型适配、音频合成、内容合规优化",
       "category": "AI工具",
       "difficulty": "intermediate",
-      "learning_rating": 9
+      "learning_rating": 9.0
     },
     {
       "slug": "20260308_ltx-23",
