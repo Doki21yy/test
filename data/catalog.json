@@ -1,7 +1,25 @@
 {
-  "last_updated": "2026-03-11T11:46:26.386376",
-  "total_videos": 11,
+  "last_updated": "2026-03-11T22:42:27.915036",
+  "total_videos": 12,
   "videos": [
+    {
+      "slug": "20260311_openclaw-vercel-agent-browser",
+      "title": "OpenClaw + Vercel Agent Browser 自动化浏览器工具使用教程",
+      "score": 8.5,
+      "summary": "本视频介绍了Vercel推出的开源命令行浏览器自动化工具Agent Browser，以及配套的OpenClaw AI助理，解决了传统浏览器自动化工具需要复杂代码、AI调用时token消耗高的痛点。Agent Browser基于Rust开发，响应速度快，输出内容紧凑，比JSON格式少消耗大量token，专门为AI上下文优化，支持网页元素标记、ref引用操作、表单填写、截图、多会话隔离等50+功能，可跨Windows、macOS、Linux平台运行。视频还演示了从安装、基础命令使用到实际操作GitHub登录、给仓库点星的完整流程，还展示了如何让OpenClaw AI自动调用Agent Browser完成网页信息查询、问题排查等任务，用户无需编写复杂代码就能实现AI驱动的浏览器自动化，适合AI Agent开发者、自动化测试人员使用，能大幅降低网页自动化的开发门槛。",
+      "duration": 667.15551,
+      "date": "2026-03-11",
+      "generated_at": "2026-03-11T22:42:17.753478",
+      "platform": "Bilibili",
+      "source_url": "https://www.bilibili.com/video/BV1j2PnzjEYY",
+      "thumbnail": "data/videos/20260311_openclaw-vercel-agent-browser/thumbnail.jpg",
+      "report": "data/videos/20260311_openclaw-vercel-agent-browser/report.html",
+      "type": "learning",
+      "topic": "介绍Vercel开源的Agent Browser命令行浏览器自动化工具与OpenClaw AI助理的功能、安装和实战使用方法",
+      "category": "AI工具",
+      "difficulty": "beginner",
+      "learning_rating": 8.5
+    },
     {
       "slug": "20260311_ltx23-ai",
       "title": "LTX2.3 首尾帧/首中尾帧AI视频生成工作流实战教程",
