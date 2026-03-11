@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenClaw + Vercel Agent Browser 自动化浏览器工具使用教程 - Learning Archive</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg-deep: #06060B;
+  --bg-surface: #0D0D14;
+  --bg-card: #12121C;
+  --bg-card-hover: #181826;
+  --border-subtle: rgba(99, 102, 241, 0.08);
+  --border-hover: rgba(99, 102, 241, 0.2);
+  --text-primary: #E8E8ED;
+  --text-secondary: #7A7A8E;
+  --text-muted: #4A4A5E;
+  --accent: #6366F1;
+  --accent-glow: rgba(99, 102, 241, 0.15);
+  --accent-soft: #818CF8;
+  --radius: 12px;
+  --font-heading: 'DM Sans', -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: var(--font-heading);
+  font-weight: 400;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: -200px; left: 50%;
+  transform: translateX(-50%);
+  width: 800px; height: 600px;
+  background: radial-gradient(ellipse, rgba(99, 102, 241, 0.05) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 24px;
+  position: relative;
+  z-index: 1;
+}
+
+a { color: var(--accent-soft); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Back Nav */
+.back-nav { padding: 24px 0; }
+.back-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--text-muted); text-decoration: none;
+  font-family: var(--font-mono); font-size: 0.78rem;
+  transition: color 0.2s;
+}
+.back-link:hover { color: var(--accent-soft); text-decoration: none; }
+.back-link svg { width: 16px; height: 16px; }
+
+/* Hero */
+.hero { padding-bottom: 40px; }
+
+.video-embed {
+  width: 100%; aspect-ratio: 16/9;
+  border-radius: var(--radius); overflow: hidden;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  margin-bottom: 28px;
+}
+.video-embed iframe { width: 100%; height: 100%; border: none; }
+.video-embed .video-link-fallback {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 12px;
+  color: var(--text-secondary); text-decoration: none;
+}
+.video-embed .video-link-fallback:hover { color: var(--accent-soft); }
+.video-embed .video-link-fallback svg { width: 48px; height: 48px; opacity: 0.5; }
+.source-link-row { margin-top: -14px; margin-bottom: 18px; text-align: center; font-size: 12px; color: var(--text-muted); }
+.source-link-row a { color: var(--accent); text-decoration: none; word-break: break-all; }
+.source-link-row a:hover { text-decoration: underline; }
+
+.hero-title {
+  font-family: var(--font-heading);
+  font-weight: 900;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  letter-spacing: -0.02em; line-height: 1.25;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+
+.hero-meta {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+}
+
+.meta-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 12px; border-radius: 6px;
+  font-family: var(--font-mono); font-size: 0.72rem;
+  font-weight: 500; letter-spacing: 0.03em;
+}
+.meta-badge.platform {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+}
+.meta-badge.platform .p-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+}
+.meta-badge.score {
+  background: var(--accent-glow);
+  border: 1px solid rgba(99, 102, 241, 0.15);
+  color: var(--accent-soft);
+}
+.meta-badge.duration, .meta-badge.date {
+  color: var(--text-muted);
+  font-family: var(--font-mono); font-size: 0.72rem;
+}
+
+/* Section Cards */
+.section-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  margin-bottom: 16px;
+}
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem; font-weight: 500;
+  color: var(--accent-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+}
+.section-heading {
+  font-family: var(--font-heading);
+  font-weight: 700; font-size: 1.15rem;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+.section-text {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+
+/* Tags */
+.tag-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.tag-pill {
+  padding: 3px 10px; border-radius: 4px;
+  font-family: var(--font-mono); font-size: 0.7rem; font-weight: 500;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+}
+.tag-pill.difficulty-beginner { border-color: rgba(34, 197, 94, 0.2); color: #4ADE80; }
+.tag-pill.difficulty-intermediate { border-color: rgba(250, 204, 21, 0.2); color: #FACC15; }
+.tag-pill.difficulty-advanced { border-color: rgba(239, 68, 68, 0.2); color: #F87171; }
+
+/* Knowledge Points */
+.knowledge-list { list-style: none; }
+.knowledge-item { padding: 14px 0; border-bottom: 1px solid var(--border-subtle); }
+.knowledge-item:last-child { border-bottom: none; }
+.knowledge-concept {
+  font-family: var(--font-heading); font-weight: 700;
+  font-size: 0.9rem; color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.knowledge-explain {
+  font-size: 0.84rem; color: var(--text-secondary); line-height: 1.65;
+}
+
+/* Chapters Accordion */
+.chapter-item { border-bottom: 1px solid var(--border-subtle); }
+.chapter-item:last-child { border-bottom: none; }
+.chapter-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 0; cursor: pointer; user-select: none;
+  transition: color 0.2s;
+}
+.chapter-header:hover { color: var(--accent-soft); }
+.chapter-header-left {
+  display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0;
+}
+.chapter-time {
+  font-family: var(--font-mono); font-size: 0.72rem;
+  color: var(--accent-soft); white-space: nowrap; flex-shrink: 0;
+}
+.chapter-title {
+  font-family: var(--font-heading); font-weight: 600;
+  font-size: 0.9rem; color: var(--text-primary);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.chapter-arrow {
+  color: var(--text-muted);
+  transition: transform 0.3s ease; flex-shrink: 0;
+}
+.chapter-item.open .chapter-arrow { transform: rotate(180deg); }
+.chapter-content { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+.chapter-item.open .chapter-content { max-height: 500px; }
+.chapter-inner { padding: 0 0 20px 0; }
+.chapter-summary {
+  font-size: 0.85rem; color: var(--text-secondary);
+  margin-bottom: 12px; line-height: 1.7;
+}
+.chapter-points { list-style: none; padding: 0; }
+.chapter-points li {
+  position: relative; padding-left: 16px;
+  margin-bottom: 6px; font-size: 0.82rem; color: var(--text-secondary);
+}
+.chapter-points li::before {
+  content: ''; position: absolute; left: 0; top: 9px;
+  width: 4px; height: 4px; border-radius: 50%; background: var(--accent);
+}
+
+/* Quotes */
+.quote-card {
+  position: relative; padding: 20px 24px;
+  margin-bottom: 12px;
+  border-left: 2px solid var(--accent);
+  background: rgba(99, 102, 241, 0.03);
+  border-radius: 0 8px 8px 0;
+}
+.quote-card:last-child { margin-bottom: 0; }
+.quote-text {
+  font-size: 0.9rem; color: var(--text-primary);
+  font-style: italic; line-height: 1.65; margin-bottom: 8px;
+}
+.quote-time {
+  font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent-soft);
+}
+
+/* Takeaways */
+.takeaway-list { list-style: none; }
+.takeaway-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 8px 0; font-size: 0.88rem; color: var(--text-secondary);
+}
+.takeaway-check {
+  width: 18px; height: 18px;
+  border: 1.5px solid var(--border-hover);
+  border-radius: 4px; flex-shrink: 0; margin-top: 2px;
+  display: flex; align-items: center; justify-content: center;
+}
+.takeaway-check svg {
+  width: 12px; height: 12px; color: var(--accent-soft);
+}
+
+/* Resources Table */
+.resource-table { width: 100%; border-collapse: collapse; }
+.resource-table th {
+  text-align: left; font-family: var(--font-mono);
+  font-size: 0.7rem; font-weight: 500; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.06em;
+  padding: 10px 0; border-bottom: 1px solid var(--border-subtle);
+}
+.resource-table td {
+  padding: 10px 0; font-size: 0.84rem;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.resource-table tr:last-child td { border-bottom: none; }
+.resource-table a { color: var(--accent-soft); text-decoration: none; }
+.resource-table a:hover { text-decoration: underline; }
+
+/* Detailed Content Sections */
+.section-block {
+  margin-bottom: 20px;
+  background: rgba(99, 102, 241, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+}
+.sec-title {
+  font-family: var(--font-heading);
+  font-size: 1rem; font-weight: 700;
+  margin-bottom: 14px; display: flex; align-items: center; gap: 10px;
+  color: var(--text-primary);
+}
+.sec-num {
+  font-family: var(--font-mono); font-size: 0.68rem;
+  color: #fff; background: var(--accent);
+  width: 24px; height: 24px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.sec-body { color: var(--text-secondary); line-height: 1.8; font-size: 0.88rem; }
+.sec-body p { margin-bottom: 10px; }
+.sec-body strong { color: var(--text-primary); font-weight: 600; }
+.subsection { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border-subtle); }
+.subsec-title { font-size: 0.92rem; font-weight: 600; margin-bottom: 8px; color: var(--text-primary); }
+.subsec-body { color: var(--text-secondary); font-size: 0.86rem; }
+.subsec-body p { margin-bottom: 8px; }
+.content-list { margin: 10px 0; padding-left: 22px; }
+.content-list li { margin-bottom: 5px; line-height: 1.65; }
+.content-h4 { font-size: 0.95rem; font-weight: 600; margin: 14px 0 8px; color: var(--text-primary); }
+.content-h5 { font-size: 0.88rem; font-weight: 600; margin: 10px 0 6px; color: var(--text-secondary); }
+.code-block {
+  background: #0D0D14; color: #CDD6F4;
+  padding: 14px 18px; border-radius: 8px;
+  overflow-x: auto; font-family: var(--font-mono);
+  font-size: 0.8rem; line-height: 1.6; margin: 10px 0;
+  border: 1px solid var(--border-subtle);
+}
+.inline-code {
+  background: var(--accent-glow); color: var(--accent-soft);
+  padding: 1px 6px; border-radius: 4px;
+  font-family: var(--font-mono); font-size: 0.85em;
+}
+
+/* FAQ */
+.faq-item {
+  margin-bottom: 14px; padding: 16px 20px;
+  background: rgba(99, 102, 241, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+}
+.faq-q { font-weight: 600; color: var(--accent-soft); margin-bottom: 8px; font-size: 0.9rem; }
+.faq-a { color: var(--text-secondary); font-size: 0.86rem; }
+.faq-a p { margin-bottom: 6px; }
+
+/* Summary Box */
+.summary-box {
+  background: rgba(99, 102, 241, 0.04);
+  border: 1px solid rgba(99, 102, 241, 0.1);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+}
+.summary-box p { color: var(--text-secondary); line-height: 1.85; font-size: 0.92rem; }
+
+/* Footer */
+.report-footer {
+  padding: 48px 0 32px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.section-card { animation: fadeInUp 0.5s ease both; }
+.section-card:nth-child(1) { animation-delay: 0.1s; }
+.section-card:nth-child(2) { animation-delay: 0.15s; }
+.section-card:nth-child(3) { animation-delay: 0.2s; }
+.section-card:nth-child(4) { animation-delay: 0.25s; }
+.section-card:nth-child(5) { animation-delay: 0.3s; }
+.section-card:nth-child(6) { animation-delay: 0.35s; }
+
+/* Responsive */
+@media (max-width: 640px) {
+  .container { padding: 0 16px; }
+  .section-card { padding: 20px 18px; }
+  .hero-title { font-size: 1.4rem; }
+  .section-block { padding: 18px 16px; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <nav class="back-nav">
+    <a href="../../../" class="back-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Archive
+    </a>
+  </nav>
+
+  <section class="hero">
+    <div class="video-embed">
+      <iframe loading="lazy" src="//player.bilibili.com/player.html?bvid=BV1j2PnzjEYY&high_quality=0&danmaku=0" allowfullscreen="true" frameborder="0"></iframe>
+    </div>
+    
+
+    <h1 class="hero-title">OpenClaw + Vercel Agent Browser 自动化浏览器工具使用教程</h1>
+
+    <div class="hero-meta">
+      <span class="meta-badge platform"><span class="p-dot" style="background:#00A1D6"></span>Bilibili</span>
+      <span class="meta-badge score">8.5/10</span>
+      <span class="meta-badge duration">11:07</span>
+      <span class="meta-badge date">2026-03-11</span>
+    </div>
+  </section>
+
+  <!-- Overview -->
+  <div class="section-card">
+    <div class="section-label">Overview</div>
+    <div class="tag-row">
+      <span class="tag-pill difficulty-beginner">Beginner</span>
+      <span class="tag-pill">AI工具</span>
+      <span class="tag-pill">五里墩茶社</span>
+    </div>
+    <div class="section-text">本视频介绍了Vercel推出的开源命令行浏览器自动化工具Agent Browser，以及配套的OpenClaw AI助理，解决了传统浏览器自动化工具需要复杂代码、AI调用时token消耗高的痛点。Agent Browser基于Rust开发，响应速度快，输出内容紧凑，比JSON格式少消耗大量token，专门为AI上下文优化，支持网页元素标记、ref引用操作、表单填写、截图、多会话隔离等50+功能，可跨Windows、macOS、Linux平台运行。视频还演示了从安装、基础命令使用到实际操作GitHub登录、给仓库点星的完整流程，还展示了如何让OpenClaw AI自动调用Agent Browser完成网页信息查询、问题排查等任务，用户无需编写复杂代码就能实现AI驱动的浏览器自动化，适合AI Agent开发者、自动化测试人员使用，能大幅降低网页自动化的开发门槛。</div>
+  </div>
+
+  <!-- Key Knowledge Points -->
+  <div class="section-card">
+    <div class="section-label">Key Knowledge</div>
+    <ul class="knowledge-list">
+      <li class="knowledge-item">
+            <div class="knowledge-concept">Agent Browser核心特性与原理</div>
+            <div class="knowledge-explain">Agent Browser是专门为AI Agent设计的浏览器自动化CLI，核心设计思路解决了传统工具适配大模型的痛点：</div>
+        </li>
+<li class="knowledge-item">
+            <div class="knowledge-concept">安装与基础使用步骤</div>
+            <div class="knowledge-explain">工具提供两种安装方案，按需选择：</div>
+        </li>
+<li class="knowledge-item">
+            <div class="knowledge-concept">OpenClaw AI助理集成使用</div>
+            <div class="knowledge-explain">OpenClaw是基于Agent Browser构建的AI助理，支持通过自然语言指令自动完成网页操作，无需手动编写命令，可接入WhatsApp、Telegram等常用聊天工具，能自动完成收件箱清理、邮件回复、日程管理、航班值机等复杂任务。</div>
+        </li>
+<li class="knowledge-item">
+            <div class="knowledge-concept">适用场景与最佳实践</div>
+            <div class="knowledge-explain">1. **AI Agent开发**：作为工具接入大模型，让大模型通过简单命令完成网页信息检索、表单提交等操作，不需要集成复杂的Playwright或Selenium框架，大幅减少开发工作量。</div>
+        </li>
+    </ul>
+  </div>
+
+  <!-- Detailed Content -->
+  <div class="section-card">
+    <div class="section-label">Detailed Content</div>
+    <div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">01</span>Agent Browser核心特性与原理</h3>
+            <div class="sec-body"><p>Agent Browser是专门为AI Agent设计的浏览器自动化CLI，核心设计思路解决了传统工具适配大模型的痛点：</p>
+<ol class="content-list">
+<li><strong>Agent优先（Agent-first）设计</strong>：输出采用紧凑的自定义文本格式，比传统JSON格式少占用70%左右的token，大幅降低大模型上下文消耗，非常适合AI场景调用。</li>
+<li><strong>基于引用（Ref-based）的元素定位</strong>：工具会自动给网页每个可交互元素分配唯一的ref标识，返回可访问性树，不需要编写CSS选择器或XPath，就能确定性定位元素，避免了传统定位方式容易随页面迭代失效的问题。</li>
+<li><strong>高性能Rust底层</strong>：CLI用Rust语言开发，命令解析延迟低至毫秒级，运行速度远快于Python实现的同类自动化工具。</li>
+<li><strong>功能完备</strong>：内置50+命令，覆盖网页导航、表单操作、截图、网络请求管理、存储操作等全场景；支持多会话隔离，不同会话有独立的Cookie和认证信息，互不干扰；提供原生跨平台二进制文件，无需额外依赖环境即可在Windows、macOS、Linux上运行。</li>
+</ol></div>
+            
+        </div><div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">02</span>安装与基础使用步骤</h3>
+            <div class="sec-body"><h4 class="content-h4">安装方式</h4>
+<p>工具提供两种安装方案，按需选择：</p>
+<ol class="content-list">
+<li><strong>全局安装（推荐，性能最优）</strong></li>
+</ol>
+<pre class="code-block"><code># 全局安装CLI
+<p>npm install -g agent-browser</p>
+<p># 下载依赖的Chromium内核</p>
+<p>agent-browser install</code></pre></p>
+<p>该方案命令直接通过Rust原生二进制运行，无额外解析开销，速度最快。macOS用户也可以用Homebrew安装：<code class="inline-code">brew install agent-browser</code>。</p>
+<ol class="content-list">
+<li><strong>快速体验（无需全局安装）</strong></li>
+</ol>
+<pre class="code-block"><code># 首次运行下载Chromium内核
+<p>npx agent-browser install</p>
+<p># 直接用npx调用命令</p>
+<p>npx agent-browser open example.com</code></pre></p>
+<p>注意npx调用需要经过Node.js层转发，速度比全局安装慢30%左右，适合临时试用。</p>
+<h4 class="content-h4">基础操作流程</h4>
+<p>以操作网页的通用流程为例：</p>
+<ol class="content-list">
+<li>打开目标网页：<code class="inline-code">agent-browser open <网页URL></code>，比如<code class="inline-code">agent-browser open https://github.com/login</code></li>
+<li>获取网页元素快照：<code class="inline-code">agent-browser snapshot -i</code>，返回所有可交互元素的文本和对应ref标识</li>
+<li>操作元素：通过返回的ref执行操作，示例命令：</li>
+</ol>
+<pre class="code-block"><code># 点击ref为e3的登录按钮
+<p>agent-browser click @e3</p>
+<p># 给ref为e1的用户名输入框填充内容</p>
+<p>agent-browser fill @e1 &quot;your-email@example.com&quot;</p>
+<p># 截取当前页面保存为page.png</p>
+<p>agent-browser screenshot page.png</p>
+<p># 获取当前页面标题</p>
+<p>agent-browser get title</p>
+<p># 关闭浏览器会话</p>
+<p>agent-browser close</code></pre></p></div>
+            
+        </div><div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">03</span>OpenClaw AI助理集成使用</h3>
+            <div class="sec-body"><p>OpenClaw是基于Agent Browser构建的AI助理，支持通过自然语言指令自动完成网页操作，无需手动编写命令，可接入WhatsApp、Telegram等常用聊天工具，能自动完成收件箱清理、邮件回复、日程管理、航班值机等复杂任务。</p>
+<h4 class="content-h4">使用流程</h4>
+<ol class="content-list">
+<li>访问官方网站https://openclaw.ai注册账号，进入聊天交互界面</li>
+<li>输入自然语言指令，例如：“打开OpenClaw的GitHub仓库，找到最新的开放issue，告诉我它的内容”</li>
+<li>OpenClaw会自动规划任务步骤，调用Agent Browser完成网页跳转、元素解析、信息提取，最终返回结构化的结果，同时会展示执行过程中调用的所有命令日志，方便排查问题。</li>
+</ol>
+<p>视频演示的实际案例中，用户发出查询最新issue的指令后，OpenClaw自动完成了打开GitHub仓库、进入issue列表、读取最新issue内容、整理问题描述的全流程，无需任何人工干预。还支持自定义工作流，结合多轮对话完成更复杂的重复任务，比如定期爬取行业新闻整理成报告、批量提交表单等。</p></div>
+            
+        </div><div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">04</span>适用场景与最佳实践</h3>
+            <div class="sec-body"><h4 class="content-h4">核心适用场景</h4>
+<ol class="content-list">
+<li><strong>AI Agent开发</strong>：作为工具接入大模型，让大模型通过简单命令完成网页信息检索、表单提交等操作，不需要集成复杂的Playwright或Selenium框架，大幅减少开发工作量。</li>
+<li><strong>UI自动化测试</strong>：基于ref的元素定位比CSS选择器更稳定，抗页面结构变化能力强，命令简单易维护，适合做跨版本的UI自动化测试。</li>
+<li><strong>网页数据采集</strong>：多会话隔离功能可以同时开启多个独立浏览器实例，采集不同网站数据不会互相干扰登录状态和Cookie，适合批量爬虫场景。</li>
+</ol>
+<h4 class="content-h4">最佳实践</h4>
+<ol class="content-list">
+<li>AI调用时snapshot命令加<code class="inline-code">-i</code>参数，返回更精简的元素信息，进一步降低token消耗。</li>
+<li>操作敏感账号时，使用独立会话，操作完成后执行<code class="inline-code">agent-browser session clear</code>清理会话数据，避免登录信息泄露。</li>
+<li>无GUI服务器部署时，工具默认运行无头模式，不需要桌面环境，直接调用即可。</li>
+<li>高频操作时合理控制请求间隔，避免触发网站反爬机制。</li>
+</ol></div>
+            
+        </div>
+  </div>
+
+  <!-- Chapters -->
+  <div class="section-card">
+    <div class="section-label">Chapters</div>
+    <div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">00:00</span>
+                    <span class="chapter-title">OpenClaw与Agent Browser产品基础介绍</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">展示视频主题，说明本次讲解的核心工具是OpenClaw和Vercel Agent Browser. 介绍agent-browser是为AI代理设计的浏览器自动化命令行工具，展示安装命令和核心特性. 讲解agent-browser的核心功能点，同时介绍OpenClaw是可执行实际操作的AI助手，支持多聊天平台接入. 展示OpenClaw的GitHub开源仓库，介绍仓库的基本结构和项目数据</div>
+                    <ul class="chapter-points"><li>本次视频围绕OpenClaw AI代理和agent-browser浏览器自动化工具展开介绍</li><li>agent-browser是面向AI场景的浏览器自动化CLI工具，输出更省token</li><li>OpenClaw是可自动执行网页操作、日程管理等任务的AI助手</li><li>OpenClaw代码开源在GitHub，可查看源码、提交Issue或参与贡献</li></ul>
+                </div>
+            </div>
+        </div>
+<div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">02:16</span>
+                    <span class="chapter-title">Agent Browser安装与基础操作实操</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">讲解agent-browser的两种使用方式：全局安装获得最佳性能，或使用npx免安装直接试用. 演示在终端执行agent-browser安装命令，完成依赖和配套Chromium浏览器的安装. 演示用agent-browser打开指定网页，执行快照命令抓取页面可交互元素和结构信息. 演示抓取GitHub登录页的元素，展示用户名输入框、密码框、登录按钮等元素的ref标识. 演示使用fill命令，通过ref标识定位输入框，填入对应的账号和密码信息. 演示使用click命令点击登录按钮，提交登录表单，页面跳转至二步验证页</div>
+                    <ul class="chapter-points"><li>agent-browser支持全局安装和npx免安装两种使用方式</li><li>agent-browser安装时会自动下载适配的Chromium浏览器</li><li>snapshot命令可抓取网页可访问元素树，输出带唯一ref标识的元素列表</li><li>agent-browser可对任意公开网页执行元素抓取，获取全部可交互元素信息</li><li>fill命令可向指定输入元素填充内容，完成表单填写操作</li></ul>
+                </div>
+            </div>
+        </div>
+<div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">06:16</span>
+                    <span class="chapter-title">Agent Browser高阶功能与OpenClaw任务演示</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">演示抓取二步验证页的元素，说明可在同一会话中对跳转后的页面继续执行操作. 演示使用grep参数过滤快照结果，快速定位包含指定关键词的元素. 演示筛选出仓库Star按钮，执行点击操作，成功为OpenClaw仓库添加星标. 介绍OpenClaw的会话操作界面，演示输入自然语言任务指令，让AI代理自动调用agent-browser完成任务. 展示AI代理自动执行任务的过程，成功找到OpenClaw仓库的最新Issue并输出核心内容. 演示任务执行出错时，OpenClaw会自动排查错误原因，给出对应的解决方法. 展示OpenClaw调用的所有agent-browser命令，说明AI代理和CLI工具的调</div>
+                    <ul class="chapter-points"><li>agent-browser会保持同一浏览器会话，页面跳转后仍可连续执行操作</li><li>agent-browser支持通过grep参数筛选快照结果，快速定位目标元素</li><li>结合筛选和点击命令，可实现无需手动查找元素的自动化网页操作</li><li>OpenClaw可接收自然语言指令，自动调用agent-browser完成网页操作任务</li><li>OpenClaw可自动完成网页信息查找、提取任务，返回结构化结果</li></ul>
+                </div>
+            </div>
+        </div>
+  </div>
+
+  <!-- Quotes -->
+  <div class="section-card">
+    <div class="section-label">Notable Quotes</div>
+    <div class="quote-card">
+            <div class="quote-text">视频核心介绍两个工具：AI代理OpenClaw、浏览器自动化CLI工具agent-browser</div>
+            <div class="quote-time">00:00</div>
+        </div>
+<div class="quote-card">
+            <div class="quote-text">agent-browser基于Rust开发，输出比JSON更省token，适配AI上下文使用</div>
+            <div class="quote-time">00:21</div>
+        </div>
+<div class="quote-card">
+            <div class="quote-text">OpenClaw可完成清理收件箱、管理日程等任务，支持在WhatsApp、Telegram等常用聊天应用使用</div>
+            <div class="quote-time">00:56</div>
+        </div>
+<div class="quote-card">
+            <div class="quote-text">OpenClaw开源仓库地址为github.com/openclaw/openclaw</div>
+            <div class="quote-time">01:36</div>
+        </div>
+<div class="quote-card">
+            <div class="quote-text">全局安装命令：npm install -g agent-browser；免安装使用npx agent-browser执行命令</div>
+            <div class="quote-time">02:16</div>
+        </div>
+  </div>
+
+  <!-- Takeaways -->
+  <div class="section-card">
+    <div class="section-label">Takeaways</div>
+    <ul class="takeaway-list">
+      <li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            首次运行agent-browser必须先执行install命令下载Chromium内核，否则会报错，Linux环境如果出现共享库缺失错误，可以加--with-deps参数运行安装：`agent-browser install --with-deps`
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            调用snapshot命令时加-i参数会返回更精简的元素信息，进一步降低token消耗，更适合AI调用场景
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            操作敏感账号登录后，记得执行`agent-browser close`关闭会话，或者单独创建临时会话，避免登录信息泄露
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            全局安装的Agent Browser比npx调用速度快30%以上，长期使用推荐选择全局安装方案
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            安装时提示playwright相关依赖错误怎么办？
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            元素的ref标识会不会每次打开网页都变化？
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            能不能在无GUI的服务器上运行Agent Browser？
+        </li>
+    </ul>
+  </div>
+
+  <!-- Resources -->
+  <div class="section-card">
+    <div class="section-label">Tools & Resources</div>
+    <table class="resource-table">
+      <thead><tr><th>Name</th><th>Description</th><th>Link</th></tr></thead>
+      <tbody>
+        <tr><td>Agent Browser 官方文档</td><td>Agent Browser的官方安装指南、命令参考和使用教程</td><td><a href="https://agent-browser.dev" target="_blank" rel="noopener">Link</a></td></tr>
+<tr><td>OpenClaw 官方网站</td><td>OpenClaw AI助理的官方网站，可注册体验自然语言网页自动化功能</td><td><a href="https://openclaw.ai" target="_blank" rel="noopener">Link</a></td></tr>
+<tr><td>OpenClaw GitHub 仓库</td><td>OpenClaw开源项目仓库，包含源码、issue和更新日志</td><td><a href="https://github.com/openclaw/openclaw" target="_blank" rel="noopener">Link</a></td></tr>
+<tr><td>Playwright MCP 仓库</td><td>Agent Browser底层依赖的相关浏览器自动化项目</td><td><a href="https://github.com/microsoft/playwright-mcp" target="_blank" rel="noopener">Link</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section-card">
+            <div class="section-label">FAQ</div>
+            <div class="faq-item">
+                <div class="faq-q">Q: 安装时提示playwright相关依赖错误怎么办？</div>
+                <div class="faq-a"><p>首先确保已经执行了agent-browser install命令，如果是Linux环境，运行<code class="inline-code">agent-browser install --with-deps</code>自动安装系统依赖；macOS用户可以用Homebrew安装<code class="inline-code">brew install agent-browser</code>避免依赖问题。</p></div>
+            </div><div class="faq-item">
+                <div class="faq-q">Q: 元素的ref标识会不会每次打开网页都变化？</div>
+                <div class="faq-a"><p>ref是基于页面可访问性树生成的，只要页面结构没有大的迭代变化，相同元素的ref是稳定的，相比CSS选择器抗页面变化能力更强，自动化脚本的维护成本更低。</p></div>
+            </div><div class="faq-item">
+                <div class="faq-q">Q: 能不能在无GUI的服务器上运行Agent Browser？</div>
+                <div class="faq-a"><p>完全支持，工具默认运行无头模式，不需要桌面环境，适合服务器端部署给AI Agent调用，也支持开启有头模式用于本地调试。</p></div>
+            </div>
+        </div>
+
+  <div class="section-card">
+            <div class="section-label">Summary</div>
+            <div class="summary-box"><p>本教程详细介绍了Vercel开源的Agent Browser命令行浏览器自动化工具和配套OpenClaw AI助理，核心亮点是专为AI场景优化的低token消耗、稳定的ref元素定位、毫秒级响应速度，完全解决了传统浏览器自动化工具难以接入大模型的痛点。用户无需掌握复杂的前端选择器知识，通过简单的命令就能实现网页操作，还可以通过OpenClaw用自然语言直接完成各类网页任务。工具跨平台支持、多会话隔离的特性，既能满足个人快速自动化需求，也能支撑企业级AI Agent的网页操作能力，大幅降低了浏览器自动化的开发和使用门槛，是AI Agent工具链中非常值得掌握的新一代自动化工具。</p></div>
+        </div>
+
+  <footer class="report-footer">
+    powered by video-learn
+  </footer>
+</div>
+
+<script>
+// Chapter accordion
+document.querySelectorAll('.chapter-header').forEach(header => {
+  header.addEventListener('click', () => {
+    header.parentElement.classList.toggle('open');
+  });
+});
+</script>
+</body>
+</html>
