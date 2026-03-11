@@ -1,0 +1,329 @@
+{
+  "title_cn": "OpenClaw + Vercel Agent Browser 自动化浏览器工具使用教程",
+  "topic": "介绍Vercel开源的Agent Browser命令行浏览器自动化工具与OpenClaw AI助理的功能、安装和实战使用方法",
+  "category": "AI工具",
+  "tags": [
+    "AI Agent",
+    "浏览器自动化",
+    "命令行工具",
+    "OpenClaw",
+    "Vercel"
+  ],
+  "difficulty": "beginner",
+  "learning_rating": 8.5,
+  "speaker": "五里墩茶社",
+  "language": "中文",
+  "video_info": {
+    "publish_date": "",
+    "views_estimate": ""
+  },
+  "overview": "本视频介绍了Vercel推出的开源命令行浏览器自动化工具Agent Browser，以及配套的OpenClaw AI助理，解决了传统浏览器自动化工具需要复杂代码、AI调用时token消耗高的痛点。Agent Browser基于Rust开发，响应速度快，输出内容紧凑，比JSON格式少消耗大量token，专门为AI上下文优化，支持网页元素标记、ref引用操作、表单填写、截图、多会话隔离等50+功能，可跨Windows、macOS、Linux平台运行。视频还演示了从安装、基础命令使用到实际操作GitHub登录、给仓库点星的完整流程，还展示了如何让OpenClaw AI自动调用Agent Browser完成网页信息查询、问题排查等任务，用户无需编写复杂代码就能实现AI驱动的浏览器自动化，适合AI Agent开发者、自动化测试人员使用，能大幅降低网页自动化的开发门槛。",
+  "sections": [
+    {
+      "title": "Agent Browser核心特性与原理",
+      "content": "Agent Browser是专门为AI Agent设计的浏览器自动化CLI，核心设计思路解决了传统工具适配大模型的痛点：\n1. **Agent优先（Agent-first）设计**：输出采用紧凑的自定义文本格式，比传统JSON格式少占用70%左右的token，大幅降低大模型上下文消耗，非常适合AI场景调用。\n2. **基于引用（Ref-based）的元素定位**：工具会自动给网页每个可交互元素分配唯一的ref标识，返回可访问性树，不需要编写CSS选择器或XPath，就能确定性定位元素，避免了传统定位方式容易随页面迭代失效的问题。\n3. **高性能Rust底层**：CLI用Rust语言开发，命令解析延迟低至毫秒级，运行速度远快于Python实现的同类自动化工具。\n4. **功能完备**：内置50+命令，覆盖网页导航、表单操作、截图、网络请求管理、存储操作等全场景；支持多会话隔离，不同会话有独立的Cookie和认证信息，互不干扰；提供原生跨平台二进制文件，无需额外依赖环境即可在Windows、macOS、Linux上运行。",
+      "subsections": []
+    },
+    {
+      "title": "安装与基础使用步骤",
+      "content": "### 安装方式\n工具提供两种安装方案，按需选择：\n1. **全局安装（推荐，性能最优）**\n```bash\n# 全局安装CLI\nnpm install -g agent-browser\n# 下载依赖的Chromium内核\nagent-browser install\n```\n该方案命令直接通过Rust原生二进制运行，无额外解析开销，速度最快。macOS用户也可以用Homebrew安装：`brew install agent-browser`。\n2. **快速体验（无需全局安装）**\n```bash\n# 首次运行下载Chromium内核\nnpx agent-browser install\n# 直接用npx调用命令\nnpx agent-browser open example.com\n```\n注意npx调用需要经过Node.js层转发，速度比全局安装慢30%左右，适合临时试用。\n\n### 基础操作流程\n以操作网页的通用流程为例：\n1. 打开目标网页：`agent-browser open <网页URL>`，比如`agent-browser open https://github.com/login`\n2. 获取网页元素快照：`agent-browser snapshot -i`，返回所有可交互元素的文本和对应ref标识\n3. 操作元素：通过返回的ref执行操作，示例命令：\n```bash\n# 点击ref为e3的登录按钮\nagent-browser click @e3\n# 给ref为e1的用户名输入框填充内容\nagent-browser fill @e1 \"your-email@example.com\"\n# 截取当前页面保存为page.png\nagent-browser screenshot page.png\n# 获取当前页面标题\nagent-browser get title\n# 关闭浏览器会话\nagent-browser close\n```",
+      "subsections": []
+    },
+    {
+      "title": "OpenClaw AI助理集成使用",
+      "content": "OpenClaw是基于Agent Browser构建的AI助理，支持通过自然语言指令自动完成网页操作，无需手动编写命令，可接入WhatsApp、Telegram等常用聊天工具，能自动完成收件箱清理、邮件回复、日程管理、航班值机等复杂任务。\n\n### 使用流程\n1. 访问官方网站https://openclaw.ai注册账号，进入聊天交互界面\n2. 输入自然语言指令，例如：“打开OpenClaw的GitHub仓库，找到最新的开放issue，告诉我它的内容”\n3. OpenClaw会自动规划任务步骤，调用Agent Browser完成网页跳转、元素解析、信息提取，最终返回结构化的结果，同时会展示执行过程中调用的所有命令日志，方便排查问题。\n\n视频演示的实际案例中，用户发出查询最新issue的指令后，OpenClaw自动完成了打开GitHub仓库、进入issue列表、读取最新issue内容、整理问题描述的全流程，无需任何人工干预。还支持自定义工作流，结合多轮对话完成更复杂的重复任务，比如定期爬取行业新闻整理成报告、批量提交表单等。",
+      "subsections": []
+    },
+    {
+      "title": "适用场景与最佳实践",
+      "content": "### 核心适用场景\n1. **AI Agent开发**：作为工具接入大模型，让大模型通过简单命令完成网页信息检索、表单提交等操作，不需要集成复杂的Playwright或Selenium框架，大幅减少开发工作量。\n2. **UI自动化测试**：基于ref的元素定位比CSS选择器更稳定，抗页面结构变化能力强，命令简单易维护，适合做跨版本的UI自动化测试。\n3. **网页数据采集**：多会话隔离功能可以同时开启多个独立浏览器实例，采集不同网站数据不会互相干扰登录状态和Cookie，适合批量爬虫场景。\n\n### 最佳实践\n1. AI调用时snapshot命令加`-i`参数，返回更精简的元素信息，进一步降低token消耗。\n2. 操作敏感账号时，使用独立会话，操作完成后执行`agent-browser session clear`清理会话数据，避免登录信息泄露。\n3. 无GUI服务器部署时，工具默认运行无头模式，不需要桌面环境，直接调用即可。\n4. 高频操作时合理控制请求间隔，避免触发网站反爬机制。",
+      "subsections": []
+    }
+  ],
+  "resources": [
+    {
+      "name": "Agent Browser 官方文档",
+      "url": "https://agent-browser.dev",
+      "description": "Agent Browser的官方安装指南、命令参考和使用教程",
+      "type": "website"
+    },
+    {
+      "name": "OpenClaw 官方网站",
+      "url": "https://openclaw.ai",
+      "description": "OpenClaw AI助理的官方网站，可注册体验自然语言网页自动化功能",
+      "type": "website"
+    },
+    {
+      "name": "OpenClaw GitHub 仓库",
+      "url": "https://github.com/openclaw/openclaw",
+      "description": "OpenClaw开源项目仓库，包含源码、issue和更新日志",
+      "type": "code repository"
+    },
+    {
+      "name": "Playwright MCP 仓库",
+      "url": "https://github.com/microsoft/playwright-mcp",
+      "description": "Agent Browser底层依赖的相关浏览器自动化项目",
+      "type": "code repository"
+    }
+  ],
+  "key_tips": [
+    "首次运行agent-browser必须先执行install命令下载Chromium内核，否则会报错，Linux环境如果出现共享库缺失错误，可以加--with-deps参数运行安装：`agent-browser install --with-deps`",
+    "调用snapshot命令时加-i参数会返回更精简的元素信息，进一步降低token消耗，更适合AI调用场景",
+    "操作敏感账号登录后，记得执行`agent-browser close`关闭会话，或者单独创建临时会话，避免登录信息泄露",
+    "全局安装的Agent Browser比npx调用速度快30%以上，长期使用推荐选择全局安装方案"
+  ],
+  "faq": [
+    {
+      "question": "安装时提示playwright相关依赖错误怎么办？",
+      "answer": "首先确保已经执行了agent-browser install命令，如果是Linux环境，运行`agent-browser install --with-deps`自动安装系统依赖；macOS用户可以用Homebrew安装`brew install agent-browser`避免依赖问题。"
+    },
+    {
+      "question": "元素的ref标识会不会每次打开网页都变化？",
+      "answer": "ref是基于页面可访问性树生成的，只要页面结构没有大的迭代变化，相同元素的ref是稳定的，相比CSS选择器抗页面变化能力更强，自动化脚本的维护成本更低。"
+    },
+    {
+      "question": "能不能在无GUI的服务器上运行Agent Browser？",
+      "answer": "完全支持，工具默认运行无头模式，不需要桌面环境，适合服务器端部署给AI Agent调用，也支持开启有头模式用于本地调试。"
+    }
+  ],
+  "hardware_requirements": "内存≥2GB，磁盘剩余空间≥1GB（存放Chromium内核和临时文件），无特殊GPU要求",
+  "target_audience": [
+    "AI Agent开发者",
+    "自动化测试工程师",
+    "网页爬虫开发者",
+    "需要批量网页操作的办公人员"
+  ],
+  "summary": "本教程详细介绍了Vercel开源的Agent Browser命令行浏览器自动化工具和配套OpenClaw AI助理，核心亮点是专为AI场景优化的低token消耗、稳定的ref元素定位、毫秒级响应速度，完全解决了传统浏览器自动化工具难以接入大模型的痛点。用户无需掌握复杂的前端选择器知识，通过简单的命令就能实现网页操作，还可以通过OpenClaw用自然语言直接完成各类网页任务。工具跨平台支持、多会话隔离的特性，既能满足个人快速自动化需求，也能支撑企业级AI Agent的网页操作能力，大幅降低了浏览器自动化的开发和使用门槛，是AI Agent工具链中非常值得掌握的新一代自动化工具。",
+  "related_links": [],
+  "scene_breakdown": {
+    "chapters": [
+      {
+        "chapter": "OpenClaw与Agent Browser产品基础介绍",
+        "start": "00:00",
+        "end": "02:15",
+        "scenes": [
+          {
+            "scene_id": "1-1",
+            "start": "00:00",
+            "end": "00:20",
+            "visual": "白色背景展示OpenClaw标识、副标题Vercel Agent Browser以及二维码",
+            "narration": "展示视频主题，说明本次讲解的核心工具是OpenClaw和Vercel Agent Browser",
+            "core_concept": "本次视频围绕OpenClaw AI代理和agent-browser浏览器自动化工具展开介绍",
+            "teaching_method": "展示",
+            "clarity": "high",
+            "note": "视频核心介绍两个工具：AI代理OpenClaw、浏览器自动化CLI工具agent-browser"
+          },
+          {
+            "scene_id": "1-2",
+            "start": "00:21",
+            "end": "00:55",
+            "visual": "agent-browser官网首页，展示安装命令和基础特性列表",
+            "narration": "介绍agent-browser是为AI代理设计的浏览器自动化命令行工具，展示安装命令和核心特性",
+            "core_concept": "agent-browser是面向AI场景的浏览器自动化CLI工具，输出更省token",
+            "teaching_method": "演示+理论",
+            "clarity": "high",
+            "note": "agent-browser基于Rust开发，输出比JSON更省token，适配AI上下文使用"
+          },
+          {
+            "scene_id": "1-3",
+            "start": "00:56",
+            "end": "01:35",
+            "visual": "先展示agent-browser完整功能列表，再切换到OpenClaw官网，滚动展示用户评价",
+            "narration": "讲解agent-browser的核心功能点，同时介绍OpenClaw是可执行实际操作的AI助手，支持多聊天平台接入",
+            "core_concept": "OpenClaw是可自动执行网页操作、日程管理等任务的AI助手",
+            "teaching_method": "演示",
+            "clarity": "high",
+            "note": "OpenClaw可完成清理收件箱、管理日程等任务，支持在WhatsApp、Telegram等常用聊天应用使用"
+          },
+          {
+            "scene_id": "1-4",
+            "start": "01:36",
+            "end": "02:15",
+            "visual": "OpenClaw的GitHub开源仓库主页，展示文件列表、星标、Fork等仓库数据",
+            "narration": "展示OpenClaw的GitHub开源仓库，介绍仓库的基本结构和项目数据",
+            "core_concept": "OpenClaw代码开源在GitHub，可查看源码、提交Issue或参与贡献",
+            "teaching_method": "演示",
+            "clarity": "high",
+            "note": "OpenClaw开源仓库地址为github.com/openclaw/openclaw"
+          }
+        ]
+      },
+      {
+        "chapter": "Agent Browser安装与基础操作实操",
+        "start": "02:16",
+        "end": "06:15",
+        "scenes": [
+          {
+            "scene_id": "2-1",
+            "start": "02:16",
+            "end": "02:55",
+            "visual": "agent-browser官网的安装教程页，展示全局安装、免安装快速启动的命令说明",
+            "narration": "讲解agent-browser的两种使用方式：全局安装获得最佳性能，或使用npx免安装直接试用",
+            "core_concept": "agent-browser支持全局安装和npx免安装两种使用方式",
+            "teaching_method": "演示+理论",
+            "clarity": "high",
+            "note": "全局安装命令：npm install -g agent-browser；免安装使用npx agent-browser执行命令"
+          },
+          {
+            "scene_id": "2-2",
+            "start": "02:56",
+            "end": "03:35",
+            "visual": "终端界面执行agent-browser安装命令，展示安装过程和Chromium安装成功提示",
+            "narration": "演示在终端执行agent-browser安装命令，完成依赖和配套Chromium浏览器的安装",
+            "core_concept": "agent-browser安装时会自动下载适配的Chromium浏览器",
+            "teaching_method": "实操",
+            "clarity": "high",
+            "note": "出现“Chromium installed successfully”提示代表安装环境就绪"
+          },
+          {
+            "scene_id": "2-3",
+            "start": "03:36",
+            "end": "04:15",
+            "visual": "终端执行agent-browser open打开OpenClaw仓库，执行snapshot命令输出页面元素列表",
+            "narration": "演示用agent-browser打开指定网页，执行快照命令抓取页面可交互元素和结构信息",
+            "core_concept": "snapshot命令可抓取网页可访问元素树，输出带唯一ref标识的元素列表",
+            "teaching_method": "实操",
+            "clarity": "high",
+            "note": "snapshot输出的每个元素都带有唯一ref编号，后续操作可通过@+ref指定目标元素"
+          },
+          {
+            "scene_id": "2-4",
+            "start": "04:16",
+            "end": "04:55",
+            "visual": "终端执行agent-browser打开GitHub登录页，执行snapshot输出登录页的元素列表",
+            "narration": "演示抓取GitHub登录页的元素，展示用户名输入框、密码框、登录按钮等元素的ref标识",
+            "core_concept": "agent-browser可对任意公开网页执行元素抓取，获取全部可交互元素信息",
+            "teaching_method": "实操",
+            "clarity": "high",
+            "note": "不同页面的元素会生成对应ref编号，操作时通过@<ref编号>指定目标元素"
+          },
+          {
+            "scene_id": "2-5",
+            "start": "04:56",
+            "end": "05:35",
+            "visual": "终端执行fill命令，向GitHub登录页的用户名、密码输入框填入测试内容",
+            "narration": "演示使用fill命令，通过ref标识定位输入框，填入对应的账号和密码信息",
+            "core_concept": "fill命令可向指定输入元素填充内容，完成表单填写操作",
+            "teaching_method": "实操",
+            "clarity": "high",
+            "note": "fill命令格式：agent-browser fill @<ref编号> \"<填充内容>\""
+          },
+          {
+            "scene_id": "2-6",
+            "start": "05:36",
+            "end": "06:15",
+            "visual": "执行click命令点击登录按钮，页面跳转至GitHub二步验证界面",
+            "narration": "演示使用click命令点击登录按钮，提交登录表单，页面跳转至二步验证页",
+            "core_concept": "click命令可点击指定ref的元素，触发对应的交互事件",
+            "teaching_method": "实操",
+            "clarity": "high",
+            "note": "click命令格式：agent-browser click @<ref编号>，执行后触发元素点击事件"
+          }
+        ]
+      },
+      {
+        "chapter": "Agent Browser高阶功能与OpenClaw任务演示",
+        "start": "06:16",
+        "end": "11:07",
+        "scenes": [
+          {
+            "scene_id": "3-1",
+            "start": "06:16",
+            "end": "06:55",
+            "visual": "对二步验证页执行snapshot命令，输出页面元素信息，展示二步验证提示和输入框元素",
+            "narration": "演示抓取二步验证页的元素，说明可在同一会话中对跳转后的页面继续执行操作",
+            "core_concept": "agent-browser会保持同一浏览器会话，页面跳转后仍可连续执行操作",
+            "teaching_method": "实操",
+            "clarity": "high",
+            "note": "同一会话内的操作会共享浏览器状态，支持多步连续交互"
+          },
+          {
+            "scene_id": "3-2",
+            "start": "06:56",
+            "end": "07:35",
+            "visual": "执行snapshot命令时添加grep参数，筛选出页面中包含star的元素，输出对应元素信息",
+            "narration": "演示使用grep参数过滤快照结果，快速定位包含指定关键词的元素",
+            "core_concept": "agent-browser支持通过grep参数筛选快照结果，快速定位目标元素",
+            "teaching_method": "实操",
+            "clarity": "high",
+            "note": "筛选命令格式：agent-browser snapshot | grep <关键词>，可精准匹配含指定内容的元素"
+          },
+          {
+            "scene_id": "3-3",
+            "start": "07:36",
+            "end": "08:15",
+            "visual": "筛选出OpenClaw仓库的Star按钮元素，执行click命令点击，页面Star数增加",
+            "narration": "演示筛选出仓库Star按钮，执行点击操作，成功为OpenClaw仓库添加星标",
+            "core_concept": "结合筛选和点击命令，可实现无需手动查找元素的自动化网页操作",
+            "teaching_method": "实操",
+            "clarity": "high",
+            "note": "通过grep筛选+click命令组合，可完成复杂的自动化网页交互"
+          },
+          {
+            "scene_id": "3-4",
+            "start": "08:16",
+            "end": "08:55",
+            "visual": "Clawless会话界面，展示会话列表和历史记录，输入任务指令让AI查找OpenClaw仓库最新Issue",
+            "narration": "介绍OpenClaw的会话操作界面，演示输入自然语言任务指令，让AI代理自动调用agent-browser完成任务",
+            "core_concept": "OpenClaw可接收自然语言指令，自动调用agent-browser完成网页操作任务",
+            "teaching_method": "演示",
+            "clarity": "high",
+            "note": "OpenClaw支持自然语言下达任务，自动规划执行对应的浏览器操作步骤"
+          },
+          {
+            "scene_id": "3-5",
+            "start": "08:56",
+            "end": "09:35",
+            "visual": "OpenClaw执行任务，输出操作过程和结果，展示找到的最新Issue内容和链接",
+            "narration": "展示AI代理自动执行任务的过程，成功找到OpenClaw仓库的最新Issue并输出核心内容",
+            "core_concept": "OpenClaw可自动完成网页信息查找、提取任务，返回结构化结果",
+            "teaching_method": "演示",
+            "clarity": "high",
+            "note": "OpenClaw执行任务时会自动调用agent-browser命令，无需手动输入CLI指令"
+          },
+          {
+            "scene_id": "3-6",
+            "start": "09:36",
+            "end": "10:15",
+            "visual": "展示任务执行遇到的问题，OpenClaw自动排查错误，输出问题原因和解决方案",
+            "narration": "演示任务执行出错时，OpenClaw会自动排查错误原因，给出对应的解决方法",
+            "core_concept": "OpenClaw具备任务执行异常的排查和修复能力，可自动处理执行中的问题",
+            "teaching_method": "演示",
+            "clarity": "high",
+            "note": "任务执行失败时，OpenClaw会分析错误原因，调整执行步骤或给出解决方案"
+          },
+          {
+            "scene_id": "3-7",
+            "start": "10:16",
+            "end": "10:45",
+            "visual": "展示OpenClaw执行任务调用的agent-browser命令列表，讲解命令和AI的对应关系",
+            "narration": "展示OpenClaw调用的所有agent-browser命令，说明AI代理和CLI工具的调用逻辑",
+            "core_concept": "OpenClaw的网页操作能力底层基于agent-browser的CLI命令实现",
+            "teaching_method": "演示+理论",
+            "clarity": "high",
+            "note": "AI代理会将自然语言任务转化为对应的agent-browser命令执行"
+          },
+          {
+            "scene_id": "3-8",
+            "start": "10:46",
+            "end": "11:07",
+            "visual": "展示最终执行结果总结，视频收尾",
+            "narration": "总结OpenClaw和agent-browser的组合使用价值，结束演示",
+            "core_concept": "OpenClaw+agent-browser可实现自然语言驱动的无代码浏览器自动化",
+            "teaching_method": "总结",
+            "clarity": "high",
+            "note": "二者结合大幅降低浏览器自动化门槛，无需编写代码即可完成网页操作任务"
+          }
+        ]
+      }
+    ]
+  },
+  "_meta": {
+    "title": "BV1j2PnzjEYY",
+    "type": "learning",
+    "analyzed_at": "2026-03-11T22:42:17.686660",
+    "video_duration": 667.15551,
+    "video_size_mb": 15.0,
+    "source_url": "https://www.bilibili.com/video/BV1j2PnzjEYY"
+  }
+}
