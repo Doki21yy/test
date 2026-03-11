@@ -510,12 +510,12 @@ function filterAndSort() {
   if (currentSort === 'score') {
     filtered.sort((a, b) => getScore(b) - getScore(a));
   } else {
-    // latest: date desc, then generated_at desc, then slug desc
+    // latest: date desc, then score desc, then slug desc
     filtered.sort((a, b) => {
       const d = (b.date || '').localeCompare(a.date || '');
       if (d !== 0) return d;
-      const g = (b.generated_at || '').localeCompare(a.generated_at || '');
-      if (g !== 0) return g;
+      const s = getScore(b) - getScore(a);
+      if (s !== 0) return s;
       return (b.slug || '').localeCompare(a.slug || '');
     });
   }
