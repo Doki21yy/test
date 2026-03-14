@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>开源大旗黑森林 Klein 9B KV 提速2.5倍 - Learning Archive</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg-deep: #06060B;
+  --bg-surface: #0D0D14;
+  --bg-card: #12121C;
+  --bg-card-hover: #181826;
+  --border-subtle: rgba(99, 102, 241, 0.08);
+  --border-hover: rgba(99, 102, 241, 0.2);
+  --text-primary: #E8E8ED;
+  --text-secondary: #7A7A8E;
+  --text-muted: #4A4A5E;
+  --accent: #6366F1;
+  --accent-glow: rgba(99, 102, 241, 0.15);
+  --accent-soft: #818CF8;
+  --radius: 12px;
+  --font-heading: 'DM Sans', -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: var(--font-heading);
+  font-weight: 400;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: -200px; left: 50%;
+  transform: translateX(-50%);
+  width: 800px; height: 600px;
+  background: radial-gradient(ellipse, rgba(99, 102, 241, 0.05) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 24px;
+  position: relative;
+  z-index: 1;
+}
+
+a { color: var(--accent-soft); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Back Nav */
+.back-nav { padding: 24px 0; }
+.back-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--text-muted); text-decoration: none;
+  font-family: var(--font-mono); font-size: 0.78rem;
+  transition: color 0.2s;
+}
+.back-link:hover { color: var(--accent-soft); text-decoration: none; }
+.back-link svg { width: 16px; height: 16px; }
+
+/* Hero */
+.hero { padding-bottom: 40px; }
+
+.video-embed {
+  width: 100%; aspect-ratio: 16/9;
+  border-radius: var(--radius); overflow: hidden;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  margin-bottom: 28px;
+}
+.video-embed iframe { width: 100%; height: 100%; border: none; }
+.video-embed .video-link-fallback {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 12px;
+  color: var(--text-secondary); text-decoration: none;
+}
+.video-embed .video-link-fallback:hover { color: var(--accent-soft); }
+.video-embed .video-link-fallback svg { width: 48px; height: 48px; opacity: 0.5; }
+.source-link-row { margin-top: -14px; margin-bottom: 18px; text-align: center; font-size: 12px; color: var(--text-muted); }
+.source-link-row a { color: var(--accent); text-decoration: none; word-break: break-all; }
+.source-link-row a:hover { text-decoration: underline; }
+
+.hero-title {
+  font-family: var(--font-heading);
+  font-weight: 900;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  letter-spacing: -0.02em; line-height: 1.25;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+
+.hero-meta {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+}
+
+.meta-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 12px; border-radius: 6px;
+  font-family: var(--font-mono); font-size: 0.72rem;
+  font-weight: 500; letter-spacing: 0.03em;
+}
+.meta-badge.platform {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+}
+.meta-badge.platform .p-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+}
+.meta-badge.score {
+  background: var(--accent-glow);
+  border: 1px solid rgba(99, 102, 241, 0.15);
+  color: var(--accent-soft);
+}
+.meta-badge.duration, .meta-badge.date {
+  color: var(--text-muted);
+  font-family: var(--font-mono); font-size: 0.72rem;
+}
+
+/* Section Cards */
+.section-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  margin-bottom: 16px;
+}
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem; font-weight: 500;
+  color: var(--accent-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+}
+.section-heading {
+  font-family: var(--font-heading);
+  font-weight: 700; font-size: 1.15rem;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+.section-text {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+
+/* Tags */
+.tag-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.tag-pill {
+  padding: 3px 10px; border-radius: 4px;
+  font-family: var(--font-mono); font-size: 0.7rem; font-weight: 500;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+}
+.tag-pill.difficulty-beginner { border-color: rgba(34, 197, 94, 0.2); color: #4ADE80; }
+.tag-pill.difficulty-intermediate { border-color: rgba(250, 204, 21, 0.2); color: #FACC15; }
+.tag-pill.difficulty-advanced { border-color: rgba(239, 68, 68, 0.2); color: #F87171; }
+
+/* Knowledge Points */
+.knowledge-list { list-style: none; }
+.knowledge-item { padding: 14px 0; border-bottom: 1px solid var(--border-subtle); }
+.knowledge-item:last-child { border-bottom: none; }
+.knowledge-concept {
+  font-family: var(--font-heading); font-weight: 700;
+  font-size: 0.9rem; color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.knowledge-explain {
+  font-size: 0.84rem; color: var(--text-secondary); line-height: 1.65;
+}
+
+/* Chapters Accordion */
+.chapter-item { border-bottom: 1px solid var(--border-subtle); }
+.chapter-item:last-child { border-bottom: none; }
+.chapter-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 0; cursor: pointer; user-select: none;
+  transition: color 0.2s;
+}
+.chapter-header:hover { color: var(--accent-soft); }
+.chapter-header-left {
+  display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0;
+}
+.chapter-time {
+  font-family: var(--font-mono); font-size: 0.72rem;
+  color: var(--accent-soft); white-space: nowrap; flex-shrink: 0;
+}
+.chapter-title {
+  font-family: var(--font-heading); font-weight: 600;
+  font-size: 0.9rem; color: var(--text-primary);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.chapter-arrow {
+  color: var(--text-muted);
+  transition: transform 0.3s ease; flex-shrink: 0;
+}
+.chapter-item.open .chapter-arrow { transform: rotate(180deg); }
+.chapter-content { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+.chapter-item.open .chapter-content { max-height: 500px; }
+.chapter-inner { padding: 0 0 20px 0; }
+.chapter-summary {
+  font-size: 0.85rem; color: var(--text-secondary);
+  margin-bottom: 12px; line-height: 1.7;
+}
+.chapter-points { list-style: none; padding: 0; }
+.chapter-points li {
+  position: relative; padding-left: 16px;
+  margin-bottom: 6px; font-size: 0.82rem; color: var(--text-secondary);
+}
+.chapter-points li::before {
+  content: ''; position: absolute; left: 0; top: 9px;
+  width: 4px; height: 4px; border-radius: 50%; background: var(--accent);
+}
+
+/* Quotes */
+.quote-card {
+  position: relative; padding: 20px 24px;
+  margin-bottom: 12px;
+  border-left: 2px solid var(--accent);
+  background: rgba(99, 102, 241, 0.03);
+  border-radius: 0 8px 8px 0;
+}
+.quote-card:last-child { margin-bottom: 0; }
+.quote-text {
+  font-size: 0.9rem; color: var(--text-primary);
+  font-style: italic; line-height: 1.65; margin-bottom: 8px;
+}
+.quote-time {
+  font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent-soft);
+}
+
+/* Takeaways */
+.takeaway-list { list-style: none; }
+.takeaway-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 8px 0; font-size: 0.88rem; color: var(--text-secondary);
+}
+.takeaway-check {
+  width: 18px; height: 18px;
+  border: 1.5px solid var(--border-hover);
+  border-radius: 4px; flex-shrink: 0; margin-top: 2px;
+  display: flex; align-items: center; justify-content: center;
+}
+.takeaway-check svg {
+  width: 12px; height: 12px; color: var(--accent-soft);
+}
+
+/* Resources Table */
+.resource-table { width: 100%; border-collapse: collapse; }
+.resource-table th {
+  text-align: left; font-family: var(--font-mono);
+  font-size: 0.7rem; font-weight: 500; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.06em;
+  padding: 10px 0; border-bottom: 1px solid var(--border-subtle);
+}
+.resource-table td {
+  padding: 10px 0; font-size: 0.84rem;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.resource-table tr:last-child td { border-bottom: none; }
+.resource-table a { color: var(--accent-soft); text-decoration: none; }
+.resource-table a:hover { text-decoration: underline; }
+
+/* Detailed Content Sections */
+.section-block {
+  margin-bottom: 20px;
+  background: rgba(99, 102, 241, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+}
+.sec-title {
+  font-family: var(--font-heading);
+  font-size: 1rem; font-weight: 700;
+  margin-bottom: 14px; display: flex; align-items: center; gap: 10px;
+  color: var(--text-primary);
+}
+.sec-num {
+  font-family: var(--font-mono); font-size: 0.68rem;
+  color: #fff; background: var(--accent);
+  width: 24px; height: 24px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.sec-body { color: var(--text-secondary); line-height: 1.8; font-size: 0.88rem; }
+.sec-body p { margin-bottom: 10px; }
+.sec-body strong { color: var(--text-primary); font-weight: 600; }
+.subsection { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border-subtle); }
+.subsec-title { font-size: 0.92rem; font-weight: 600; margin-bottom: 8px; color: var(--text-primary); }
+.subsec-body { color: var(--text-secondary); font-size: 0.86rem; }
+.subsec-body p { margin-bottom: 8px; }
+.content-list { margin: 10px 0; padding-left: 22px; }
+.content-list li { margin-bottom: 5px; line-height: 1.65; }
+.content-h4 { font-size: 0.95rem; font-weight: 600; margin: 14px 0 8px; color: var(--text-primary); }
+.content-h5 { font-size: 0.88rem; font-weight: 600; margin: 10px 0 6px; color: var(--text-secondary); }
+.code-block {
+  background: #0D0D14; color: #CDD6F4;
+  padding: 14px 18px; border-radius: 8px;
+  overflow-x: auto; font-family: var(--font-mono);
+  font-size: 0.8rem; line-height: 1.6; margin: 10px 0;
+  border: 1px solid var(--border-subtle);
+}
+.inline-code {
+  background: var(--accent-glow); color: var(--accent-soft);
+  padding: 1px 6px; border-radius: 4px;
+  font-family: var(--font-mono); font-size: 0.85em;
+}
+
+/* FAQ */
+.faq-item {
+  margin-bottom: 14px; padding: 16px 20px;
+  background: rgba(99, 102, 241, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+}
+.faq-q { font-weight: 600; color: var(--accent-soft); margin-bottom: 8px; font-size: 0.9rem; }
+.faq-a { color: var(--text-secondary); font-size: 0.86rem; }
+.faq-a p { margin-bottom: 6px; }
+
+/* Summary Box */
+.summary-box {
+  background: rgba(99, 102, 241, 0.04);
+  border: 1px solid rgba(99, 102, 241, 0.1);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+}
+.summary-box p { color: var(--text-secondary); line-height: 1.85; font-size: 0.92rem; }
+
+/* Footer */
+.report-footer {
+  padding: 48px 0 32px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.section-card { animation: fadeInUp 0.5s ease both; }
+.section-card:nth-child(1) { animation-delay: 0.1s; }
+.section-card:nth-child(2) { animation-delay: 0.15s; }
+.section-card:nth-child(3) { animation-delay: 0.2s; }
+.section-card:nth-child(4) { animation-delay: 0.25s; }
+.section-card:nth-child(5) { animation-delay: 0.3s; }
+.section-card:nth-child(6) { animation-delay: 0.35s; }
+
+/* Responsive */
+@media (max-width: 640px) {
+  .container { padding: 0 16px; }
+  .section-card { padding: 20px 18px; }
+  .hero-title { font-size: 1.4rem; }
+  .section-block { padding: 18px 16px; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <nav class="back-nav">
+    <a href="../../../" class="back-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Archive
+    </a>
+  </nav>
+
+  <section class="hero">
+    <div class="video-embed">
+      <iframe loading="lazy" src="//player.bilibili.com/player.html?bvid=BV1TScUzMEdX&high_quality=0&danmaku=0" allowfullscreen="true" frameborder="0"></iframe>
+    </div>
+    
+
+    <h1 class="hero-title">开源大旗黑森林 Klein 9B KV 提速2.5倍</h1>
+
+    <div class="hero-meta">
+      <span class="meta-badge platform"><span class="p-dot" style="background:#00A1D6"></span>Bilibili</span>
+      <span class="meta-badge score">8.5/10</span>
+      <span class="meta-badge duration">2:49</span>
+      <span class="meta-badge date">2026-03-14</span>
+    </div>
+  </section>
+
+  <!-- Overview -->
+  <div class="section-card">
+    <div class="section-label">Overview</div>
+    <div class="tag-row">
+      <span class="tag-pill difficulty-intermediate">Intermediate</span>
+      <span class="tag-pill">AI绘画</span>
+      <span class="tag-pill">山竹老师AIGC</span>
+    </div>
+    <div class="section-text">本视频讲解黑森林实验室最新开源的FLUX.2 Klein 9B KV图像生成模型，该模型针对KV缓存技术做了深度优化，相比原版FLUX.2 Klein 9B推理速度提升2.5倍，同时原生支持多引用图编辑、图像融合、局部修改等功能，解决了以往FLUX系列模型推理慢、多图编辑算力消耗高的痛点。视频先系统讲解了模型的核心特性、KV缓存优化的工作原理，随后展示了模型在Hugging Face的官方下载渠道和不同量化版本的适配场景，最后通过ComfyUI实操演示，完整展示了使用该模型实现人物换装、局部图像修改、多图特征融合的全流程，生成图像保持了FLUX系列的高画质水准，同时大幅降低了推理等待时间，适配普通消费级显卡使用。</div>
+  </div>
+
+  <!-- Key Knowledge Points -->
+  <div class="section-card">
+    <div class="section-label">Key Knowledge</div>
+    <ul class="knowledge-list">
+      <li class="knowledge-item">
+            <div class="knowledge-concept">Klein 9B KV模型核心特性与工作原理</div>
+            <div class="knowledge-explain">Klein 9B KV是黑森林实验室基于FLUX.2 Klein 9B迭代的优化版本，核心升级点为**KV缓存（Key-Value Cache）**优化：参考图像的KV值仅需计算一次并缓存到内存中，后续多图编辑、局部修改等任务可以直接复用缓存，避免重复计算，最终实现推理速度提升2.5倍。</div>
+        </li>
+<li class="knowledge-item">
+            <div class="knowledge-concept">模型获取与部署环境准备</div>
+            <div class="knowledge-explain">模型可从Hugging Face平台下载，官方提供FP16原版和多个量化版本：</div>
+        </li>
+<li class="knowledge-item">
+            <div class="knowledge-concept">ComfyUI实操工作流配置</div>
+            <div class="knowledge-explain">官方已经预设了适配Klein 9B KV的工作流模板，可直接在ComfyUI模板库中搜索「Flux.2 Klein KV 图像编辑」一键导入，模板已经预先配置好KV缓存节点、多图输入节点、局部蒙版节点，无需手动搭建。</div>
+        </li>
+<li class="knowledge-item">
+            <div class="knowledge-concept">典型应用场景效果说明</div>
+            <div class="knowledge-explain">Klein 9B KV的缓存特性特别适合以下三类高频场景：</div>
+        </li>
+    </ul>
+  </div>
+
+  <!-- Detailed Content -->
+  <div class="section-card">
+    <div class="section-label">Detailed Content</div>
+    <div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">01</span>Klein 9B KV模型核心特性与工作原理</h3>
+            <div class="sec-body"><p>Klein 9B KV是黑森林实验室基于FLUX.2 Klein 9B迭代的优化版本，核心升级点为<strong>KV缓存（Key-Value Cache）</strong>优化：参考图像的KV值仅需计算一次并缓存到内存中，后续多图编辑、局部修改等任务可以直接复用缓存，避免重复计算，最终实现推理速度提升2.5倍。</p>
+<p>模型核心特性如下：</p>
+<ol class="content-list">
+<li>完全兼容原生FLUX.2的所有功能，支持文生图、图生图、单图/多图引用编辑、局部蒙版修改等场景</li>
+<li>采用非商业开源协议，可免费用于非商业用途，4-bit量化版本仅需8G显存即可运行</li>
+<li>生成质量无明显损失，20-24步即可达到原生模型30步的生成效果，支持最高888*1280分辨率推理</li>
+</ol>
+<p>KV缓存的运行逻辑分为两步：第一步首次处理参考图时，将计算得到的注意力KV值存储到缓存空间；第二步后续修改提示词、调整蒙版、更换局部元素时，直接读取已缓存的KV值，仅计算修改部分的参数，大幅降低算力消耗。</p></div>
+            
+        </div><div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">02</span>模型获取与部署环境准备</h3>
+            <div class="sec-body"><h4 class="content-h4">模型下载渠道</h4>
+<p>模型可从Hugging Face平台下载，官方提供FP16原版和多个量化版本：</p>
+<ul class="content-list">
+<li>FP16原版：显存要求16G以上，适合专业显卡用户</li>
+<li>8-bit量化版：显存要求12G以上，平衡速度和质量</li>
+<li>4-bit量化版：显存要求8G以上，适合普通消费级显卡用户</li>
+</ul>
+<p>除官方版本外，也可下载第三方GGUF量化版本，进一步降低显存门槛。</p>
+<h4 class="content-h4">部署环境要求</h4>
+<ol class="content-list">
+<li>ComfyUI需升级到最新版本，确保原生支持FLUX.2的KV缓存特性</li>
+<li>提前安装FLUX系列模型对应的依赖节点，避免运行工作流时出现节点缺失报错</li>
+<li>预留至少20G磁盘空间存储模型文件和缓存数据</li>
+</ol></div>
+            
+        </div><div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">03</span>ComfyUI实操工作流配置</h3>
+            <div class="sec-body"><p>官方已经预设了适配Klein 9B KV的工作流模板，可直接在ComfyUI模板库中搜索「Flux.2 Klein KV 图像编辑」一键导入，模板已经预先配置好KV缓存节点、多图输入节点、局部蒙版节点，无需手动搭建。</p>
+<p>具体操作步骤：</p>
+<ol class="content-list">
+<li>导入预设模板后，在模型加载节点选择已下载的Klein 9B KV模型文件，量化版本选择对应后缀的文件即可</li>
+<li>上传参考图：如果是换装类任务，分别上传人物原图、服装参考图到对应输入节点</li>
+<li>配置提示词：在提示词节点输入生成需求，示例：<code class="inline-code">女性模特穿着参考图中的紫色不规则连衣裙，站在非洲草原上，自然日光，8K高清商业照片</code></li>
+<li>局部修改配置：使用蒙版节点涂抹需要修改的区域，蒙版边缘可适当羽化提升融合效果</li>
+<li>参数调整：步数设置为20-24步，CFG值设置为3.5-4.5，分辨率保持和参考图一致即可</li>
+<li>点击生成：首次生成会计算KV缓存耗时较长，后续调整提示词、修改蒙版时会自动复用缓存，生成速度提升2-3倍。</li>
+</ol></div>
+            
+        </div><div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">04</span>典型应用场景效果说明</h3>
+            <div class="sec-body"><p>Klein 9B KV的缓存特性特别适合以下三类高频场景：</p>
+<ol class="content-list">
+<li><strong>多参考图融合</strong>：可同时融合人物、服装、场景等多张参考图的特征，生成定制化图像，视频演示的换装任务首次生成耗时约20秒，后续调整服装样式、场景仅需3-5秒即可出图</li>
+<li><strong>局部修改迭代</strong>：修改人物配饰、服装花纹、背景元素等局部内容时，不需要重新计算全图参数，效率比原版FLUX提升3倍以上</li>
+<li><strong>批量风格迁移</strong>：批量为多张图片应用同一种风格时，仅需缓存一次风格参考图的KV值，后续批量处理速度提升2倍以上</li>
+</ol>
+<p>模型生成的图像细节还原度高，服装纹理、光影融合自然，没有明显的拼接痕迹，完全满足商业内容生产的质量要求。</p></div>
+            
+        </div>
+  </div>
+
+  <!-- Chapters -->
+  <div class="section-card">
+    <div class="section-label">Chapters</div>
+    <div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">00:00</span>
+                    <span class="chapter-title">Klein 9B KV模型基础介绍</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">讲者介绍黑森林实验室新发布的Klein 9B KV模型，说明它是FLUX.2的优化版本，核心优化点为KV缓存，可让推理速度提升2.5倍，同时支持多图引导的编辑任务，适配多种生成场景. 讲者展示该模型的实际生成效果样例，说明模型在不同生成任务中的表现，同时介绍可以在Hugging Face获取该模型的多个量化版本，适配不同的硬件需求</div>
+                    <ul class="chapter-points"><li>Klein 9B KV通过KV缓存优化实现2.5倍推理提速，支持多参考图编辑任务</li><li>Klein 9B KV有多种量化版本可供下载，生成效果丰富适配多场景</li></ul>
+                </div>
+            </div>
+        </div>
+<div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">01:12</span>
+                    <span class="chapter-title">Klein 9B KV模型ComfyUI实操演示</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">讲者演示在ComfyUI中使用该模型的操作流程，首先加载对应的工作流模板，然后导入需要的参考素材，完成节点的连接配置. 讲者运行配置好的工作流，演示该模型运行速度对比普通模型更快，输出将参考服装融合到人物身上的初步生成效果. 讲者展示最终的生成效果，说明模型对参考服装的细节还原度很高，编辑效果自然真实</div>
+                    <ul class="chapter-points"><li>使用Klein 9B KV需要加载对应专属工作流，导入参考素材完成配置</li><li>Klein 9B KV运行速度快，可快速实现参考图引导的服装融合任务</li><li>Klein 9B KV生成的编辑效果对参考素材细节还原度高，效果自然</li></ul>
+                </div>
+            </div>
+        </div>
+  </div>
+
+  <!-- Quotes -->
+  <div class="section-card">
+    <div class="section-label">Notable Quotes</div>
+    <div class="quote-card">
+            <div class="quote-text">Klein 9B KV是FLUX.2的优化版本，KV缓存优化使其提速2.5倍，支持多参考图编辑</div>
+            <div class="quote-time">00:00</div>
+        </div>
+<div class="quote-card">
+            <div class="quote-text">该模型有多款量化版本，可在Hugging Face下载适配自身硬件环境</div>
+            <div class="quote-time">00:36</div>
+        </div>
+<div class="quote-card">
+            <div class="quote-text">ComfyUI中使用该模型需加载专属工作流，提前准备好所需参考素材</div>
+            <div class="quote-time">01:12</div>
+        </div>
+<div class="quote-card">
+            <div class="quote-text">该模型运行速度优势明显，可快速输出参考图引导的生成结果</div>
+            <div class="quote-time">01:50</div>
+        </div>
+<div class="quote-card">
+            <div class="quote-text">该模型对参考素材的细节还原度高，图像编辑效果自然真实</div>
+            <div class="quote-time">02:27</div>
+        </div>
+  </div>
+
+  <!-- Takeaways -->
+  <div class="section-card">
+    <div class="section-label">Takeaways</div>
+    <ul class="takeaway-list">
+      <li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            首次生成时会计算KV缓存耗时较长，后续修改提示词、局部蒙版时会复用缓存，不要中途清空缓存或重载模型
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            8G显存用户推荐使用4-bit量化版本，生成分辨率不要超过1024*1024，避免显存溢出
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            局部修改时蒙版区域不要超过全图的30%，否则模型会重新计算全图KV，失去缓存加速效果
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            生成步数设置为20-24步即可平衡速度和质量，不需要设置更高步数额外增加耗时
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            生成时提示显存不足怎么办？
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            KV缓存没有生效，每次生成速度都很慢？
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            生成的图像融合效果差，有明显拼接痕迹？
+        </li>
+    </ul>
+  </div>
+
+  <!-- Resources -->
+  <div class="section-card">
+    <div class="section-label">Tools & Resources</div>
+    <table class="resource-table">
+      <thead><tr><th>Name</th><th>Description</th><th>Link</th></tr></thead>
+      <tbody>
+        <tr><td>FLUX.2 Klein 9B KV官方模型</td><td>黑森林实验室官方开源的原版模型，包含FP16等多个版本</td><td><a href="https://huggingface.co/black-forest-labs/FLUX.2-klein-9b-kv" target="_blank" rel="noopener">Link</a></td></tr>
+<tr><td>FLUX.2 Klein 9B KV量化版本</td><td>第三方GGUF量化版本，支持8G显存设备运行</td><td><a href="https://huggingface.co/QuantFactory/FLUX.2-klein-9b-kv-GGUF" target="_blank" rel="noopener">Link</a></td></tr>
+<tr><td>Klein 9B KV图像编辑工作流模板</td><td>可直接在ComfyUI模板库搜索获取，开箱即用</td><td><span style="color:var(--text-muted)">--</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section-card">
+            <div class="section-label">FAQ</div>
+            <div class="faq-item">
+                <div class="faq-q">Q: 生成时提示显存不足怎么办？</div>
+                <div class="faq-a"><p>首先更换4-bit或8-bit量化版本的模型，其次降低生成分辨率，关闭ComfyUI中不必要的节点预览功能，也可以开启ComfyUI的「显存溢出到内存」选项缓解压力。</p></div>
+            </div><div class="faq-item">
+                <div class="faq-q">Q: KV缓存没有生效，每次生成速度都很慢？</div>
+                <div class="faq-a"><p>检查工作流中是否正确连接了KV缓存节点，确保参考图输入没有被修改，首次生成后不要切换模型或重新加载模型，否则缓存会被清空。</p></div>
+            </div><div class="faq-item">
+                <div class="faq-q">Q: 生成的图像融合效果差，有明显拼接痕迹？</div>
+                <div class="faq-a"><p>调整CFG值到4左右，增加生成步数到24步，蒙版边缘适当羽化，也可以在提示词中增加「自然融合、光影一致、无缝拼接」的描述提升效果。</p></div>
+            </div>
+        </div>
+
+  <div class="section-card">
+            <div class="section-label">Summary</div>
+            <div class="summary-box"><p>本视频介绍的FLUX.2 Klein 9B KV是黑森林实验室推出的高性价比开源图像生成模型，核心亮点是通过KV缓存技术将推理速度提升2.5倍，同时保持了FLUX系列的高生成质量，原生支持多图编辑、局部修改、图像融合等高频功能，大幅降低了消费级显卡用户使用FLUX模型的门槛。视频配套的ComfyUI预设工作流可直接上手使用，不需要复杂配置，特别适合电商换装、定制化图像生成、批量内容生产等场景，能显著提升AI绘画的工作效率，是目前开源FLUX衍生模型中实用性极强的版本。</p></div>
+        </div>
+
+  <footer class="report-footer">
+    powered by video-learn
+  </footer>
+</div>
+
+<script>
+// Chapter accordion
+document.querySelectorAll('.chapter-header').forEach(header => {
+  header.addEventListener('click', () => {
+    header.parentElement.classList.toggle('open');
+  });
+});
+</script>
+</body>
+</html>
