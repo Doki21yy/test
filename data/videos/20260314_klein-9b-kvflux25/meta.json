@@ -1,0 +1,20 @@
+{
+  "title": "黑森林开源Klein 9B KV模型使用教程：FLUX推理提速2.5倍",
+  "type": "learning",
+  "topic": "讲解黑森林开源Klein 9B KV加速模型的特性、部署方法与实际应用，实现FLUX.2文生图模型推理速度提升2.5倍",
+  "category": "AI工具",
+  "difficulty": "intermediate",
+  "learning_rating": 8.5,
+  "summary": "本视频由山竹老师AIGC讲解黑森林团队最新开源的Klein 9B KV模型，该模型针对FLUX.2系列文生图模型进行推理优化，可在不损失生成质量的前提下将推理速度提升2.5倍，大幅降低FLUX模型的使用门槛和硬件成本。视频详细介绍了Klein 9B KV的核心特性、官方获取渠道，以及在ComfyUI中的部署步骤和工作流配置方法，还通过虚拟试衣的实际场景案例演示了模型的生成效果，对比了加速前后的生成速度差异，帮助学习者快速掌握该加速模型的使用方法，有效提升AI绘画的工作效率。",
+  "speaker": "山竹老师AIGC",
+  "tags": [
+    "Klein 9B KV",
+    "FLUX.2",
+    "AI绘画",
+    "模型加速",
+    "ComfyUI"
+  ],
+  "source_url": "",
+  "duration": 169.766,
+  "generated_at": "2026-03-14T17:17:23.320488"
+}
