@@ -1,0 +1,20 @@
+{
+  "title": "LTX 2.3多图首尾帧工作流更新使用教程",
+  "type": "learning",
+  "topic": "讲解LTX 2.3版本新增的多图首尾帧、IC LoRA Union控制模型特性，以及对应ComfyUI工作流的配置与使用方法",
+  "category": "AI视频生成",
+  "difficulty": "intermediate",
+  "learning_rating": 8.5,
+  "summary": "本视频介绍了LTX 2.3版本的两大核心更新：多图首尾帧功能与IC LoRA Union联合控制模型，解决了之前版本AI视频生成中角色一致性差、运动过渡不流畅的痛点。其中多图首尾帧最高支持20张参考图输入，可自定义每张参考图的出现帧位置和权重，大幅提升了视频内容的可控性；IC LoRA Union支持深度、Canny、DW Pose三种控制信号类型，可提取参考视频的骨骼、边缘等运动信息引导视频生成。教程基于全球最大的在线ComfyUI平台RunningHub提供可直接运行的完整工作流，详细讲解了快速启动配置、参数调节、参考图设置、视频控制等全流程操作步骤，同时对比了2.3版本与LTX2版本的数字人生成效果，给出了明确的版本选择建议，适合有一定ComfyUI基础的用户快速上手LTX 2.3新功能。",
+  "speaker": "AI-KSK",
+  "tags": [
+    "LTX2.3",
+    "ComfyUI",
+    "多图首尾帧",
+    "IC LoRA",
+    "AI视频生成"
+  ],
+  "source_url": "https://www.bilibili.com/video/BV186wEzRENT",
+  "duration": 353.222381,
+  "generated_at": "2026-03-15T16:02:49.803013"
+}
