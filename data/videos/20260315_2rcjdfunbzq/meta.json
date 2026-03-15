@@ -1,0 +1,20 @@
+{
+  "title": "2rcJdFuNbZQ",
+  "type": "learning",
+  "topic": "通过开源项目OpenClaw讲解AI Agent的核心概念、架构逻辑、落地能力与底层技术基础",
+  "category": "AI技术",
+  "difficulty": "intermediate",
+  "learning_rating": 9.2,
+  "summary": "本课程由台湾大学李宏毅老师讲授，以近期爆火的开源AI Agent项目OpenClaw（俗称\"养龙虾\"）为核心案例，系统拆解AI Agent的工作逻辑与应用价值。课程首先厘清了大众的认知误区：AI Agent本身不是大语言模型（Large Language Model, LLM），而是连接用户、LLM和第三方工具的中间层框架，其智能程度完全取决于后端对接的LLM性能。课程通过对比演示，直观展现了AI Agent与普通LLM的核心差异：普通LLM仅能输出文本建议，无法落地执行，而OpenClaw可自主拆解任务、调用绘图、语音合成、浏览器等工具，独立完成创建YouTube频道、制作教学视频、报名竞赛等复杂全流程任务。课程还梳理了AI Agent的发展脉络，从2023年实用性不足的AutoGPT，到2025年已可落地的Claude Code、OpenClaw等框架，讲解了系统提示词（System Prompt）、上下文窗口（Context Window）等核心技术概念，帮助学习者建立对AI Agent的完整认知，理解其落地逻辑与应用边界。",
+  "speaker": "李宏毅（Hung-yi Lee，台湾大学机器学习课程讲师）",
+  "tags": [
+    "AI Agent",
+    "OpenClaw",
+    "大语言模型",
+    "系统提示词",
+    "AI应用落地"
+  ],
+  "source_url": "https://www.youtube.com/watch?v=2rcJdFuNbZQ",
+  "duration": 4997,
+  "generated_at": "2026-03-15T16:14:22.405173"
+}
