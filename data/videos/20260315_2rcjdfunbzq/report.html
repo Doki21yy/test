@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>以OpenClaw为例解析AI Agent工作原理 - Learning Archive</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg-deep: #06060B;
+  --bg-surface: #0D0D14;
+  --bg-card: #12121C;
+  --bg-card-hover: #181826;
+  --border-subtle: rgba(99, 102, 241, 0.08);
+  --border-hover: rgba(99, 102, 241, 0.2);
+  --text-primary: #E8E8ED;
+  --text-secondary: #7A7A8E;
+  --text-muted: #4A4A5E;
+  --accent: #6366F1;
+  --accent-glow: rgba(99, 102, 241, 0.15);
+  --accent-soft: #818CF8;
+  --radius: 12px;
+  --font-heading: 'DM Sans', -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: var(--font-heading);
+  font-weight: 400;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: -200px; left: 50%;
+  transform: translateX(-50%);
+  width: 800px; height: 600px;
+  background: radial-gradient(ellipse, rgba(99, 102, 241, 0.05) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 24px;
+  position: relative;
+  z-index: 1;
+}
+
+a { color: var(--accent-soft); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Back Nav */
+.back-nav { padding: 24px 0; }
+.back-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--text-muted); text-decoration: none;
+  font-family: var(--font-mono); font-size: 0.78rem;
+  transition: color 0.2s;
+}
+.back-link:hover { color: var(--accent-soft); text-decoration: none; }
+.back-link svg { width: 16px; height: 16px; }
+
+/* Hero */
+.hero { padding-bottom: 40px; }
+
+.video-embed {
+  width: 100%; aspect-ratio: 16/9;
+  border-radius: var(--radius); overflow: hidden;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  margin-bottom: 28px;
+}
+.video-embed iframe { width: 100%; height: 100%; border: none; }
+.video-embed .video-link-fallback {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 12px;
+  color: var(--text-secondary); text-decoration: none;
+}
+.video-embed .video-link-fallback:hover { color: var(--accent-soft); }
+.video-embed .video-link-fallback svg { width: 48px; height: 48px; opacity: 0.5; }
+.source-link-row { margin-top: -14px; margin-bottom: 18px; text-align: center; font-size: 12px; color: var(--text-muted); }
+.source-link-row a { color: var(--accent); text-decoration: none; word-break: break-all; }
+.source-link-row a:hover { text-decoration: underline; }
+
+.hero-title {
+  font-family: var(--font-heading);
+  font-weight: 900;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  letter-spacing: -0.02em; line-height: 1.25;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+
+.hero-meta {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+}
+
+.meta-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 12px; border-radius: 6px;
+  font-family: var(--font-mono); font-size: 0.72rem;
+  font-weight: 500; letter-spacing: 0.03em;
+}
+.meta-badge.platform {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+}
+.meta-badge.platform .p-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+}
+.meta-badge.score {
+  background: var(--accent-glow);
+  border: 1px solid rgba(99, 102, 241, 0.15);
+  color: var(--accent-soft);
+}
+.meta-badge.duration, .meta-badge.date {
+  color: var(--text-muted);
+  font-family: var(--font-mono); font-size: 0.72rem;
+}
+
+/* Section Cards */
+.section-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  margin-bottom: 16px;
+}
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem; font-weight: 500;
+  color: var(--accent-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+}
+.section-heading {
+  font-family: var(--font-heading);
+  font-weight: 700; font-size: 1.15rem;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+.section-text {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+
+/* Tags */
+.tag-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.tag-pill {
+  padding: 3px 10px; border-radius: 4px;
+  font-family: var(--font-mono); font-size: 0.7rem; font-weight: 500;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+}
+.tag-pill.difficulty-beginner { border-color: rgba(34, 197, 94, 0.2); color: #4ADE80; }
+.tag-pill.difficulty-intermediate { border-color: rgba(250, 204, 21, 0.2); color: #FACC15; }
+.tag-pill.difficulty-advanced { border-color: rgba(239, 68, 68, 0.2); color: #F87171; }
+
+/* Knowledge Points */
+.knowledge-list { list-style: none; }
+.knowledge-item { padding: 14px 0; border-bottom: 1px solid var(--border-subtle); }
+.knowledge-item:last-child { border-bottom: none; }
+.knowledge-concept {
+  font-family: var(--font-heading); font-weight: 700;
+  font-size: 0.9rem; color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.knowledge-explain {
+  font-size: 0.84rem; color: var(--text-secondary); line-height: 1.65;
+}
+
+/* Chapters Accordion */
+.chapter-item { border-bottom: 1px solid var(--border-subtle); }
+.chapter-item:last-child { border-bottom: none; }
+.chapter-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 0; cursor: pointer; user-select: none;
+  transition: color 0.2s;
+}
+.chapter-header:hover { color: var(--accent-soft); }
+.chapter-header-left {
+  display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0;
+}
+.chapter-time {
+  font-family: var(--font-mono); font-size: 0.72rem;
+  color: var(--accent-soft); white-space: nowrap; flex-shrink: 0;
+}
+.chapter-title {
+  font-family: var(--font-heading); font-weight: 600;
+  font-size: 0.9rem; color: var(--text-primary);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.chapter-arrow {
+  color: var(--text-muted);
+  transition: transform 0.3s ease; flex-shrink: 0;
+}
+.chapter-item.open .chapter-arrow { transform: rotate(180deg); }
+.chapter-content { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+.chapter-item.open .chapter-content { max-height: 500px; }
+.chapter-inner { padding: 0 0 20px 0; }
+.chapter-summary {
+  font-size: 0.85rem; color: var(--text-secondary);
+  margin-bottom: 12px; line-height: 1.7;
+}
+.chapter-points { list-style: none; padding: 0; }
+.chapter-points li {
+  position: relative; padding-left: 16px;
+  margin-bottom: 6px; font-size: 0.82rem; color: var(--text-secondary);
+}
+.chapter-points li::before {
+  content: ''; position: absolute; left: 0; top: 9px;
+  width: 4px; height: 4px; border-radius: 50%; background: var(--accent);
+}
+
+/* Quotes */
+.quote-card {
+  position: relative; padding: 20px 24px;
+  margin-bottom: 12px;
+  border-left: 2px solid var(--accent);
+  background: rgba(99, 102, 241, 0.03);
+  border-radius: 0 8px 8px 0;
+}
+.quote-card:last-child { margin-bottom: 0; }
+.quote-text {
+  font-size: 0.9rem; color: var(--text-primary);
+  font-style: italic; line-height: 1.65; margin-bottom: 8px;
+}
+.quote-time {
+  font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent-soft);
+}
+
+/* Takeaways */
+.takeaway-list { list-style: none; }
+.takeaway-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 8px 0; font-size: 0.88rem; color: var(--text-secondary);
+}
+.takeaway-check {
+  width: 18px; height: 18px;
+  border: 1.5px solid var(--border-hover);
+  border-radius: 4px; flex-shrink: 0; margin-top: 2px;
+  display: flex; align-items: center; justify-content: center;
+}
+.takeaway-check svg {
+  width: 12px; height: 12px; color: var(--accent-soft);
+}
+
+/* Resources Table */
+.resource-table { width: 100%; border-collapse: collapse; }
+.resource-table th {
+  text-align: left; font-family: var(--font-mono);
+  font-size: 0.7rem; font-weight: 500; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.06em;
+  padding: 10px 0; border-bottom: 1px solid var(--border-subtle);
+}
+.resource-table td {
+  padding: 10px 0; font-size: 0.84rem;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.resource-table tr:last-child td { border-bottom: none; }
+.resource-table a { color: var(--accent-soft); text-decoration: none; }
+.resource-table a:hover { text-decoration: underline; }
+
+/* Detailed Content Sections */
+.section-block {
+  margin-bottom: 20px;
+  background: rgba(99, 102, 241, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+}
+.sec-title {
+  font-family: var(--font-heading);
+  font-size: 1rem; font-weight: 700;
+  margin-bottom: 14px; display: flex; align-items: center; gap: 10px;
+  color: var(--text-primary);
+}
+.sec-num {
+  font-family: var(--font-mono); font-size: 0.68rem;
+  color: #fff; background: var(--accent);
+  width: 24px; height: 24px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.sec-body { color: var(--text-secondary); line-height: 1.8; font-size: 0.88rem; }
+.sec-body p { margin-bottom: 10px; }
+.sec-body strong { color: var(--text-primary); font-weight: 600; }
+.subsection { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border-subtle); }
+.subsec-title { font-size: 0.92rem; font-weight: 600; margin-bottom: 8px; color: var(--text-primary); }
+.subsec-body { color: var(--text-secondary); font-size: 0.86rem; }
+.subsec-body p { margin-bottom: 8px; }
+.content-list { margin: 10px 0; padding-left: 22px; }
+.content-list li { margin-bottom: 5px; line-height: 1.65; }
+.content-h4 { font-size: 0.95rem; font-weight: 600; margin: 14px 0 8px; color: var(--text-primary); }
+.content-h5 { font-size: 0.88rem; font-weight: 600; margin: 10px 0 6px; color: var(--text-secondary); }
+.code-block {
+  background: #0D0D14; color: #CDD6F4;
+  padding: 14px 18px; border-radius: 8px;
+  overflow-x: auto; font-family: var(--font-mono);
+  font-size: 0.8rem; line-height: 1.6; margin: 10px 0;
+  border: 1px solid var(--border-subtle);
+}
+.inline-code {
+  background: var(--accent-glow); color: var(--accent-soft);
+  padding: 1px 6px; border-radius: 4px;
+  font-family: var(--font-mono); font-size: 0.85em;
+}
+
+/* FAQ */
+.faq-item {
+  margin-bottom: 14px; padding: 16px 20px;
+  background: rgba(99, 102, 241, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+}
+.faq-q { font-weight: 600; color: var(--accent-soft); margin-bottom: 8px; font-size: 0.9rem; }
+.faq-a { color: var(--text-secondary); font-size: 0.86rem; }
+.faq-a p { margin-bottom: 6px; }
+
+/* Summary Box */
+.summary-box {
+  background: rgba(99, 102, 241, 0.04);
+  border: 1px solid rgba(99, 102, 241, 0.1);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+}
+.summary-box p { color: var(--text-secondary); line-height: 1.85; font-size: 0.92rem; }
+
+/* Footer */
+.report-footer {
+  padding: 48px 0 32px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.section-card { animation: fadeInUp 0.5s ease both; }
+.section-card:nth-child(1) { animation-delay: 0.1s; }
+.section-card:nth-child(2) { animation-delay: 0.15s; }
+.section-card:nth-child(3) { animation-delay: 0.2s; }
+.section-card:nth-child(4) { animation-delay: 0.25s; }
+.section-card:nth-child(5) { animation-delay: 0.3s; }
+.section-card:nth-child(6) { animation-delay: 0.35s; }
+
+/* Responsive */
+@media (max-width: 640px) {
+  .container { padding: 0 16px; }
+  .section-card { padding: 20px 18px; }
+  .hero-title { font-size: 1.4rem; }
+  .section-block { padding: 18px 16px; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <nav class="back-nav">
+    <a href="../../../" class="back-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Archive
+    </a>
+  </nav>
+
+  <section class="hero">
+    <div class="video-embed">
+      <iframe loading="lazy" src="https://www.youtube.com/embed/2rcJdFuNbZQ" allowfullscreen frameborder="0"></iframe>
+    </div>
+    
+
+    <h1 class="hero-title">以OpenClaw为例解析AI Agent工作原理</h1>
+
+    <div class="hero-meta">
+      <span class="meta-badge platform"><span class="p-dot" style="background:#FF0000"></span>YouTube</span>
+      <span class="meta-badge score">9.2/10</span>
+      <span class="meta-badge duration">83:17</span>
+      <span class="meta-badge date">2026-03-15</span>
+    </div>
+  </section>
+
+  <!-- Overview -->
+  <div class="section-card">
+    <div class="section-label">Overview</div>
+    <div class="tag-row">
+      <span class="tag-pill difficulty-intermediate">Intermediate</span>
+      <span class="tag-pill">AI技术</span>
+      <span class="tag-pill">李宏毅（Hung-yi Lee，台湾大学机器学习课程讲师）</span>
+    </div>
+    <div class="section-text">本课程由台湾大学李宏毅老师讲授，以近期爆火的开源AI Agent项目OpenClaw（俗称&quot;养龙虾&quot;）为核心案例，系统拆解AI Agent的工作逻辑与应用价值。课程首先厘清了大众的认知误区：AI Agent本身不是大语言模型（Large Language Model, LLM），而是连接用户、LLM和第三方工具的中间层框架，其智能程度完全取决于后端对接的LLM性能。课程通过对比演示，直观展现了AI Agent与普通LLM的核心差异：普通LLM仅能输出文本建议，无法落地执行，而OpenClaw可自主拆解任务、调用绘图、语音合成、浏览器等工具，独立完成创建YouTube频道、制作教学视频、报名竞赛等复杂全流程任务。课程还梳理了AI Agent的发展脉络，从2023年实用性不足的AutoGPT，到2025年已可落地的Claude Code、OpenClaw等框架，讲解了系统提示词（System Prompt）、上下文窗口（Context Window）等核心技术概念，帮助学习者建立对AI Agent的完整认知，理解其落地逻辑与应用边界。</div>
+  </div>
+
+  <!-- Key Knowledge Points -->
+  <div class="section-card">
+    <div class="section-label">Key Knowledge</div>
+    <ul class="knowledge-list">
+      <li class="knowledge-item">
+            <div class="knowledge-concept">AI Agent核心概念与发展历程</div>
+            <div class="knowledge-explain">AI Agent（AI代理）是人类长期以来的技术构想，核心目标是打造可自主运行完成复杂任务的人工智能系统，其发展高度依赖大语言模型的能力迭代：</div>
+        </li>
+<li class="knowledge-item">
+            <div class="knowledge-concept">OpenClaw项目基础介绍</div>
+            <div class="knowledge-explain">OpenClaw是当前最热门的开源AI Agent框架之一，项目logo为龙虾，因此用户将部署运行OpenClaw戏称为&quot;养龙虾&quot;。</div>
+        </li>
+<li class="knowledge-item">
+            <div class="knowledge-concept">OpenClaw的底层工作原理</div>
+            <div class="knowledge-explain">OpenClaw本质是用户与大语言模型之间的中间层，其核心架构分为三部分：</div>
+        </li>
+<li class="knowledge-item">
+            <div class="knowledge-concept">AI Agent的底层技术基础</div>
+            <div class="knowledge-explain">AI Agent的所有能力都基于大语言模型的核心逻辑，要理解AI Agent的能力边界，首先需要明确LLM的运行规则：</div>
+        </li>
+    </ul>
+  </div>
+
+  <!-- Detailed Content -->
+  <div class="section-card">
+    <div class="section-label">Detailed Content</div>
+    <div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">01</span>AI Agent核心概念与发展历程</h3>
+            <div class="sec-body"><p>AI Agent（AI代理）是人类长期以来的技术构想，核心目标是打造可自主运行完成复杂任务的人工智能系统，其发展高度依赖大语言模型的能力迭代：</p>
+<ol class="content-list">
+<li>2022年底至2023年：初代AI Agent框架AutoGPT爆火，但受限于当时LLM的推理、指令遵循能力不足，实际实用性极低，热度很快消退。</li>
+<li>2024-2025年：随着LLM能力大幅提升，Claude Code、Gemini CLI、OpenClaw等新一代AI Agent框架陆续落地，已经可以稳定完成多步骤复杂任务。</li>
+</ol>
+<p>需要特别明确一个核心认知误区：<strong>AI Agent不等于大语言模型，也不是新的人工智能技术</strong>，它本质是基于现有LLM能力的应用层框架，本身不具备智能，所有的推理、决策能力都来自后端对接的LLM。</p></div>
+            <div class="subsection">
+                    <h4 class="subsec-title">AI Agent的核心价值</h4>
+                    <div class="subsec-body"><p>相比直接使用LLM，AI Agent解决了普通LLM"只说不做"的痛点：它可以将用户的自然语言需求拆解为多个执行步骤，自主调用对应工具完成每一步操作，最终实现从需求到落地的全流程自动化，不需要人类介入中间环节。</p></div>
+                </div>
+        </div><div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">02</span>OpenClaw项目基础介绍</h3>
+            <div class="sec-body"><p>OpenClaw是当前最热门的开源AI Agent框架之一，项目logo为龙虾，因此用户将部署运行OpenClaw戏称为"养龙虾"。</p>
+<h4 class="content-h4">核心特性</h4>
+<ol class="content-list">
+<li><strong>多渠道交互</strong>：支持通过LINE、Discord、WhatsApp等即时通讯软件与AI Agent交互，使用体验类似拥有一个24小时在线的私人助理，这也是它和Claude Code等工具类Agent的核心差异。</li>
+<li><strong>多模型兼容</strong>：支持对接GPT、Claude、Gemini等云端商用LLM，也可以对接本地部署的开源LLM，用户可自行选择后端模型。</li>
+<li><strong>自主工具调用</strong>：内置工具调用能力，可自主调用绘图、语音合成、代码运行、浏览器等工具完成复杂任务。</li>
+</ol>
+<p>部署建议：不要将OpenClaw安装在常用办公/个人电脑上，建议使用格式化后的闲置设备独立运行，避免Agent因指令理解偏差误删重要文件、泄露个人隐私；同时AI Agent无法修复网络中断等物理世界问题，长期运行需要保证网络环境稳定。</p></div>
+            <div class="subsection">
+                    <h4 class="subsec-title">OpenClaw能力演示</h4>
+                    <div class="subsec-body"><p>课程中演示了OpenClaw的真实落地能力：给Agent下达"创建YouTube频道，每天中午输出视频选题，确认后自主制作并上传视频"的需求后，OpenClaw独立完成了以下操作：创建YouTube频道、填写频道介绍、调用绘图工具生成头像、每日主动推送选题、确认后自主搜索资料、制作PPT、撰写脚本、调用语音合成工具生成配音、剪辑视频、上传至云端待审核、审核通过后自动上传至YouTube，全程不需要人类介入中间环节。此外OpenClaw还自主完成了台大"Teaching Monster"教学AI竞赛的报名、参赛全流程，在热身赛中零失败完成32道高中理科教学视频产出任务。</p></div>
+                </div>
+        </div><div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">03</span>OpenClaw的底层工作原理</h3>
+            <div class="sec-body"><p>OpenClaw本质是用户与大语言模型之间的中间层，其核心架构分为三部分：</p>
+<ol class="content-list">
+<li><strong>用户端交互层</strong>：对接各类即时通讯软件，接收用户的自然语言需求。</li>
+<li><strong>中间处理层</strong>：整合本地存储的身份配置、记忆数据、工具规则，将用户需求拼接为符合要求的提示词提交给后端LLM。</li>
+<li><strong>执行层</strong>：接收LLM的输出结果，要么直接返回给用户，要么调用对应工具完成操作后再反馈结果。</li>
+</ol></div>
+            <div class="subsection">
+                    <h4 class="subsec-title">系统提示词（System Prompt）的核心作用</h4>
+                    <div class="subsec-body"><p>AI Agent的身份、行为规则、能力边界都由系统提示词定义，OpenClaw的系统提示词来自本地存储的4个Markdown格式文本文件，用户可手动编辑修改：</p>
+<ul class="content-list">
+<li>身份配置文件：定义Agent的名字、身份、所有者、核心目标等信息，比如课程中演示的Agent"小金"的身份配置就明确了它是李宏毅老师的AI助理，目标是成为顶级AI讲师，运营YouTube频道"Random AI"。</li>
+<li>工具规则文件：说明Agent可调用的工具列表、调用方式、限制规则。</li>
+<li>行为准则文件：定义Agent的回复风格、任务优先级、隐私规则等。</li>
+<li>记忆存储文件：存储Agent和用户的历史交互记录、已完成的任务信息等。</li>
+</ul>
+<p>每次用户发送需求后，OpenClaw都会把以上4个文件的内容、用户的历史交互记录、当前需求拼接为一个完整的提示词，提交给后端LLM，再将LLM的输出处理后返回给用户或执行对应操作，因此LLM会自然按照设定的身份和规则响应需求。</p></div>
+                </div>
+        </div><div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">04</span>AI Agent的底层技术基础</h3>
+            <div class="sec-body"><p>AI Agent的所有能力都基于大语言模型的核心逻辑，要理解AI Agent的能力边界，首先需要明确LLM的运行规则：</p>
+<ol class="content-list">
+<li>LLM的核心是"词链游戏"：接收输入的提示词（Prompt），预测下一个应该输出的令牌（Token），再将输出的令牌拼接进输入，循环迭代直到输出结束符号，最终生成完整的回复（Response）。</li>
+<li>所有LLM都有上下文窗口（Context Window）限制：输入提示词+输出内容的总令牌数不能超过上下文窗口上限，否则LLM无法正常运行；同时当前LLM的推理能力会随输入长度的增加而下降，即使没有达到上下文窗口上限，过长的输入也会导致LLM输出错误率提升。</li>
+</ol>
+<p>因此AI Agent的核心优化方向之一就是解决上下文窗口不足的问题，包括记忆压缩、分段任务处理、向量知识库检索等方案，相关技术会在后续课程中详细讲解。</p></div>
+            
+        </div>
+  </div>
+
+  <!-- Chapters -->
+  <div class="section-card">
+    <div class="section-label">Chapters</div>
+    <div class="chapter-item"><div class="chapter-header"><div class="chapter-header-left"><span class="chapter-time">--</span><span class="chapter-title">No chapter data available</span></div></div></div>
+  </div>
+
+  <!-- Quotes -->
+  <div class="section-card">
+    <div class="section-label">Notable Quotes</div>
+    <div class="quote-card">
+            <div class="quote-text">OpenClaw本身不具备智能，其任务完成能力完全取决于后端对接的大语言模型，建议优先对接能力较强的商用LLM获得更好的执行效果</div>
+            
+        </div>
+<div class="quote-card">
+            <div class="quote-text">不要在常用电脑上安装OpenClaw，建议使用格式化后的闲置设备独立运行，避免Agent误操作删除重要文件、泄露个人隐私</div>
+            
+        </div>
+<div class="quote-card">
+            <div class="quote-text">可手动编辑OpenClaw本地存储的4个Markdown格式系统提示词文件，自定义Agent的身份、行为规则、领域知识、工具权限等配置</div>
+            
+        </div>
+<div class="quote-card">
+            <div class="quote-text">AI Agent无法自主修复网络中断、断电等物理世界问题，若需要长期稳定运行，需保证运行设备的网络和供电稳定</div>
+            
+        </div>
+  </div>
+
+  <!-- Takeaways -->
+  <div class="section-card">
+    <div class="section-label">Takeaways</div>
+    <ul class="takeaway-list">
+      <li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            OpenClaw本身不具备智能，其任务完成能力完全取决于后端对接的大语言模型，建议优先对接能力较强的商用LLM获得更好的执行效果
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            不要在常用电脑上安装OpenClaw，建议使用格式化后的闲置设备独立运行，避免Agent误操作删除重要文件、泄露个人隐私
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            可手动编辑OpenClaw本地存储的4个Markdown格式系统提示词文件，自定义Agent的身份、行为规则、领域知识、工具权限等配置
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            AI Agent无法自主修复网络中断、断电等物理世界问题，若需要长期稳定运行，需保证运行设备的网络和供电稳定
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            OpenClaw和ChatGPT、Claude这类大语言模型有什么区别？
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            为什么2023年的AutoGPT不好用，现在的OpenClaw就能落地？
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            OpenClaw的上下文窗口不够用怎么办？
+        </li>
+    </ul>
+  </div>
+
+  <!-- Resources -->
+  <div class="section-card">
+    <div class="section-label">Tools & Resources</div>
+    <table class="resource-table">
+      <thead><tr><th>Name</th><th>Description</th><th>Link</th></tr></thead>
+      <tbody>
+        <tr><td>OpenClaw</td><td>热门开源AI Agent框架，支持多渠道交互、多模型对接、自主工具调用，可24小时运行完成复杂自动化任务</td><td><span style="color:var(--text-muted)">--</span></td></tr>
+<tr><td>AutoGPT</td><td>2023年推出的初代知名AI Agent框架，受限于当时LLM能力实用性较低</td><td><span style="color:var(--text-muted)">--</span></td></tr>
+<tr><td>Claude Code</td><td>Anthropic推出的AI Agent框架，具备自主执行多步骤任务的能力，定位为开发工具</td><td><span style="color:var(--text-muted)">--</span></td></tr>
+<tr><td>Mobook</td><td>AI Agent专属社交平台，支持数百万AI Agent自主交互、发布内容</td><td><span style="color:var(--text-muted)">--</span></td></tr>
+<tr><td>Rent Human</td><td>概念性平台，供AI Agent发布实体世界任务需求，雇佣人类完成线下操作</td><td><span style="color:var(--text-muted)">--</span></td></tr>
+<tr><td>Teaching Monster</td><td>台湾大学AI研究中心举办的AI教学能力竞赛，要求AI在30分钟内生成高中理科教学视频</td><td><span style="color:var(--text-muted)">--</span></td></tr>
+<tr><td>GPT系列模型</td><td>OpenAI推出的大语言模型，可作为OpenClaw的后端模型</td><td><span style="color:var(--text-muted)">--</span></td></tr>
+<tr><td>Claude系列模型</td><td>Anthropic推出的大语言模型，可作为OpenClaw的后端模型</td><td><span style="color:var(--text-muted)">--</span></td></tr>
+<tr><td>Gemini系列模型</td><td>Google推出的大语言模型，可作为OpenClaw的后端模型</td><td><span style="color:var(--text-muted)">--</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section-card">
+            <div class="section-label">FAQ</div>
+            <div class="faq-item">
+                <div class="faq-q">Q: OpenClaw和ChatGPT、Claude这类大语言模型有什么区别？</div>
+                <div class="faq-a"><p>ChatGPT、Claude属于大语言模型（LLM），核心能力是根据输入生成文本回复，本身无法调用外部工具执行落地操作；而OpenClaw是AI Agent框架，本质是用户、LLM和外部工具之间的中间层，本身不具备生成能力，它的作用是整合系统提示词、记忆存储、工具调用能力，将用户需求处理后提交给后端对接的LLM，再将LLM的输出转化为实际操作，最终完成复杂的落地任务。</p></div>
+            </div><div class="faq-item">
+                <div class="faq-q">Q: 为什么2023年的AutoGPT不好用，现在的OpenClaw就能落地？</div>
+                <div class="faq-a"><p>AI Agent的落地高度依赖后端LLM的能力，2023年AutoGPT推出时，LLM的指令遵循、逻辑推理、任务拆解、工具调用能力还比较弱，无法稳定完成多步骤复杂任务；随着LLM能力逐年提升，2025年前后的LLM已经可以稳定支持任务拆解、多工具调度、错误修正等操作，因此OpenClaw等新一代AI Agent框架才具备了实用价值。</p></div>
+            </div><div class="faq-item">
+                <div class="faq-q">Q: OpenClaw的上下文窗口不够用怎么办？</div>
+                <div class="faq-a"><p>当前所有LLM都存在上下文窗口物理限制，且推理能力会随输入长度增加而下降，可通过记忆压缩、历史对话召回、分段任务处理、对接向量知识库等方式优化超长任务的处理效果，相关优化方法会在后续课程中详细讲解。</p></div>
+            </div>
+        </div>
+
+  <div class="section-card">
+            <div class="section-label">Summary</div>
+            <div class="summary-box"><p>本课程由台大李宏毅老师讲授，以爆火的开源AI Agent项目OpenClaw为核心案例，生动拆解了AI Agent的底层逻辑与应用价值。课程厘清了大众对AI Agent的常见认知误区：AI Agent本身不是大语言模型，而是连接用户、大语言模型和工具的中间框架，其智能程度完全取决于后端对接的LLM性能。课程通过AI自主创建YouTube频道、报名并参与教学竞赛的真实演示，直观展现了AI Agent相比普通LLM的核心优势：可自主拆解任务、调用工具，完成从需求到落地的全流程自动化操作。课程还梳理了AI Agent的发展脉络，讲解了系统提示词、上下文窗口等核心技术概念，为学习者后续深入学习AI Agent开发、落地应用打下了扎实的基础，也为普通用户了解AI Agent的能力边界提供了清晰的参考。</p></div>
+        </div>
+
+  <footer class="report-footer">
+    powered by video-learn
+  </footer>
+</div>
+
+<script>
+// Chapter accordion
+document.querySelectorAll('.chapter-header').forEach(header => {
+  header.addEventListener('click', () => {
+    header.parentElement.classList.toggle('open');
+  });
+});
+</script>
+</body>
+</html>
