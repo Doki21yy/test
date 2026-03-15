@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LTX 2.3多图首尾帧工作流更新使用教程 - Learning Archive</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg-deep: #06060B;
+  --bg-surface: #0D0D14;
+  --bg-card: #12121C;
+  --bg-card-hover: #181826;
+  --border-subtle: rgba(99, 102, 241, 0.08);
+  --border-hover: rgba(99, 102, 241, 0.2);
+  --text-primary: #E8E8ED;
+  --text-secondary: #7A7A8E;
+  --text-muted: #4A4A5E;
+  --accent: #6366F1;
+  --accent-glow: rgba(99, 102, 241, 0.15);
+  --accent-soft: #818CF8;
+  --radius: 12px;
+  --font-heading: 'DM Sans', -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: var(--font-heading);
+  font-weight: 400;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: -200px; left: 50%;
+  transform: translateX(-50%);
+  width: 800px; height: 600px;
+  background: radial-gradient(ellipse, rgba(99, 102, 241, 0.05) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 24px;
+  position: relative;
+  z-index: 1;
+}
+
+a { color: var(--accent-soft); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Back Nav */
+.back-nav { padding: 24px 0; }
+.back-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--text-muted); text-decoration: none;
+  font-family: var(--font-mono); font-size: 0.78rem;
+  transition: color 0.2s;
+}
+.back-link:hover { color: var(--accent-soft); text-decoration: none; }
+.back-link svg { width: 16px; height: 16px; }
+
+/* Hero */
+.hero { padding-bottom: 40px; }
+
+.video-embed {
+  width: 100%; aspect-ratio: 16/9;
+  border-radius: var(--radius); overflow: hidden;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  margin-bottom: 28px;
+}
+.video-embed iframe { width: 100%; height: 100%; border: none; }
+.video-embed .video-link-fallback {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 12px;
+  color: var(--text-secondary); text-decoration: none;
+}
+.video-embed .video-link-fallback:hover { color: var(--accent-soft); }
+.video-embed .video-link-fallback svg { width: 48px; height: 48px; opacity: 0.5; }
+.source-link-row { margin-top: -14px; margin-bottom: 18px; text-align: center; font-size: 12px; color: var(--text-muted); }
+.source-link-row a { color: var(--accent); text-decoration: none; word-break: break-all; }
+.source-link-row a:hover { text-decoration: underline; }
+
+.hero-title {
+  font-family: var(--font-heading);
+  font-weight: 900;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  letter-spacing: -0.02em; line-height: 1.25;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+
+.hero-meta {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+}
+
+.meta-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 12px; border-radius: 6px;
+  font-family: var(--font-mono); font-size: 0.72rem;
+  font-weight: 500; letter-spacing: 0.03em;
+}
+.meta-badge.platform {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+}
+.meta-badge.platform .p-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+}
+.meta-badge.score {
+  background: var(--accent-glow);
+  border: 1px solid rgba(99, 102, 241, 0.15);
+  color: var(--accent-soft);
+}
+.meta-badge.duration, .meta-badge.date {
+  color: var(--text-muted);
+  font-family: var(--font-mono); font-size: 0.72rem;
+}
+
+/* Section Cards */
+.section-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  margin-bottom: 16px;
+}
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem; font-weight: 500;
+  color: var(--accent-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+}
+.section-heading {
+  font-family: var(--font-heading);
+  font-weight: 700; font-size: 1.15rem;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+.section-text {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+
+/* Tags */
+.tag-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.tag-pill {
+  padding: 3px 10px; border-radius: 4px;
+  font-family: var(--font-mono); font-size: 0.7rem; font-weight: 500;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+}
+.tag-pill.difficulty-beginner { border-color: rgba(34, 197, 94, 0.2); color: #4ADE80; }
+.tag-pill.difficulty-intermediate { border-color: rgba(250, 204, 21, 0.2); color: #FACC15; }
+.tag-pill.difficulty-advanced { border-color: rgba(239, 68, 68, 0.2); color: #F87171; }
+
+/* Knowledge Points */
+.knowledge-list { list-style: none; }
+.knowledge-item { padding: 14px 0; border-bottom: 1px solid var(--border-subtle); }
+.knowledge-item:last-child { border-bottom: none; }
+.knowledge-concept {
+  font-family: var(--font-heading); font-weight: 700;
+  font-size: 0.9rem; color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.knowledge-explain {
+  font-size: 0.84rem; color: var(--text-secondary); line-height: 1.65;
+}
+
+/* Chapters Accordion */
+.chapter-item { border-bottom: 1px solid var(--border-subtle); }
+.chapter-item:last-child { border-bottom: none; }
+.chapter-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 0; cursor: pointer; user-select: none;
+  transition: color 0.2s;
+}
+.chapter-header:hover { color: var(--accent-soft); }
+.chapter-header-left {
+  display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0;
+}
+.chapter-time {
+  font-family: var(--font-mono); font-size: 0.72rem;
+  color: var(--accent-soft); white-space: nowrap; flex-shrink: 0;
+}
+.chapter-title {
+  font-family: var(--font-heading); font-weight: 600;
+  font-size: 0.9rem; color: var(--text-primary);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.chapter-arrow {
+  color: var(--text-muted);
+  transition: transform 0.3s ease; flex-shrink: 0;
+}
+.chapter-item.open .chapter-arrow { transform: rotate(180deg); }
+.chapter-content { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+.chapter-item.open .chapter-content { max-height: 500px; }
+.chapter-inner { padding: 0 0 20px 0; }
+.chapter-summary {
+  font-size: 0.85rem; color: var(--text-secondary);
+  margin-bottom: 12px; line-height: 1.7;
+}
+.chapter-points { list-style: none; padding: 0; }
+.chapter-points li {
+  position: relative; padding-left: 16px;
+  margin-bottom: 6px; font-size: 0.82rem; color: var(--text-secondary);
+}
+.chapter-points li::before {
+  content: ''; position: absolute; left: 0; top: 9px;
+  width: 4px; height: 4px; border-radius: 50%; background: var(--accent);
+}
+
+/* Quotes */
+.quote-card {
+  position: relative; padding: 20px 24px;
+  margin-bottom: 12px;
+  border-left: 2px solid var(--accent);
+  background: rgba(99, 102, 241, 0.03);
+  border-radius: 0 8px 8px 0;
+}
+.quote-card:last-child { margin-bottom: 0; }
+.quote-text {
+  font-size: 0.9rem; color: var(--text-primary);
+  font-style: italic; line-height: 1.65; margin-bottom: 8px;
+}
+.quote-time {
+  font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent-soft);
+}
+
+/* Takeaways */
+.takeaway-list { list-style: none; }
+.takeaway-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 8px 0; font-size: 0.88rem; color: var(--text-secondary);
+}
+.takeaway-check {
+  width: 18px; height: 18px;
+  border: 1.5px solid var(--border-hover);
+  border-radius: 4px; flex-shrink: 0; margin-top: 2px;
+  display: flex; align-items: center; justify-content: center;
+}
+.takeaway-check svg {
+  width: 12px; height: 12px; color: var(--accent-soft);
+}
+
+/* Resources Table */
+.resource-table { width: 100%; border-collapse: collapse; }
+.resource-table th {
+  text-align: left; font-family: var(--font-mono);
+  font-size: 0.7rem; font-weight: 500; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.06em;
+  padding: 10px 0; border-bottom: 1px solid var(--border-subtle);
+}
+.resource-table td {
+  padding: 10px 0; font-size: 0.84rem;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.resource-table tr:last-child td { border-bottom: none; }
+.resource-table a { color: var(--accent-soft); text-decoration: none; }
+.resource-table a:hover { text-decoration: underline; }
+
+/* Detailed Content Sections */
+.section-block {
+  margin-bottom: 20px;
+  background: rgba(99, 102, 241, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+}
+.sec-title {
+  font-family: var(--font-heading);
+  font-size: 1rem; font-weight: 700;
+  margin-bottom: 14px; display: flex; align-items: center; gap: 10px;
+  color: var(--text-primary);
+}
+.sec-num {
+  font-family: var(--font-mono); font-size: 0.68rem;
+  color: #fff; background: var(--accent);
+  width: 24px; height: 24px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.sec-body { color: var(--text-secondary); line-height: 1.8; font-size: 0.88rem; }
+.sec-body p { margin-bottom: 10px; }
+.sec-body strong { color: var(--text-primary); font-weight: 600; }
+.subsection { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border-subtle); }
+.subsec-title { font-size: 0.92rem; font-weight: 600; margin-bottom: 8px; color: var(--text-primary); }
+.subsec-body { color: var(--text-secondary); font-size: 0.86rem; }
+.subsec-body p { margin-bottom: 8px; }
+.content-list { margin: 10px 0; padding-left: 22px; }
+.content-list li { margin-bottom: 5px; line-height: 1.65; }
+.content-h4 { font-size: 0.95rem; font-weight: 600; margin: 14px 0 8px; color: var(--text-primary); }
+.content-h5 { font-size: 0.88rem; font-weight: 600; margin: 10px 0 6px; color: var(--text-secondary); }
+.code-block {
+  background: #0D0D14; color: #CDD6F4;
+  padding: 14px 18px; border-radius: 8px;
+  overflow-x: auto; font-family: var(--font-mono);
+  font-size: 0.8rem; line-height: 1.6; margin: 10px 0;
+  border: 1px solid var(--border-subtle);
+}
+.inline-code {
+  background: var(--accent-glow); color: var(--accent-soft);
+  padding: 1px 6px; border-radius: 4px;
+  font-family: var(--font-mono); font-size: 0.85em;
+}
+
+/* FAQ */
+.faq-item {
+  margin-bottom: 14px; padding: 16px 20px;
+  background: rgba(99, 102, 241, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+}
+.faq-q { font-weight: 600; color: var(--accent-soft); margin-bottom: 8px; font-size: 0.9rem; }
+.faq-a { color: var(--text-secondary); font-size: 0.86rem; }
+.faq-a p { margin-bottom: 6px; }
+
+/* Summary Box */
+.summary-box {
+  background: rgba(99, 102, 241, 0.04);
+  border: 1px solid rgba(99, 102, 241, 0.1);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+}
+.summary-box p { color: var(--text-secondary); line-height: 1.85; font-size: 0.92rem; }
+
+/* Footer */
+.report-footer {
+  padding: 48px 0 32px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.section-card { animation: fadeInUp 0.5s ease both; }
+.section-card:nth-child(1) { animation-delay: 0.1s; }
+.section-card:nth-child(2) { animation-delay: 0.15s; }
+.section-card:nth-child(3) { animation-delay: 0.2s; }
+.section-card:nth-child(4) { animation-delay: 0.25s; }
+.section-card:nth-child(5) { animation-delay: 0.3s; }
+.section-card:nth-child(6) { animation-delay: 0.35s; }
+
+/* Responsive */
+@media (max-width: 640px) {
+  .container { padding: 0 16px; }
+  .section-card { padding: 20px 18px; }
+  .hero-title { font-size: 1.4rem; }
+  .section-block { padding: 18px 16px; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <nav class="back-nav">
+    <a href="../../../" class="back-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Archive
+    </a>
+  </nav>
+
+  <section class="hero">
+    <div class="video-embed">
+      <iframe loading="lazy" src="//player.bilibili.com/player.html?bvid=BV186wEzRENT&high_quality=0&danmaku=0" allowfullscreen="true" frameborder="0"></iframe>
+    </div>
+    
+
+    <h1 class="hero-title">LTX 2.3多图首尾帧工作流更新使用教程</h1>
+
+    <div class="hero-meta">
+      <span class="meta-badge platform"><span class="p-dot" style="background:#00A1D6"></span>Bilibili</span>
+      <span class="meta-badge score">8.5/10</span>
+      <span class="meta-badge duration">5:53</span>
+      <span class="meta-badge date">2026-03-15</span>
+    </div>
+  </section>
+
+  <!-- Overview -->
+  <div class="section-card">
+    <div class="section-label">Overview</div>
+    <div class="tag-row">
+      <span class="tag-pill difficulty-intermediate">Intermediate</span>
+      <span class="tag-pill">AI视频生成</span>
+      <span class="tag-pill">AI-KSK</span>
+    </div>
+    <div class="section-text">本视频介绍了LTX 2.3版本的两大核心更新：多图首尾帧功能与IC LoRA Union联合控制模型，解决了之前版本AI视频生成中角色一致性差、运动过渡不流畅的痛点。其中多图首尾帧最高支持20张参考图输入，可自定义每张参考图的出现帧位置和权重，大幅提升了视频内容的可控性；IC LoRA Union支持深度、Canny、DW Pose三种控制信号类型，可提取参考视频的骨骼、边缘等运动信息引导视频生成。教程基于全球最大的在线ComfyUI平台RunningHub提供可直接运行的完整工作流，详细讲解了快速启动配置、参数调节、参考图设置、视频控制等全流程操作步骤，同时对比了2.3版本与LTX2版本的数字人生成效果，给出了明确的版本选择建议，适合有一定ComfyUI基础的用户快速上手LTX 2.3新功能。</div>
+  </div>
+
+  <!-- Key Knowledge Points -->
+  <div class="section-card">
+    <div class="section-label">Key Knowledge</div>
+    <ul class="knowledge-list">
+      <li class="knowledge-item">
+            <div class="knowledge-concept">LTX 2.3核心更新特性</div>
+            <div class="knowledge-explain">LTX 2.3相比上一代2.0版本，核心提升主要集中在两个方向：</div>
+        </li>
+<li class="knowledge-item">
+            <div class="knowledge-concept">多图首尾帧工作流使用教程</div>
+            <div class="knowledge-explain">该工作流可通过上传多张关键帧参考图，生成符合参考图设定、过渡流畅的AI视频，所有流程已在RunningHub平台上线可直接在线运行。</div>
+        </li>
+<li class="knowledge-item">
+            <div class="knowledge-concept">IC LoRA Union视频控制工作流使用</div>
+            <div class="knowledge-explain">该工作流可通过参考视频的运动信息引导生成，实现动作迁移类视频创作，支持骨骼、深度、边缘多种控制信号。</div>
+        </li>
+<li class="knowledge-item">
+            <div class="knowledge-concept">工作流底层配置说明</div>
+            <div class="knowledge-explain">工作流的底层设计细节：</div>
+        </li>
+<li class="knowledge-item">
+            <div class="knowledge-concept">版本效果对比与选择建议</div>
+            <div class="knowledge-explain">针对数字人生成场景，目前LTX 2.3版本所有公开的数字人流派效果均不如LTX2的蒸馏对口型工作流，尤其是异形非人主体的生成效果差距更加明显。建议用户暂时继续使用LTX2的数字人流派完成对口型类数字人内容，无需强行升级到2.3版本处理数字人需求，待后续版本优化后再尝试。</div>
+        </li>
+    </ul>
+  </div>
+
+  <!-- Detailed Content -->
+  <div class="section-card">
+    <div class="section-label">Detailed Content</div>
+    <div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">01</span>LTX 2.3核心更新特性</h3>
+            <div class="sec-body"><p>LTX 2.3相比上一代2.0版本，核心提升主要集中在两个方向：</p>
+<ol class="content-list">
+<li><strong>多图首尾帧功能</strong>：角色一致性、运动流畅度相比2.0版本有质的提升，官方最高支持20张参考图输入，用户可自定义每张参考图在视频中的出现位置和权重，大幅拓展了视频内容的创作空间，适合制作多关键帧的剧情类、创意类视频。</li>
+<li><strong>IC LoRA Union联合控制模型</strong>：新增了视频运动控制能力，支持深度（Depth）、边缘（Canny）、人体姿态（DW Pose）三种控制信号，可提取参考视频的运动信息引导生成，实现了参考视频动作到生成视频的迁移。</li>
+</ol></div>
+            
+        </div><div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">02</span>多图首尾帧工作流使用教程</h3>
+            <div class="sec-body"><p>该工作流可通过上传多张关键帧参考图，生成符合参考图设定、过渡流畅的AI视频，所有流程已在RunningHub平台上线可直接在线运行。</p></div>
+            <div class="subsection">
+                    <h4 class="subsec-title">快速启动配置</h4>
+                    <div class="subsec-body"><p>首次使用只需完成3步基础配置即可运行：</p>
+<ol class="content-list">
+<li>设置视频基础参数：在视频设置模块配置宽度、高度、时长（单位为秒）、帧率，默认帧率为24FPS，2.3版本最高可设置为36FPS无明显异常，可根据需求提升帧率获得更流畅的效果。</li>
+<li>上传参考图：在对应节点上传你需要用到的关键帧参考图，无需手动统一尺寸，工作流会自动匹配首张参考图的尺寸。</li>
+<li>填写提示词：正向提示词可直接使用生成参考图的原始提示词，无需额外调整即可正常运行，反向提示词可添加低质量、瑕疵类通用规避词。</li>
+</ol></div>
+                </div><div class="subsection">
+                    <h4 class="subsec-title">参考图参数调节</h4>
+                    <div class="subsec-body"><p>核心参数通过<code class="inline-code">LTXV Add Guide Multi</code>节点（KJ Nodes）配置：</p>
+<ul class="content-list">
+<li>目前RunningHub线上版本最多支持5张参考图输入，后续版本更新后将开放到官方上限20张。</li>
+<li>每张参考图对应两个可调节参数：</li>
+<li><code class="inline-code">frame_idx</code>：参考图在视频中出现的帧位置，比如10秒24FPS的视频总帧数为240，可设置关键帧在0、60、120、180帧位置依次出现。</li>
+<li><code class="inline-code">strength</code>：参考图的权重，取值范围0-1，首尾关键帧建议设置为1保证内容一致性，中间过渡帧建议设置为0.5兼顾过渡流畅度。</li>
+</ul>
+<p>示例中4张参考图设置权重为1、0.5、0.5、1，对应帧位置0、60、120、180，生成240帧视频无需额外微调即可获得优异效果。</p></div>
+                </div>
+        </div><div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">03</span>IC LoRA Union视频控制工作流使用</h3>
+            <div class="sec-body"><p>该工作流可通过参考视频的运动信息引导生成，实现动作迁移类视频创作，支持骨骼、深度、边缘多种控制信号。</p></div>
+            <div class="subsection">
+                    <h4 class="subsec-title">快速启动配置</h4>
+                    <div class="subsec-body"><p>基础配置步骤：</p>
+<ol class="content-list">
+<li>上传首帧参考图（可选）：上传一张参考图作为生成视频的首帧，可大幅提升生成内容的真实感和一致性。</li>
+<li>上传参考视频：上传用于提取运动控制信号的参考视频，工作流会自动提取视频中的对应控制信号。</li>
+<li>填写提示词：可直接通过首帧参考图反推得到提示词，无需手动撰写复杂的运动描述，IC LoRA会自动继承参考视频的运动信息，不用担心生成视频静止。</li>
+</ol></div>
+                </div><div class="subsection">
+                    <h4 class="subsec-title">使用技巧与拓展配置</h4>
+                    <div class="subsec-body"><p>核心优化技巧：</p>
+<ul class="content-list">
+<li>参考视频选择：可以选择大动作的视频，但帧与帧之间的差异不能过大，动作尽量缓慢流畅，过大的帧间隔会导致生成视频崩坏。</li>
+<li>切换控制信号：默认使用DW Pose人体骨骼控制，如需使用深度或Canny控制，只需将对应控制信号提取节点的输出连接到<code class="inline-code">Resize Image V2</code>节点的image输入即可，无需其他额外配置。</li>
+</ul></div>
+                </div>
+        </div><div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">04</span>工作流底层配置说明</h3>
+            <div class="sec-body"><p>工作流的底层设计细节：</p>
+<ol class="content-list">
+<li><strong>两阶段生成逻辑</strong>：初始设置的宽高不是最终输出的视频尺寸，工作流一阶段会将输入尺寸缩放0.67倍生成低清视频，二阶段通过放大模型输出2倍高清视频，降低显存压力同时提升最终画质。</li>
+<li><strong>nag节点说明</strong>：当前线上运行时nag节点存在部分报错，本地部署运行无报错可开启该节点，开启后反向提示词才会生效，常用反向提示词可添加「字幕、中文字幕」避免生成内容出现不必要的字幕元素。</li>
+</ol></div>
+            
+        </div><div class="section-block">
+            <h3 class="sec-title"><span class="sec-num">05</span>版本效果对比与选择建议</h3>
+            <div class="sec-body"><p>针对数字人生成场景，目前LTX 2.3版本所有公开的数字人流派效果均不如LTX2的蒸馏对口型工作流，尤其是异形非人主体的生成效果差距更加明显。建议用户暂时继续使用LTX2的数字人流派完成对口型类数字人内容，无需强行升级到2.3版本处理数字人需求，待后续版本优化后再尝试。</p></div>
+            
+        </div>
+  </div>
+
+  <!-- Chapters -->
+  <div class="section-card">
+    <div class="section-label">Chapters</div>
+    <div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">0</span>
+                    <span class="chapter-title">LTX2.3新特性与运行平台介绍</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">介绍LTX2.3多图首尾帧工作流更新，说明其内容一致性、运动流畅度远优于2.0版本，该功能最高支持20张图像输入，探索空间更大. 介绍2.3更新的IC LoRA Union控制模型，支持深度、Canny、DW Pose三种控制类型，效果不如多图首尾帧惊艳，工作流已部署在RunningHub在线平台可直接运行</div>
+                    <ul class="chapter-points"><li>LTX2.3多图首尾帧功能升级特性</li><li>LTX2.3控制模型更新与运行平台说明</li></ul>
+                </div>
+            </div>
+        </div>
+<div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">60</span>
+                    <span class="chapter-title">多图首尾帧工作流实操讲解</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">讲解快速启动需要设置的参数：宽高、时长（以秒为单位），默认帧率24帧，最高可提升到36帧无明显异常，完成参数设置后加载首尾帧参考图、配置提示词即可运行. 说明当前线上节点最多支持5张图输入，后续更新后可支持20张，可自定义每张参考图的权重，以及该图在生成视频中出现的帧索引位置，示例设置4张图权重为1、0.5、0.5、1，对应0、60、120、180帧出现. 展示无精细调节的生成效果已经较好，说明工作流使用KJ拆分的分离模型，自带2倍放大，设置的宽高是一阶段使用的尺寸，一阶段会先缩放0.67倍，二阶段放大2倍得到最终视频. 说明输入的参考图会自动和首张图尺寸保持一致，NAG节点可让反向提示词生效</div>
+                    <ul class="chapter-points"><li>多图首尾帧快速启动参数配置规则</li><li>参考图权重与位置参数配置方法</li><li>多图首尾帧工作流的两阶段缩放逻辑</li><li>参考图预处理与反向提示词配置方法</li><li>多图首尾帧工作流的获取渠道</li></ul>
+                </div>
+            </div>
+        </div>
+<div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">214</span>
+                    <span class="chapter-title">IC LoRA视频控制工作流讲解</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">介绍该工作流是通过提取原视频的骨骼、深度等运动信息引导生成，可选择性加入参考图提升真实感，效果和之前Wan系列的骨骼引导类似，不算特别惊艳. 讲解使用技巧：原视频动作可以幅度大，但帧与帧之间的差异不能过大，过大的帧间隔会导致生成的视频崩坏，尽量选择慢且流畅的原视频作为引导. 讲解快速启动需要输入首帧参考图、引导视频，设置提示词，也可以直接用参考图反推提示词，有强LoRA介入不用担心生成视频完全静止，还可以切换深度、Canny等其他控制类型. 说明IC LoRA联合控制和之前Wan2.1/2.2的控制逻辑有本质差异，原理和FLUX的IC LoRA一致，通过上下文参考实现渲染，感兴趣可以自行体验</div>
+                    <ul class="chapter-points"><li>IC LoRA控制工作流的基本原理</li><li>IC LoRA控制工作流的使用技巧</li><li>IC LoRA工作流的参数设置方法</li><li>IC LoRA控制的底层逻辑</li></ul>
+                </div>
+            </div>
+        </div>
+<div class="chapter-item">
+            <div class="chapter-header">
+                <div class="chapter-header-left">
+                    <span class="chapter-time">327</span>
+                    <span class="chapter-title">数字人流型使用建议</span>
+                </div>
+                <span class="chapter-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <div class="chapter-content">
+                <div class="chapter-inner">
+                    <div class="chapter-summary">说明LTX2.3的数字人流型效果不如LTX2代，建议直接使用LTX二代的数字人流程，尤其对异形非人主体，2代的效果更好，没必要强行使用2.3版本的数字人流</div>
+                    <ul class="chapter-points"><li>LTX数字人流型的版本选择建议</li></ul>
+                </div>
+            </div>
+        </div>
+  </div>
+
+  <!-- Quotes -->
+  <div class="section-card">
+    <div class="section-label">Notable Quotes</div>
+    <div class="quote-card">
+            <div class="quote-text">LTX2.3多图首尾帧流畅度优于2.0版本，最高支持20张参考图输入</div>
+            <div class="quote-time">0</div>
+        </div>
+<div class="quote-card">
+            <div class="quote-text">IC LoRA Union支持三类控制维度，对应工作流可在RunningHub平台在线运行</div>
+            <div class="quote-time">30</div>
+        </div>
+<div class="quote-card">
+            <div class="quote-text">快速启动需配置宽高、时长、帧率参数，帧率最高可设置为36帧无异常</div>
+            <div class="quote-time">60</div>
+        </div>
+<div class="quote-card">
+            <div class="quote-text">可自定义每张参考图的权重，以及其在生成视频中出现的帧位置</div>
+            <div class="quote-time">90</div>
+        </div>
+<div class="quote-card">
+            <div class="quote-text">工作流为两阶段缩放，最终输出视频尺寸是设置宽高的2倍</div>
+            <div class="quote-time">120</div>
+        </div>
+  </div>
+
+  <!-- Takeaways -->
+  <div class="section-card">
+    <div class="section-label">Takeaways</div>
+    <ul class="takeaway-list">
+      <li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            多图首尾帧设置参考图权重时，首尾关键帧权重设为1，中间过渡帧设为0.5，可同时兼顾内容一致性和过渡流畅度
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            使用视频控制功能时，参考视频尽量选择动作缓慢流畅的内容，避免帧间变化过大导致生成视频崩坏
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            LTX 2.3生成帧率最高可设为36FPS，不会出现明显异常，可有效提升视频流畅度
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            数字人生成场景优先选择LTX2的对口型工作流，效果优于2.3版本所有同类流程，无需强行升级
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            多图首尾帧最多支持多少张参考图输入？
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            为什么我设置的宽高和最终输出的视频尺寸不一致？
+        </li>
+<li class="takeaway-item">
+            <span class="takeaway-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></span>
+            反向提示词不生效怎么办？
+        </li>
+    </ul>
+  </div>
+
+  <!-- Resources -->
+  <div class="section-card">
+    <div class="section-label">Tools & Resources</div>
+    <table class="resource-table">
+      <thead><tr><th>Name</th><th>Description</th><th>Link</th></tr></thead>
+      <tbody>
+        <tr><td>RunningHub在线ComfyUI平台</td><td>可在线运行LTX 2.3相关工作流，无需本地部署，邀请码：rh-v1111</td><td><a href="https://www.runninghub.cn/" target="_blank" rel="noopener">Link</a></td></tr>
+<tr><td>Hugging Face LTX-2.3-Workflows开源项目</td><td>获取官方开源的LTX 2.3各类工作流文件，可下载到本地运行</td><td><a href="https://huggingface.co/Rundiff/LTX-2.3-Workflows" target="_blank" rel="noopener">Link</a></td></tr>
+<tr><td>LTX2蒸馏对口型工作流</td><td>生成效果优于2.3版本的数字人对口型工作流，适合数字人生成场景</td><td><span style="color:var(--text-muted)">--</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section-card">
+            <div class="section-label">FAQ</div>
+            <div class="faq-item">
+                <div class="faq-q">Q: 多图首尾帧最多支持多少张参考图输入？</div>
+                <div class="faq-a"><p>官方最高支持20张参考图输入，目前RunningHub线上版本最多支持5张，后续版本更新后会开放到20张的官方上限。</p></div>
+            </div><div class="faq-item">
+                <div class="faq-q">Q: 为什么我设置的宽高和最终输出的视频尺寸不一致？</div>
+                <div class="faq-a"><p>工作流默认采用两阶段生成逻辑，一阶段会将输入尺寸缩放0.67倍生成低清内容，二阶段放大2倍输出高清视频，因此最终输出尺寸会比初始设置大，属于正常设计，无需手动调整参数。</p></div>
+            </div><div class="faq-item">
+                <div class="faq-q">Q: 反向提示词不生效怎么办？</div>
+                <div class="faq-a"><p>目前线上运行时nag节点存在部分报错问题，可尝试本地部署运行后开启该节点，开启后反向提示词即可生效；也可直接在正向提示词中添加负面规避内容，实现同样的效果。</p></div>
+            </div>
+        </div>
+
+  <div class="section-card">
+            <div class="section-label">Summary</div>
+            <div class="summary-box"><p>本教程详细讲解了LTX 2.3版本的核心更新功能与配套工作流的使用方法，最大亮点是新增的多图首尾帧功能，支持最高20张参考图输入，可自定义每张图的出现位置和权重，相比2.0版本大幅提升了视频内容可控性和角色一致性，过渡流畅度也有质的提升。同时提供的IC LoRA Union联合控制工作流，可通过参考视频的运动信号引导生成，实现动作迁移类视频创作。教程明确指出当前2.3版本数字人生成效果不如LTX2版本，给出了清晰的版本选择建议，所有工作流已在RunningHub平台上线可直接在线运行，无需复杂本地部署，实用性极强，适合有一定基础的AIGC创作者快速上手新功能。</p></div>
+        </div>
+
+  <footer class="report-footer">
+    powered by video-learn
+  </footer>
+</div>
+
+<script>
+// Chapter accordion
+document.querySelectorAll('.chapter-header').forEach(header => {
+  header.addEventListener('click', () => {
+    header.parentElement.classList.toggle('open');
+  });
+});
+</script>
+</body>
+</html>
