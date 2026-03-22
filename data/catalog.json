@@ -12,7 +12,7 @@
       "generated_at": "2026-03-22T17:32:49.061449",
       "platform": "YouTube",
       "source_url": "https://www.youtube.com/watch?v=jQxHo9PC19Q",
-      "thumbnail": "data/videos/20260322_test-video/thumbnail.jpg",
+      "thumbnail": "https://img.youtube.com/vi/jQxHo9PC19Q/maxresdefault.jpg",
       "report": "data/videos/20260322_test-video/report.html",
       "type": "learning",
       "topic": "教授零代码基础用户通过AI工具生成素材、自动写代码、免费部署，制作带有微动态英雄区的高质感网站，解决AI生成网站千篇一律的问题",
