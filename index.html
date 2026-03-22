@@ -456,8 +456,13 @@ function getScore(v) {
 
 function getThumbUrl(v) {
   if (v.thumbnail && (v.thumbnail.startsWith('http') || v.thumbnail.startsWith('data:'))) return v.thumbnail;
+  if (v.thumbnail && v.thumbnail.startsWith('data/')) return './' + v.thumbnail;
   if (v.thumbnail) return v.thumbnail;
+  // Fallback: try local thumbnail.jpg
   if (v.slug) return './data/videos/' + v.slug + '/thumbnail.jpg';
+  // Fallback for YouTube: extract video ID from source_url
+  const ytMatch = (v.source_url || '').match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+  if (ytMatch) return 'https://img.youtube.com/vi/' + ytMatch[1] + '/maxresdefault.jpg';
   return '';
 }
 
