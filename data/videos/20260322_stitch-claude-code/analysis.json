@@ -1,0 +1,102 @@
+{
+  "title_cn": "Google Stitch 2.0 × Claude Code 工作流：AI网页设计的革命性整合",
+  "topic": "Google Stitch 2.0与Claude Code的AI网页设计完整工作流教程",
+  "category": "AI工具",
+  "tags": [
+    "Stitch",
+    "Claude Code",
+    "AI设计",
+    "Google",
+    "前端开发"
+  ],
+  "difficulty": "beginner",
+  "learning_rating": 9.0,
+  "speaker": "Chase AI",
+  "language": "英文",
+  "video_info": {
+    "publish_date": "",
+    "views_estimate": ""
+  },
+  "overview": "本视频介绍了Google发布的全新AI设计工具Stitch 2.0，它集成Gemini 3.1模型，专门解决Claude Code等AI编码工具在前端设计方面的短板。通过「灵感采集 → Stitch生成设计 → Claude Code完善后端」的工作流，用户可快速生成高质量、看起来不像AI垃圾的网站。Stitch发布后Figma股价应声下跌近8%。",
+  "sections": [
+    {
+      "title": "Stitch 2.0 核心价值定位",
+      "content": "Stitch 2.0是Google发布的全新AI设计工具，基于Gemini 3.1模型，专门解决Claude Code等AI编码工具在前端设计方面的短板。通过「灵感 → Stitch → Claude Code」工作流，用户可快速生成高质量、看起来不像AI垃圾的网站。",
+      "subsections": []
+    },
+    {
+      "title": "推荐工作流程详解",
+      "content": "完整工作流程分为4个步骤：寻找灵感 → Stitch设计生成 → 导出到Claude Code → 部署上线。",
+      "subsections": [
+        {
+          "title": "工作流第一步",
+          "content": "在Dribbble、Godly、Website或Pinterest搜索喜欢的设计风格，截图保存作为设计参考"
+        },
+        {
+          "title": "工作流第二步",
+          "content": "上传截图 + 简单描述需求，自动生成设计系统和多版本原型"
+        }
+      ]
+    },
+    {
+      "title": "Stitch核心功能演示",
+      "content": "设计系统生成、快速迭代、可视化编辑、Live Mode、多种导出选项。",
+      "subsections": []
+    },
+    {
+      "title": "与Claude Code的对比分析",
+      "content": "Stitch在视觉设计质量、迭代速度、所见即所得、组件编辑、灵感融合、成本等方面均优于纯Claude Code前端设计。",
+      "subsections": []
+    }
+  ],
+  "resources": [
+    {
+      "name": "Google Stitch",
+      "url": "https://stitch.google.com",
+      "description": "Google AI设计工具",
+      "type": "tool"
+    },
+    {
+      "name": "Claude Code",
+      "url": "https://claude.ai/code",
+      "description": "AI编程助手",
+      "type": "tool"
+    },
+    {
+      "name": "Pinterest",
+      "url": "https://pinterest.com",
+      "description": "设计灵感平台",
+      "type": "website"
+    },
+    {
+      "name": "Dribbble",
+      "url": "https://dribbble.com",
+      "description": "设计师社区",
+      "type": "website"
+    }
+  ],
+  "key_tips": [
+    "Stitch解决了AI编程工具在前端设计方面的短板",
+    "通过「灵感采集 → Stitch生成 → Claude Code完善」的流程可快速获得高质量网站前端",
+    "Stitch在设计迭代、所见即所得、截图参考等方面具有明显优势"
+  ],
+  "faq": [],
+  "hardware_requirements": "",
+  "target_audience": [
+    "独立开发者",
+    "非专业设计师",
+    "AI爱好者"
+  ],
+  "summary": "本视频系统介绍了Google Stitch 2.0与Claude Code的整合工作流，展示了如何通过AI快速完成专业级网页设计。Stitch解决了AI编程工具在前端设计方面的短板，通过「灵感采集 → Stitch生成 → Claude Code完善」的流程，用户可快速获得高质量网站前端。",
+  "related_links": [],
+  "_meta": {
+    "title": "20260322_stitch-claude-code",
+    "type": "learning",
+    "analysis_mode": "manual",
+    "analyzed_at": "2026-03-22T16:30:00.000000",
+    "source_url": "https://www.youtube.com/watch?v=qqcpiDXPCvY",
+    "video_duration": 900,
+    "channel": "Chase AI",
+    "thumbnail": "https://img.youtube.com/vi/qqcpiDXPCvY/maxresdefault.jpg"
+  }
+}
