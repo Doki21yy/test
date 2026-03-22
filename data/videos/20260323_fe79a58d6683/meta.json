@@ -1,0 +1,20 @@
+{
+  "title": "视频学习笔记",
+  "type": "learning",
+  "topic": "讲解AI智能体从单Agent到多Agent集群的演进逻辑、架构优势，结合工具实操展示多Agent协作处理复杂任务的方法",
+  "category": "AI技术",
+  "difficulty": "beginner",
+  "learning_rating": 8.5,
+  "summary": "本视频讲解AI智能体从单Agent到多Agent集群的演进逻辑，分析单Agent处理复杂任务的瓶颈，介绍多Agent团队的架构优势，结合Claude Code、Kimi的实际案例，演示多Agent集群处理论文总结、行业分析等任务的用法，展示其效率优势。",
+  "speaker": "飞天闪客",
+  "tags": [
+    "多Agent集群",
+    "AI智能体",
+    "Kimi Agent集群",
+    "Claude Code",
+    "大模型应用"
+  ],
+  "source_url": "https://www.bilibili.com/video/BV1AsNwzkErQ/",
+  "duration": 316.464535,
+  "generated_at": "2026-03-23T00:56:10.567219"
+}
