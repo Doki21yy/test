@@ -1,0 +1,334 @@
+{
+  "title_cn": "OpenClaw保姆级安装使用教程：Qclaw一键部署全指南",
+  "topic": "OpenClaw AI Agent安装部署与使用指南",
+  "category": "AI工具",
+  "tags": [
+    "OpenClaw",
+    "Qclaw",
+    "AI Agent",
+    "智能体部署",
+    "效率工具"
+  ],
+  "difficulty": "beginner",
+  "learning_rating": 9.0,
+  "speaker": "秋芝2046",
+  "language": "中文",
+  "video_info": {
+    "publish_date": "未知",
+    "views_estimate": "未知"
+  },
+  "overview": "本教程针对热门AI Agent OpenClaw安装门槛高的痛点，介绍自研可视化管理工具Qclaw，支持一键部署、可视化配置、快捷对接通讯软件，同时讲解核心能力、设备模型选择、安装步骤与玩法，帮助小白零代码快速上手。",
+  "sections": [
+    {
+      "title": "OpenClaw核心能力",
+      "content": "全权限操作电脑；本地永久记忆；主动复盘进化；7*24小时定时任务；海量技能生态；多通讯软件对接"
+    },
+    {
+      "title": "设备与模型选择",
+      "content": "优先选闲置Mac/Windows电脑；次选打折云服务器、老安卓手机；顶尖主模型+国产包月模型降本"
+    },
+    {
+      "title": "Qclaw安装流程",
+      "content": "官网下载安装包；填写模型API Key；选择对接通讯软件；配置技能与Hook后启动"
+    },
+    {
+      "title": "Qclaw管理功能",
+      "content": "查看运行状态/Token消耗；一键重启/修复/回滚配置；切换模型/设置日限额；管理会话/技能/记忆"
+    },
+    {
+      "title": "OpenClaw实用玩法",
+      "content": "定时任务/行程管理；信息采集/内容爬取；辅助代码开发；办公流程自动化；智能家居联动"
+    }
+  ],
+  "resources": [
+    {
+      "name": "Qclaw（龙虾管家）",
+      "url": "视频评论区获取",
+      "description": "OpenClaw可视化一键安装管理工具，无需命令行即可完成部署配置",
+      "type": "tool"
+    },
+    {
+      "name": "OpenClaw使用指南文档",
+      "url": "视频评论区获取",
+      "description": "包含OpenClaw使用场景、推荐技能清单与玩法教程",
+      "type": "tutorial"
+    }
+  ],
+  "key_tips": [
+    "使用Coding plan套餐时需手动选择套餐登录，避免额外产生API费用",
+    "安装时建议勾选省流与安全Skill，可自动按任务难度切换模型、拦截恶意Skill",
+    "OpenClaw任务执行跑偏时，直接在Qclaw面板停止任务，避免无意义消耗Token",
+    "不要将日常使用的OpenClaw加入公开群或Agent社区，防止提示词注入泄露隐私"
+  ],
+  "faq": [
+    {
+      "question": "安装或对接通讯软件过程中出现错误怎么办？",
+      "answer": "可在Qclaw的对话入口询问已启动的OpenClaw，即可自动排查解决问题"
+    },
+    {
+      "question": "OpenClaw连接不上、配置异常怎么处理？",
+      "answer": "在Qclaw小窗面板点击重启网关/自动修复/回滚配置，即可快速解决异常"
+    },
+    {
+      "question": "如何降低OpenClaw的Token消耗成本？",
+      "answer": "设置每日消耗限额，搭配按需切模型的Skill，普通任务用国产包月模型处理"
+    }
+  ],
+  "hardware_requirements": "支持Mac/Windows电脑、云服务器、安卓手机、树莓派部署，推荐使用运行内存8G以上的闲置电脑",
+  "target_audience": [
+    "AI Agent爱好者",
+    "办公效率提升需求用户",
+    "无代码基础的AI工具使用者",
+    "个人开发者"
+  ],
+  "summary": "本教程通过自研可视化工具Qclaw大幅降低热门AI Agent OpenClaw的部署门槛，小白无需敲命令即可完成安装、配置、对接通讯软件全流程，同时详解核心能力与实用玩法，帮助普通用户快速上手高权限AI智能体提升效率。",
+  "related_links": [],
+  "scene_breakdown": {
+    "chapters": [
+      {
+        "chapter": "Qclaw产品发布与功能介绍",
+        "start": "00:00",
+        "end": "01:13",
+        "scenes": [
+          {
+            "scene_id": "1-1",
+            "start": "00:00",
+            "end": "00:35",
+            "visual": "讲者处于紫色灯光的室内场景，依次弹出OpenClaw热度相关新闻、“爆肝半个月”“十亿TOKEN”等字幕，展示Qclaw龙虾管家的logo",
+            "narration": "讲者说明OpenClaw当前热度很高，但多数用户被复杂的安装流程拦住，自己爆肝半个月开发了免费的Qclaw龙虾管家工具，可降低使用门槛，请求观众三连支持",
+            "core_concept": "Qclaw是面向普通用户的OpenClaw一键安装管理工具，完全免费",
+            "teaching_method": "引入介绍",
+            "clarity": "high",
+            "note": "OpenClaw安装门槛高，Qclaw可实现一键安装与全流程管理，工具完全免费"
+          },
+          {
+            "scene_id": "1-2",
+            "start": "00:35",
+            "end": "01:13",
+            "visual": "右侧弹出Qclaw的功能列表：一键安装、可视化管理、接入通讯软件等，后续展示整理好的OpenClaw使用场景文档页面",
+            "narration": "介绍Qclaw的核心功能，包括一键安装、可视化配置管理、快捷接入通讯软件、重启/修复/换模型/看消耗等，说明后续会分享OpenClaw使用方法和个人使用心得，整理的配套使用文档可在评论区获取",
+            "core_concept": "Qclaw的核心功能及后续内容预告",
+            "teaching_method": "理论讲解",
+            "clarity": "high",
+            "note": "Qclaw覆盖OpenClaw全生命周期管理，配套使用场景和技能文档可在评论区领取"
+          }
+        ]
+      },
+      {
+        "chapter": "OpenClaw核心能力介绍",
+        "start": "01:13",
+        "end": "02:31",
+        "scenes": [
+          {
+            "scene_id": "2-1",
+            "start": "01:13",
+            "end": "01:50",
+            "visual": "右侧弹出OpenClaw的能力列表，依次展示“啥都能干”“永久记忆”“自我进化”三项能力的说明",
+            "narration": "讲解OpenClaw作为AI Agent的前三项核心能力：权限高于普通AI产品，可操作电脑命令行、浏览器、桌面应用解决各类问题；记忆以文件形式存在本地，越用越懂用户；会主动记录错误，实现自我迭代进化",
+            "core_concept": "OpenClaw的全场景操作、永久本地记忆、自我进化三项核心能力",
+            "teaching_method": "理论讲解",
+            "clarity": "high",
+            "note": "OpenClaw可操控电脑全场景应用，记忆本地存储，能主动纠错迭代"
+          },
+          {
+            "scene_id": "2-2",
+            "start": "01:50",
+            "end": "02:31",
+            "visual": "继续展示后三项能力“全天干活”“生态庞大”“指挥方便”的说明，最后演示在OpenClaw中询问其实现原理的操作",
+            "narration": "讲解剩余三项能力：支持7*24小时巡检和定时任务；技能生态丰富，一句话即可安装新能力；可对接飞书、钉钉、QQ等主流通讯软件随时发送指令，建议安装后直接询问OpenClaw了解其实现原理",
+            "core_concept": "OpenClaw的定时任务、技能扩展、通讯对接能力及学习建议",
+            "teaching_method": "理论讲解+演示",
+            "clarity": "high",
+            "note": "OpenClaw支持定时任务、一键扩展技能、对接主流通讯工具，安装后可直接询问其运行原理"
+          }
+        ]
+      },
+      {
+        "chapter": "部署前准备：设备与模型选择",
+        "start": "02:31",
+        "end": "04:20",
+        "scenes": [
+          {
+            "scene_id": "3-1",
+            "start": "02:31",
+            "end": "03:15",
+            "visual": "展示可部署OpenClaw的设备列表：Mac、Windows、云服务器、安卓手机、树莓派，弹出设备推荐优先级表格",
+            "narration": "介绍可部署OpenClaw的设备类型，给出选择优先级：首选闲置Mac/Windows本地电脑，其次是优惠期云服务器、老安卓手机，云服务器更适合对外提供服务的场景，后续会测试国产云厂商的适配性并输出教程",
+            "core_concept": "OpenClaw部署设备的选择建议",
+            "teaching_method": "对比讲解",
+            "clarity": "high",
+            "note": "OpenClaw可部署在Mac/Windows/云服务器/安卓/树莓派，优先选闲置本地电脑，云服务器适合对外服务场景"
+          },
+          {
+            "scene_id": "3-2",
+            "start": "03:15",
+            "end": "04:20",
+            "visual": "展示模型搭配建议：顶尖模型+国产包月模型，弹出纯用Claude的成本说明，后续展示不同用户的模型搭配方案",
+            "narration": "讲解模型选择逻辑：顶尖模型效果远好于普通模型，建议至少搭配1个顶尖模型做主事，搭配国产包月模型处理杂活降低成本，纯用Claude密集使用单日成本可达2000元，后续会争取模型API的粉丝专属折扣整合到Qclaw中",
+            "core_concept": "OpenClaw的模型搭配建议",
+            "teaching_method": "对比+举例",
+            "clarity": "high",
+            "note": "模型优先选“顶尖主模型+国产包月杂活模型”搭配，可大幅降低使用成本，后续Qclaw会接入专属折扣API"
+          }
+        ]
+      },
+      {
+        "chapter": "Qclaw安装与配置全流程",
+        "start": "04:20",
+        "end": "11:09",
+        "scenes": [
+          {
+            "scene_id": "4-1",
+            "start": "04:20",
+            "end": "05:00",
+            "visual": "演示Qclaw官网下载页面、安装过程、启动后自动检测OpenClaw环境的界面，展示已有配置一键迁移的选项",
+            "narration": "讲解安装第一步：前往Qclaw官网下载对应系统的安装包，按照普通软件流程安装，启动后会自动检测当前设备是否已安装OpenClaw，已安装用户可一键迁移原有配置，无需手动操作",
+            "core_concept": "Qclaw的下载与安装步骤",
+            "teaching_method": "实操演示",
+            "clarity": "high",
+            "note": "Qclaw官网可直接下载安装包，支持Windows和Mac，启动后自动检测OpenClaw环境，支持原有配置一键迁移"
+          },
+          {
+            "scene_id": "4-2",
+            "start": "05:00",
+            "end": "06:05",
+            "visual": "演示Qclaw自动处理环境依赖的过程，展示模型选择下拉列表、API Key填写界面，以及跳转服务商购买页的引导",
+            "narration": "讲解第二步模型配置：Qclaw会自动处理所有环境依赖，无需手动安装nodejs、git、homebrew等工具；可在列表中选择所需的模型服务商，填写对应的API Key，没有Key可直接点击跳转对应服务商的购买页面，后续会争取粉丝专属折扣",
+            "core_concept": "Qclaw的模型配置步骤",
+            "teaching_method": "实操演示",
+            "clarity": "high",
+            "note": "Qclaw自动处理环境依赖，无需手动配置，支持选择各类主流模型，可直接跳转购买对应API Key"
+          },
+          {
+            "scene_id": "4-3",
+            "start": "06:05",
+            "end": "07:44",
+            "visual": "演示飞书开放平台创建应用、获取APP ID和APP Secret的全过程，展示Qclaw内的带图教程弹窗，以及群聊策略选择界面",
+            "narration": "讲解第三步对接通讯软件，以飞书为例：Qclaw内置了带图教程，按照教程在飞书开放平台创建应用，获取APP ID和APP Secret填写到Qclaw中，之后可选择群聊策略，支持所有群可聊、指定群可聊、仅私聊三种模式",
+            "core_concept": "Qclaw对接通讯软件的操作步骤",
+            "teaching_method": "实操演示",
+            "clarity": "high",
+            "note": "通讯软件对接可参考Qclaw内置带图教程，以飞书为例只需创建应用复制对应信息即可，可自定义群聊访问权限"
+          },
+          {
+            "scene_id": "4-4",
+            "start": "07:44",
+            "end": "09:10",
+            "visual": "展示Skill选择界面，所有技能已汉化功能说明，弹出推荐的省钱、安全类Skill，展示Hook配置界面及悬浮显示的功能解释",
+            "narration": "讲解技能（Skill）和钩子（Hook）配置：Qclaw已将所有技能的作用翻译为中文，可按需勾选，推荐优先安装自动切换模型的省钱技能和拦截恶意Skill的安全技能；Hook选项鼠标悬浮即可查看功能解释，建议按需开启相关功能",
+            "core_concept": "Qclaw的技能与Hook配置方法",
+            "teaching_method": "实操演示",
+            "clarity": "high",
+            "note": "Skill可按需选择，推荐优先安装自动切换模型的省钱技能和恶意技能拦截工具，Hover可查看Hook选项的功能解释"
+          },
+          {
+            "scene_id": "4-5",
+            "start": "09:10",
+            "end": "11:09",
+            "visual": "演示飞书开放平台权限配置、添加回调地址、发布版本的过程，展示向飞书机器人发消息获取配对码、填入Qclaw完成配对的操作，最后测试飞书内对话效果",
+            "narration": "讲解最后一步飞书配对：按照Qclaw教程在飞书开放平台配置消息接收权限、添加回调地址并发布新版本，给飞书机器人发送消息即可获取配对码，填入Qclaw完成配对，即可在飞书内和OpenClaw交互，安装遇到问题可在Qclaw内咨询已部署的OpenClaw解决",
+            "core_concept": "Qclaw与飞书的配对步骤",
+            "teaching_method": "实操演示",
+            "clarity": "high",
+            "note": "按照教程完成飞书权限与回调配置，发送消息获取配对码填入即可完成对接，安装遇到问题可在Qclaw内咨询已部署的OpenClaw解决"
+          }
+        ]
+      },
+      {
+        "chapter": "Qclaw日常管理功能介绍",
+        "start": "11:09",
+        "end": "13:14",
+        "scenes": [
+          {
+            "scene_id": "5-1",
+            "start": "11:09",
+            "end": "12:10",
+            "visual": "展示Qclaw小窗管理面板，标注运行状态、Token消耗、会话数参数，以及重启、修复、回滚、停止任务等功能按钮",
+            "narration": "介绍Qclaw小窗面板的核心功能：可实时查看OpenClaw运行状态、Token消耗量、会话数量，提供一键重启网关、自动修复配置、回滚配置、停止异常任务的功能，还可快速切换模型、设置每日Token消耗限额，避免不必要的浪费",
+            "core_concept": "Qclaw小窗管理面板的核心功能",
+            "teaching_method": "演示讲解",
+            "clarity": "high",
+            "note": "Qclaw小窗面板可快速查看运行状态和消耗，一键解决配置错误、任务跑飞等常见问题，还可设置Token限额避免浪费"
+          },
+          {
+            "scene_id": "5-2",
+            "start": "12:10",
+            "end": "13:14",
+            "visual": "展示Qclaw大屏模式的会话管理、技能管理、记忆管理页面，最后弹出用户反馈群的二维码",
+            "narration": "介绍Qclaw大屏模式支持更细致的会话管理、技能管理、记忆管理等功能，说明当前是Beta版本，存在不完善的地方，还有更多功能正在开发中，欢迎用户扫码进群反馈问题和提出新需求，共同迭代产品",
+            "core_concept": "Qclaw大屏模式功能及反馈渠道",
+            "teaching_method": "演示讲解",
+            "clarity": "high",
+            "note": "Qclaw大屏模式提供更丰富的管理功能，Beta版本遇到问题可进群反馈，后续会持续迭代优化"
+          }
+        ]
+      },
+      {
+        "chapter": "OpenClaw实用玩法与注意事项",
+        "start": "13:14",
+        "end": "16:05",
+        "scenes": [
+          {
+            "scene_id": "6-1",
+            "start": "13:14",
+            "end": "14:15",
+            "visual": "展示定时任务监控UP主更新、自动抓取视频评论的对话示例和运行结果，标注内置Browser工具的说明",
+            "narration": "讲解前两类实用玩法：定时任务类如定时监控博主更新、联动日历待办发送早晚报、自动安排行程；信息采集类如自动抓取视频评论、网页公开内容，这类功能仅需调用OpenClaw内置的Browser工具，无需额外安装技能",
+            "core_concept": "OpenClaw定时任务与信息采集玩法",
+            "teaching_method": "举例演示",
+            "clarity": "high",
+            "note": "OpenClaw可实现定时监控、待办联动、信息爬取等功能，信息采集仅需内置浏览器工具即可完成"
+          },
+          {
+            "scene_id": "6-2",
+            "start": "14:15",
+            "end": "15:20",
+            "visual": "展示自动开发产品、企业群报销自动处理、控制智能音箱的使用示例，展示语音交互的对话界面",
+            "narration": "讲解其余三类玩法：后台开发类可自动调用其他Agent完成产品开发、代码提交、运行测试全流程并输出报告；流程自动化类可加入企业群处理报销、立项、采购等流程的自动审核与归档；智能家居类安装对应Skill即可控制各类智能设备，支持语音输入和语音回复，使用体验更流畅",
+            "core_concept": "OpenClaw的开发、流程自动化、智能家居玩法",
+            "teaching_method": "举例演示",
+            "clarity": "high",
+            "note": "OpenClaw可实现自动开发、企业流程自动化、智能家居控制，支持语音交互，使用体验更流畅"
+          },
+          {
+            "scene_id": "6-3",
+            "start": "15:20",
+            "end": "16:05",
+            "visual": "播放提示词注入风险的猫和老鼠动画片段，最后展示配套的玩法汇总文档",
+            "narration": "讲解使用注意事项：不要回复无意义的夸赞类内容，避免消耗不必要的Token；不要将自用的OpenClaw加入公开群或Agent社区，避免被提示词注入导致隐私泄露，配套文档中有更多玩法可自行尝试",
+            "core_concept": "OpenClaw的使用安全与成本注意事项",
+            "teaching_method": "理论讲解+举例",
+            "clarity": "high",
+            "note": "避免无意义对话浪费Token，不要将自用OpenClaw放到公开场景，防止提示词注入泄露隐私，更多玩法可参考配套文档"
+          }
+        ]
+      },
+      {
+        "chapter": "总结与展望",
+        "start": "16:05",
+        "end": "17:43",
+        "scenes": [
+          {
+            "scene_id": "7-1",
+            "start": "16:05",
+            "end": "17:43",
+            "visual": "讲者分享使用感受，搭配普通人使用AI提升工作效率的画面，最后讲者比出点赞手势，弹出up主ID收尾",
+            "narration": "讲者分享自己使用OpenClaw的感受，说明AI Agent的核心意义是降低技术门槛，让有想法的普通人可以放大自身能力，甚至改变命运，鼓励大家勇敢尝试，使用Qclaw遇到bug欢迎反馈，最后请求观众点赞收藏关注",
+            "core_concept": "AI Agent的价值与对用户的鼓励",
+            "teaching_method": "观点分享",
+            "clarity": "high",
+            "note": "AI Agent降低了技术实现门槛，普通人的创意和能力会被放大，建议大胆尝试使用，遇到问题可反馈给开发者"
+          }
+        ]
+      }
+    ]
+  },
+  "_meta": {
+    "title": "BV1mYPSzmEkV",
+    "type": "learning",
+    "analyzed_at": "2026-03-23T01:51:26.114583",
+    "video_duration": 1063.787,
+    "video_size_mb": 13.7,
+    "source_url": "https://www.bilibili.com/video/BV1mYPSzmEkV/"
+  }
+}
