@@ -1,7 +1,25 @@
 {
-  "last_updated": "2026-03-23T00:43:57.255106",
-  "total_videos": 20,
+  "last_updated": "2026-03-23T01:51:56.530620",
+  "total_videos": 21,
   "videos": [
+    {
+      "slug": "20260323_fe79a58d6683",
+      "title": "视频学习笔记",
+      "score": 8.5,
+      "summary": "本视频讲解AI智能体从单Agent到多Agent集群的演进逻辑，分析单Agent处理复杂任务的瓶颈，介绍多Agent团队的架构优势，结合Claude Code、Kimi的实际案例，演示多Agent集群处理论文总结、行业分析等任务的用法，展示其效率优势。",
+      "duration": 316.464535,
+      "date": "2026-03-23",
+      "generated_at": "2026-03-23T00:56:10.567219",
+      "platform": "Bilibili",
+      "source_url": "https://www.bilibili.com/video/BV1AsNwzkErQ/",
+      "thumbnail": "data/videos/20260323_fe79a58d6683/thumbnail.jpg",
+      "report": "data/videos/20260323_fe79a58d6683/report.html",
+      "type": "learning",
+      "topic": "讲解AI智能体从单Agent到多Agent集群的演进逻辑、架构优势，结合工具实操展示多Agent协作处理复杂任务的方法",
+      "category": "AI技术",
+      "difficulty": "beginner",
+      "learning_rating": 8.5
+    },
     {
       "slug": "20260323_claude-codeai-agent",
       "title": "零基础用Claude Code搭建专属AI秘书团 无代码打造个人多Agent效率工具",
