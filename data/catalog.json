@@ -1,7 +1,25 @@
 {
-  "last_updated": "2026-03-22T20:43:23.482021",
-  "total_videos": 18,
+  "last_updated": "2026-03-22T23:29:00.795277",
+  "total_videos": 19,
   "videos": [
+    {
+      "slug": "20260322_fe79a58d6683",
+      "title": "视频学习笔记",
+      "score": 8.5,
+      "summary": "当前Claude Code生态正在发生显著变化，大量CLI工具涌现，用于扩展Claude Code的原生能力边界，覆盖从内容研究、应用部署到谷歌套件控制等多元场景。本视频由Chase AI主讲人分享多款经过实战验证的精选CLI工具，解决Claude Code原生无法操作无公开API的第三方平台、音视频处理能力不足、复杂平台操作流程繁琐等痛点。核心使用逻辑是通过在本地安装对应CLI工具，配合为Claude Code导入工具使用技能，即可让Claude Code自动通过命令行调用对应能力，无需用户手动操作复杂的界面流程。所有工具均具备极低的使用门槛，大部分仅需2步即可完成配置，甚至可以直接告知Claude Code工具名称由其自动完成安装，适合非技术背景的AI爱好者和专业开发者使用，能够大幅提升AI开发和日常工作的自动化效率。",
+      "duration": 843,
+      "date": "2026-03-22",
+      "generated_at": "2026-03-22T23:28:49.664791",
+      "platform": "YouTube",
+      "source_url": "https://www.youtube.com/watch?v=uULvhQrKB_c",
+      "thumbnail": "https://img.youtube.com/vi/uULvhQrKB_c/maxresdefault.jpg",
+      "report": "data/videos/20260322_fe79a58d6683/report.html",
+      "type": "learning",
+      "topic": "Claude Code生态实用CLI工具盘点与使用指南",
+      "category": "AI工具/编程效率",
+      "difficulty": "beginner",
+      "learning_rating": 8.5
+    },
     {
       "slug": "20260322_lora-19ltx23lora",
       "title": "【lora训练营-19】LTX2.3数字人带音频LoRA训练实操，无需大量数据集，长视频不崩脸！",
@@ -48,7 +66,7 @@
       "generated_at": "2026-03-15T16:14:22.405173",
       "platform": "YouTube",
       "source_url": "https://www.youtube.com/watch?v=2rcJdFuNbZQ",
-      "thumbnail": "https://img.youtube.com/vi/2rcJdFuNbZQ/hqdefault.jpg",
+      "thumbnail": "https://img.youtube.com/vi/2rcJdFuNbZQ/maxresdefault.jpg",
       "report": "data/videos/20260315_2rcjdfunbzq/report.html",
       "type": "learning",
       "topic": "通过开源项目OpenClaw讲解AI Agent的核心概念、架构逻辑、落地能力与底层技术基础",
