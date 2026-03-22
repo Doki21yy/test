@@ -1,0 +1,110 @@
+{
+  "title_cn": "零基础用Claude Code搭建专属AI秘书团 无代码打造个人多Agent效率工具",
+  "topic": "无代码使用Claude Code子代理功能搭建个人专属多角色AI秘书团，实现日常事务自动化处理",
+  "category": "AI工具",
+  "tags": [
+    "Claude Code",
+    "AI Agent",
+    "多代理系统",
+    "AI秘书",
+    "效率工具"
+  ],
+  "difficulty": "beginner",
+  "learning_rating": 8.5,
+  "speaker": "秋芝2046",
+  "language": "中文",
+  "video_info": {
+    "publish_date": "",
+    "views_estimate": ""
+  },
+  "overview": "本教程面向无编程基础用户，讲解如何利用Claude Code的子代理功能，搭建包含多角色的专属AI秘书团，实现新闻推送、穿搭建议、健康管理等日常事务自动处理，大幅提升效率。",
+  "sections": [
+    {
+      "title": "Claude Code核心特性",
+      "content": "可读取用户资料习惯偏好；自带内置工具，支持MCP扩展；可生成子代理组建专属团队"
+    },
+    {
+      "title": "环境安装配置",
+      "content": "用Cursor AI IDE自动安装；替换国内大模型API；设置跳过操作权限确认"
+    },
+    {
+      "title": "AI秘书团设计",
+      "content": "定义各子代理角色职责；填写个人信息模板；按需配置对应MCP工具"
+    },
+    {
+      "title": "Agent生成与测试",
+      "content": "按流程创建单代理配置工具；执行/init生成运行规范；测试自动化任务执行流程"
+    }
+  ],
+  "resources": [
+    {
+      "name": "Cursor",
+      "url": "",
+      "description": "免费AI原生IDE，可自动完成Claude Code安装配置",
+      "type": "tool"
+    },
+    {
+      "name": "Smithery",
+      "url": "",
+      "description": "MCP工具超市，可获取各类扩展工具适配Claude Code",
+      "type": "website"
+    },
+    {
+      "name": "Z智谱",
+      "url": "",
+      "description": "大模型API平台，可获取GLM-4.5的API Key替换原生模型",
+      "type": "website"
+    },
+    {
+      "name": "Claude Code官方文档",
+      "url": "",
+      "description": "官方安装配置参考指南",
+      "type": "tutorial"
+    }
+  ],
+  "key_tips": [
+    "安装Claude Code时将官方文档发给Cursor的Agent模式，可自动完成全流程安装，无需手动配置Node.js等环境",
+    "启动Claude Code时添加--dangerously-skip-permissions参数，可跳过每次操作的手动确认，大幅提升运行效率",
+    "输入/help可查看所有指令，看不懂的英文内容选中后可让Cursor直接翻译解释，无需自行查阅资料"
+  ],
+  "faq": [
+    {
+      "question": "没有Claude原生账号无法使用原生模型怎么办？",
+      "answer": "可使用国内的GLM-4.5、Kimi K2等大模型替换，替换命令和教程可参考配套文档，仅需替换自己申请的API Key即可正常使用"
+    },
+    {
+      "question": "安装完MCP工具后如何确认配置是否成功？",
+      "answer": "输入claude mcp list命令，所有配置的工具显示connected就代表配置成功，可以正常调用"
+    },
+    {
+      "question": "Agent运行时遗忘之前的上下文信息怎么办？",
+      "answer": "使用/compact指令压缩聊天记录生成交接文档，后续的代理会读取该文档承接之前的上下文信息，避免记忆丢失"
+    }
+  ],
+  "hardware_requirements": "普通家用电脑即可，无特殊GPU、显存要求",
+  "target_audience": [
+    "无编程基础的职场办公人群",
+    "想提升日常效率的学生/自由职业者",
+    "AI工具、Agent应用爱好者"
+  ],
+  "summary": "本教程打破了Claude Code仅用于编程的刻板印象，手把手教零基础用户搭建个性化多角色AI秘书团，无需复杂编程即可实现日常事务自动化，配套提供所有指令、工具参考，可直接复用拓展自定义Agent。",
+  "related_links": [
+    {
+      "label": "视频配套指令、工具、Agent灵感参考文档",
+      "url": "见视频评论区"
+    }
+  ],
+  "scene_breakdown": {
+    "_degraded": true,
+    "reason": "API 调用(video_url)在 3 次重试后失败",
+    "chapters": []
+  },
+  "_meta": {
+    "title": "BV1zqeMzfEiQ",
+    "type": "learning",
+    "analyzed_at": "2026-03-23T00:43:31.566951",
+    "video_duration": 1257.175,
+    "video_size_mb": 16.2,
+    "source_url": "https://www.bilibili.com/video/BV1zqeMzfEiQ/"
+  }
+}
