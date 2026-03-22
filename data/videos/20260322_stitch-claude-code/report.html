@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Google Stitch 2.0 × Claude Code 工作流 - Learning Archive</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg-deep: #06060B;
+  --bg-surface: #0D0D14;
+  --bg-card: #12121C;
+  --bg-card-hover: #181826;
+  --border-subtle: rgba(99, 102, 241, 0.08);
+  --border-hover: rgba(99, 102, 241, 0.2);
+  --text-primary: #E8E8ED;
+  --text-secondary: #7A7A8E;
+  --text-muted: #4A4A5E;
+  --accent: #6366F1;
+  --accent-glow: rgba(99, 102, 241, 0.15);
+  --accent-soft: #818CF8;
+  --radius: 12px;
+  --font-heading: 'DM Sans', -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: var(--font-heading);
+  font-weight: 400;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: -200px; left: 50%;
+  transform: translateX(-50%);
+  width: 800px; height: 600px;
+  background: radial-gradient(ellipse, rgba(99, 102, 241, 0.05) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 24px;
+  position: relative;
+  z-index: 1;
+}
+
+a { color: var(--accent-soft); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Back Nav */
+.back-nav { padding: 24px 0; }
+.back-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--text-muted); text-decoration: none;
+  font-family: var(--font-mono); font-size: 0.78rem;
+  transition: color 0.2s;
+}
+.back-link:hover { color: var(--accent-soft); text-decoration: none; }
+.back-link svg { width: 16px; height: 16px; }
+
+/* Hero */
+.hero { padding-bottom: 40px; }
+
+.video-embed {
+  width: 100%; aspect-ratio: 16/9;
+  border-radius: var(--radius); overflow: hidden;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  margin-bottom: 28px;
+}
+.video-embed iframe { width: 100%; height: 100%; border: none; }
+.video-embed .video-link-fallback {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 12px;
+  color: var(--text-secondary); text-decoration: none;
+}
+.video-embed .video-link-fallback:hover { color: var(--accent-soft); }
+.video-embed .video-link-fallback svg { width: 48px; height: 48px; opacity: 0.5; }
+.source-link-row { margin-top: -14px; margin-bottom: 18px; text-align: center; font-size: 12px; color: var(--text-muted); }
+.source-link-row a { color: var(--accent); text-decoration: none; word-break: break-all; }
+.source-link-row a:hover { text-decoration: underline; }
+
+.hero-title {
+  font-family: var(--font-heading);
+  font-weight: 900;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  letter-spacing: -0.02em; line-height: 1.25;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+
+.hero-meta {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+}
+
+.meta-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 12px; border-radius: 6px;
+  font-family: var(--font-mono); font-size: 0.72rem;
+  font-weight: 500; letter-spacing: 0.03em;
+}
+.meta-badge.platform {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+}
+.meta-badge.platform .p-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+}
+.meta-badge.score {
+  background: var(--accent-glow);
+  border: 1px solid rgba(99, 102, 241, 0.15);
+  color: var(--accent-soft);
+}
+.meta-badge.duration, .meta-badge.date {
+  color: var(--text-muted);
+  font-family: var(--font-mono); font-size: 0.72rem;
+}
+
+/* Section Cards */
+.section-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  margin-bottom: 16px;
+}
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem; font-weight: 500;
+  color: var(--accent-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+}
+.section-heading {
+  font-family: var(--font-heading);
+  font-weight: 700; font-size: 1.15rem;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+.section-text {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+
+/* Tags */
+.tag-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.tag-pill {
+  padding: 3px 10px; border-radius: 4px;
+  font-family: var(--font-mono); font-size: 0.7rem; font-weight: 500;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+}
+.tag-pill.difficulty-beginner { border-color: rgba(34, 197, 94, 0.2); color: #4ADE80; }
+.tag-pill.difficulty-intermediate { border-color: rgba(250, 204, 21, 0.2); color: #FACC15; }
+.tag-pill.difficulty-advanced { border-color: rgba(239, 68, 68, 0.2); color: #F87171; }
+
+/* Knowledge Points */
+.knowledge-list { list-style: none; }
+.knowledge-item { padding: 14px 0; border-bottom: 1px solid var(--border-subtle); }
+.knowledge-item:last-child { border-bottom: none; }
+.knowledge-concept {
+  font-family: var(--font-heading); font-weight: 700;
+  font-size: 0.9rem; color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.knowledge-explain {
+  font-size: 0.84rem; color: var(--text-secondary); line-height: 1.65;
+}
+
+/* Chapters Accordion */
+.chapter-item { border-bottom: 1px solid var(--border-subtle); }
+.chapter-item:last-child { border-bottom: none; }
+.chapter-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 0; cursor: pointer; user-select: none;
+  transition: color 0.2s;
+}
+.chapter-header:hover { color: var(--accent-soft); }
+.chapter-header-left {
+  display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0;
+}
+.chapter-time {
+  font-family: var(--font-mono); font-size: 0.72rem;
+  color: var(--accent-soft); white-space: nowrap; flex-shrink: 0;
+}
+.chapter-title {
+  font-family: var(--font-heading); font-weight: 600;
+  font-size: 0.9rem; color: var(--text-primary);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.chapter-arrow {
+  color: var(--text-muted);
+  transition: transform 0.3s ease; flex-shrink: 0;
+}
+.chapter-item.open .chapter-arrow { transform: rotate(180deg); }
+.chapter-content { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+.chapter-item.open .chapter-content { max-height: 500px; }
+.chapter-inner { padding: 0 0 20px 0; }
+.chapter-summary {
+  font-size: 0.85rem; color: var(--text-secondary);
+  margin-bottom: 12px; line-height: 1.7;
+}
+.chapter-points { list-style: none; padding: 0; }
+.chapter-points li {
+  position: relative; padding-left: 16px;
+  margin-bottom: 6px; font-size: 0.82rem; color: var(--text-secondary);
+}
+.chapter-points li::before {
+  content: ''; position: absolute; left: 0; top: 9px;
+  width: 4px; height: 4px; border-radius: 50%; background: var(--accent);
+}
+
+/* Quotes */
+.quote-card {
+  position: relative; padding: 20px 24px;
+  margin-bottom: 12px;
+  border-left: 2px solid var(--accent);
+  background: rgba(99, 102, 241, 0.03);
+  border-radius: 0 8px 8px 0;
+}
+.quote-card:last-child { margin-bottom: 0; }
+.quote-text {
+  font-size: 0.9rem; color: var(--text-primary);
+  font-style: italic; line-height: 1.65; margin-bottom: 8px;
+}
+.quote-time {
+  font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent-soft);
+}
+
+/* Takeaways */
+.takeaway-list { list-style: none; }
+.takeaway-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 8px 0; font-size: 0.88rem; color: var(--text-secondary);
+}
+.takeaway-check {
+  width: 18px; height: 18px;
+  border: 1.5px solid var(--border-hover);
+  border-radius: 4px; flex-shrink: 0; margin-top: 2px;
+  display: flex; align-items: center; justify-content: center;
+}
+.takeaway-check svg {
+  width: 12px; height: 12px; color: var(--accent-soft);
+}
+
+/* Resources Table */
+.resource-table { width: 100%; border-collapse: collapse; }
+.resource-table th {
+  text-align: left; font-family: var(--font-mono);
+  font-size: 0.7rem; font-weight: 500; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.06em;
+  padding: 10px 0; border-bottom: 1px solid var(--border-subtle);
+}
+.resource-table td {
+  padding: 10px 0; font-size: 0.84rem;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.resource-table tr:last-child td { border-bottom: none; }
+.resource-table a { color: var(--accent-soft); text-decoration: none; }
+.resource-table a:hover { text-decoration: underline; }
+
+/* Detailed Content Sections */
+.section-block {
+  margin-bottom: 20px;
+  background: rgba(99, 102, 241, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+}
+.sec-title {
+  font-family: var(--font-heading);
+  font-size: 1rem; font-weight: 700;
+  margin-bottom: 14px; display: flex; align-items: center; gap: 10px;
+  color: var(--text-primary);
+}
+.sec-num {
+  font-family: var(--font-mono); font-size: 0.68rem;
+  color: #fff; background: var(--accent);
+  width: 24px; height: 24px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.sec-body { color: var(--text-secondary); line-height: 1.8; font-size: 0.88rem; }
+.sec-body p { margin-bottom: 10px; }
+.sec-body strong { color: var(--text-primary); font-weight: 600; }
+.subsection { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border-subtle); }
+.subsec-title { font-size: 0.92rem; font-weight: 600; margin-bottom: 8px; color: var(--text-primary); }
+.subsec-body { color: var(--text-secondary); font-size: 0.86rem; }
+.subsec-body p { margin-bottom: 8px; }
+.content-list { margin: 10px 0; padding-left: 22px; }
+.content-list li { margin-bottom: 5px; line-height: 1.65; }
+.content-h4 { font-size: 0.95rem; font-weight: 600; margin: 14px 0 8px; color: var(--text-primary); }
+.content-h5 { font-size: 0.88rem; font-weight: 600; margin: 10px 0 6px; color: var(--text-secondary); }
+.code-block {
+  background: #0D0D14; color: #CDD6F4;
+  padding: 14px 18px; border-radius: 8px;
+  overflow-x: auto; font-family: var(--font-mono);
+  font-size: 0.8rem; line-height: 1.6; margin: 10px 0;
+  border: 1px solid var(--border-subtle);
+}
+.inline-code {
+  background: var(--accent-glow); color: var(--accent-soft);
+  padding: 1px 6px; border-radius: 4px;
+  font-family: var(--font-mono); font-size: 0.85em;
+}
+
+/* FAQ */
+.faq-item {
+  margin-bottom: 14px; padding: 16px 20px;
+  background: rgba(99, 102, 241, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+}
+.faq-q { font-weight: 600; color: var(--accent-soft); margin-bottom: 8px; font-size: 0.9rem; }
+.faq-a { color: var(--text-secondary); font-size: 0.86rem; }
+.faq-a p { margin-bottom: 6px; }
+
+/* Summary Box */
+.summary-box {
+  background: rgba(99, 102, 241, 0.04);
+  border: 1px solid rgba(99, 102, 241, 0.1);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+}
+.summary-box p { color: var(--text-secondary); line-height: 1.85; font-size: 0.92rem; }
+
+/* Footer */
+.report-footer {
+  padding: 48px 0 32px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.section-card { animation: fadeInUp 0.5s ease both; }
+.section-card:nth-child(1) { animation-delay: 0.1s; }
+.section-card:nth-child(2) { animation-delay: 0.15s; }
+.section-card:nth-child(3) { animation-delay: 0.2s; }
+.section-card:nth-child(4) { animation-delay: 0.25s; }
+.section-card:nth-child(5) { animation-delay: 0.3s; }
+.section-card:nth-child(6) { animation-delay: 0.35s; }
+
+/* Responsive */
+@media (max-width: 640px) {
+  .container { padding: 0 16px; }
+  .section-card { padding: 20px 18px; }
+  .hero-title { font-size: 1.4rem; }
+  .section-block { padding: 18px 16px; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <nav class="back-nav">
+    <a href="../../../" class="back-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Archive
+    </a>
+  </nav>
+
+  <section class="hero">
+    <div class="video-embed">
+      <iframe loading="lazy" src="https://www.youtube.com/embed/qqcpiDXPCvY" allowfullscreen frameborder="0"></iframe>
+    </div>
+
+    <h1 class="hero-title">Google Stitch 2.0 × Claude Code 工作流：AI网页设计的革命性整合</h1>
+
+    <div class="hero-meta">
+      <span class="meta-badge platform"><span class="p-dot" style="background:#FF0000"></span>YouTube</span>
+      <span class="meta-badge score">9.0/10</span>
+      <span class="meta-badge duration">15:00</span>
+      <span class="meta-badge date">2026-03-22</span>
+    </div>
+  </section>
+
+  <!-- Overview -->
+  <div class="section-card">
+    <div class="section-label">Overview</div>
+    <div class="tag-row">
+      <span class="tag-pill difficulty-beginner">Beginner</span>
+      <span class="tag-pill">AI工具</span>
+      <span class="tag-pill">Chase AI</span>
+    </div>
+    <div class="section-text">本视频介绍了Google发布的全新AI设计工具Stitch 2.0，它集成Gemini 3.1模型，专门解决Claude Code等AI编码工具在前端设计方面的短板。通过「灵感采集 → Stitch生成设计 → Claude Code完善后端」的工作流，用户可快速生成高质量、看起来不像AI垃圾的网站。Stitch发布后Figma股价应声下跌近8%。</div>
+  </div>
+
+  <!-- Key Knowledge Points -->
+  <div class="section-card">
+    <div class="section-label">Key Knowledge</div>
+    <ul class="knowledge-list">
+      <li class="knowledge-item">
+        <div class="knowledge-concept">Stitch 2.0 核心价值定位</div>
+        <div class="knowledge-explain">Stitch 2.0是Google发布的免费AI设计工具，基于Gemini 3.1模型，专门解决AI编程工具在前端设计方面的短板。</div>
+      </li>
+      <li class="knowledge-item">
+        <div class="knowledge-concept">推荐工作流程</div>
+        <div class="knowledge-explain">Pinterest找灵感 → Stitch生成设计 → Claude Code完善后端 → 部署上线。</div>
+      </li>
+      <li class="knowledge-item">
+        <div class="knowledge-concept">Stitch核心功能</div>
+        <div class="knowledge-explain">设计系统生成、快速迭代、可视化编辑、Live Mode、多种导出选项。</div>
+      </li>
+      <li class="knowledge-item">
+        <div class="knowledge-concept">市场影响</div>
+        <div class="knowledge-explain">Stitch发布后Figma股价应声下跌近8%，对Figma等传统设计工具形成冲击。</div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Detailed Content -->
+  <div class="section-card">
+    <div class="section-label">Detailed Content</div>
+    <div class="section-block">
+      <h3 class="sec-title"><span class="sec-num">01</span>Stitch 2.0 核心价值定位</h3>
+      <div class="sec-body">
+        <p>Stitch 2.0是Google发布的全新AI设计工具，基于Gemini 3.1模型，专门解决Claude Code等AI编码工具在前端设计方面的短板。通过「灵感 → Stitch → Claude Code」工作流，用户可快速生成高质量、看起来不像AI垃圾的网站。</p>
+        <p><strong>核心优势：</strong></p>
+        <ol class="content-list">
+          <li><strong>所见即所得</strong>：无限画布设计，快速预览多版本</li>
+          <li><strong>极速迭代</strong>：秒级生成多个设计变体</li>
+          <li><strong>自动设计系统</strong>：从截图和提示词自动提取设计规范</li>
+          <li><strong>完全免费</strong>：无需消耗Token</li>
+          <li><strong>降低门槛</strong>：非专业设计师也能快速产出高质量原型</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="section-block">
+      <h3 class="sec-title"><span class="sec-num">02</span>推荐工作流程详解</h3>
+      <div class="sec-body">
+        <p>完整工作流程分为4个步骤：</p>
+        <ol class="content-list">
+          <li><strong>寻找灵感</strong>：在Dribbble、Godly、Website或Pinterest搜索喜欢的设计风格，截图保存作为设计参考</li>
+          <li><strong>Stitch设计生成</strong>：上传截图 + 简单描述需求，自动生成设计系统和多版本原型</li>
+          <li><strong>导出到Claude Code</strong>：一键复制代码，在Claude Code中完善后端逻辑</li>
+          <li><strong>部署上线</strong>：GitHub + Vercel完成部署</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="section-block">
+      <h3 class="sec-title"><span class="sec-num">03</span>Stitch核心功能演示</h3>
+      <div class="sec-body">
+        <p><strong>设计系统生成</strong>：自动从截图和提示词中提取设计规范，包括主色/次色/中性色定义、字体选择、圆角规范、组件样式等。</p>
+        <p><strong>快速迭代</strong>：一键生成多个变体版本，支持布局变体、配色变体、图片变体、自定义创意范围。使用explore功能可获取3种不同方案对比。</p>
+        <p><strong>可视化编辑</strong>：点击即可编辑单个组件或整体布局，支持实时预览和全屏模式。</p>
+        <p><strong>Live Mode</strong>：AI实时观察屏幕并对话交互，可通过语音控制设计修改，添加动态背景和鼠标跟随效果。</p>
+        <p><strong>导出选项</strong>：支持复制代码到剪贴板、发送到AI Studio、导出到Figma、发送到Jules等多种方式。</p>
+      </div>
+    </div>
+
+    <div class="section-block">
+      <h3 class="sec-title"><span class="sec-num">04</span>与Claude Code的对比分析</h3>
+      <div class="sec-body">
+        <table class="resource-table">
+          <tr><th>维度</th><th>Stitch 2.0</th><th>Claude Code (纯)</th></tr>
+          <tr><td>视觉设计质量</td><td>⭐⭐⭐⭐⭐ 专业级</td><td>⭐⭐ 容易出现AI感</td></tr>
+          <tr><td>迭代速度</td><td>⭐⭐⭐⭐⭐ 秒级生成多版本</td><td>⭐⭐ 每次需等待重生成</td></tr>
+          <tr><td>所见即所得</td><td>✅ 无限画布预览</td><td>❌ 需启动开发服务器</td></tr>
+          <tr><td>组件编辑</td><td>✅ 点选即改</td><td>❌ 需描述修改</td></tr>
+          <tr><td>灵感融合</td><td>✅ 支持截图参考</td><td>❌ 仅靠文字描述</td></tr>
+          <tr><td>成本</td><td>🆓 完全免费</td><td>💰 消耗Token</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Resources -->
+  <div class="section-card">
+    <div class="section-label">Resources</div>
+    <table class="resource-table">
+      <tr><th>工具</th><th>链接</th></tr>
+      <tr><td>Google Stitch</td><td><a href="https://stitch.google.com" target="_blank">https://stitch.google.com</a></td></tr>
+      <tr><td>Claude Code</td><td><a href="https://claude.ai/code" target="_blank">https://claude.ai/code</a></td></tr>
+      <tr><td>Pinterest</td><td><a href="https://pinterest.com" target="_blank">https://pinterest.com</a></td></tr>
+      <tr><td>Dribbble</td><td><a href="https://dribbble.com" target="_blank">https://dribbble.com</a></td></tr>
+    </table>
+  </div>
+
+  <!-- Summary -->
+  <div class="section-card">
+    <div class="section-label">Summary</div>
+    <div class="summary-box">
+      <p>本视频系统介绍了Google Stitch 2.0与Claude Code的整合工作流，展示了如何通过AI快速完成专业级网页设计。Stitch解决了AI编程工具在前端设计方面的短板，通过「灵感采集 → Stitch生成 → Claude Code完善」的流程，用户可快速获得高质量网站前端。视频强调了Stitch在设计迭代、所见即所得、截图参考等方面的优势，以及它对Figma等传统工具造成的冲击。适合想用AI提升网页设计效率的非专业设计师和独立开发者学习使用。</p>
+    </div>
+  </div>
+
+  <footer class="report-footer">
+    Learning Archive · 2026-03-22
+  </footer>
+</div>
+
+</body>
+</html>
