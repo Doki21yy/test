@@ -1,0 +1,140 @@
+{
+  "title_cn": "10款提升Claude Code使用效率的必备CLI工具推荐",
+  "topic": "分享可搭配Claude Code使用的10款实用CLI工具，讲解其功能、优势与使用方法",
+  "category": "AI工具",
+  "tags": [
+    "Claude Code",
+    "CLI工具",
+    "AI开发效率",
+    "自动化工具"
+  ],
+  "difficulty": "beginner",
+  "learning_rating": 8.5,
+  "speaker": "Chase AI",
+  "language": "英文",
+  "video_info": {
+    "publish_date": "",
+    "views_estimate": ""
+  },
+  "overview": "本视频分享10款可与Claude Code搭配使用的优质CLI工具，覆盖开发、部署、多媒体处理、办公等场景，解决Claude Code原生功能不足的问题，降低操作复杂度，减少token消耗，大幅提升工作效率。",
+  "sections": [
+    {
+      "title": "CLI工具核心优势",
+      "content": "适配终端原生环境；token消耗更低；无额外服务开销；扩展Claude Code能力边界"
+    },
+    {
+      "title": "热门CLI工具分类",
+      "content": "开发部署类；多媒体处理类；浏览器自动化类；本地模型适配类；办公管理类"
+    },
+    {
+      "title": "工具使用通用流程",
+      "content": "安装CLI依赖；导入对应skill；Claude Code调用执行；按需配置权限范围"
+    }
+  ],
+  "resources": [
+    {
+      "name": "CLI Anything",
+      "url": "",
+      "description": "快速为开源项目生成对应的CLI工具",
+      "type": "tool"
+    },
+    {
+      "name": "Notebook LM-PI",
+      "url": "",
+      "description": "无公开API场景下连接Claude Code与Notebook LM，支持视频分析",
+      "type": "tool"
+    },
+    {
+      "name": "Stripe CLI",
+      "url": "",
+      "description": "终端操作Stripe支付配置，无需跳转网页",
+      "type": "tool"
+    },
+    {
+      "name": "FFmpeg",
+      "url": "",
+      "description": "音视频、字幕处理工具，支持格式转换、帧提取等操作",
+      "type": "tool"
+    },
+    {
+      "name": "GitHub CLI",
+      "url": "",
+      "description": "终端操作GitHub仓库，支持提交、分支管理、部署等操作",
+      "type": "tool"
+    },
+    {
+      "name": "Vercel CLI",
+      "url": "",
+      "description": "终端实现Vercel平台应用部署、CI/CD流程管理",
+      "type": "tool"
+    },
+    {
+      "name": "Superbase CLI",
+      "url": "",
+      "description": "终端管理Superbase数据库、认证服务，支持本地部署",
+      "type": "tool"
+    },
+    {
+      "name": "Playright CLI",
+      "url": "",
+      "description": "浏览器自动化工具，支持网页测试、批量操作，token消耗低",
+      "type": "tool"
+    },
+    {
+      "name": "LLM fit",
+      "url": "",
+      "description": "检测本地硬件配置，推荐适配的本地大语言模型",
+      "type": "tool"
+    },
+    {
+      "name": "GWS(Google Workspace CLI)",
+      "url": "",
+      "description": "终端操作Google Workspace全系列产品，支持沙箱权限配置",
+      "type": "tool"
+    },
+    {
+      "name": "Chase AI Plus",
+      "url": "",
+      "description": "Claude Code实战大师课，每周更新实用落地案例",
+      "type": "tutorial"
+    }
+  ],
+  "key_tips": [
+    "大部分CLI工具可直接向Claude Code发送仓库链接，即可自动完成安装部署，无需手动操作",
+    "使用涉及敏感权限的CLI工具（如GWS）时建议配置沙箱权限，仅开放必要资源访问权，降低安全风险",
+    "同类场景优先选择CLI工具而非MCP服务，可大幅降低token消耗、提升运行速度"
+  ],
+  "faq": [
+    {
+      "question": "CLI工具必须搭配对应的skill才能使用吗？",
+      "answer": "大部分需要，少部分无需skill的工具会在仓库说明中标注，skill导入通常为一键操作，非常便捷"
+    },
+    {
+      "question": "担心CLI工具操作出错怎么办？",
+      "answer": "涉及支付、数据修改的高风险操作可先手动测试验证逻辑，再交由Claude Code批量执行"
+    },
+    {
+      "question": "安装太多skill会影响Claude Code调用准确率吗？",
+      "answer": "会，建议仅安装当前高频使用的skill，不需要的及时卸载，避免触发错误调用"
+    }
+  ],
+  "hardware_requirements": "",
+  "target_audience": [
+    "Claude Code使用者",
+    "AI开发人员",
+    "自动化办公从业者"
+  ],
+  "summary": "本视频推荐10款适配Claude Code的优质CLI工具，覆盖开发、部署、多媒体处理、办公等全场景，可补全Claude Code原生能力短板，降低token消耗与多平台切换成本，大幅提升AI开发及日常工作效率，适合所有Claude Code用户参考。",
+  "related_links": [],
+  "_meta": {
+    "title": "10 CLI Tools That Make Claude Code UNSTOPPABLE",
+    "type": "learning",
+    "analysis_mode": "transcript",
+    "analyzed_at": "2026-03-22T23:43:20.445568",
+    "transcript_length": 19178,
+    "source_url": "https://www.youtube.com/watch?v=uULvhQrKB_c",
+    "video_duration": 843,
+    "channel": "",
+    "thumbnail": ""
+  }
+}
