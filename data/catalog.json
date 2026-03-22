@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-03-22T18:25:00.000000",
+  "last_updated": "2026-03-22T18:30:00.000000",
   "total_videos": 17,
   "videos": [
     {
@@ -293,16 +293,20 @@
     {
       "slug": "20260322_stitch-claude-code",
       "title": "Google Stitch 2.0 × Claude Code 工作流：AI网页设计的革命性整合",
-      "score": 0,
-      "summary": "",
+      "score": 9.0,
+      "summary": "本视频介绍了Google发布的全新AI设计工具Stitch 2.0，它集成Gemini 3.1模型，专门解决Claude Code等AI编码工具在前端设计方面的短板。通过「灵感采集 → Stitch生成设计 → Claude Code完善后端」的工作流，用户可快速生成高质量、看起来不像AI垃圾的网站。Stitch发布后Figma股价应声下跌近8%。",
       "duration": 900,
       "date": "2026-03-22",
-      "generated_at": "",
+      "generated_at": "2026-03-22T16:30:00.000000",
       "platform": "YouTube",
       "source_url": "https://www.youtube.com/watch?v=qqcpiDXPCvY",
-      "thumbnail": "data/videos/20260322_stitch-claude-code/thumbnail.jpg",
+      "thumbnail": "https://img.youtube.com/vi/qqcpiDXPCvY/maxresdefault.jpg",
       "report": "data/videos/20260322_stitch-claude-code/report.html",
-      "type": "optimize"
+      "type": "learning",
+      "topic": "Google Stitch 2.0与Claude Code的AI网页设计完整工作流教程",
+      "category": "AI工具",
+      "difficulty": "beginner",
+      "learning_rating": 9.0
     }
   ]
 }
