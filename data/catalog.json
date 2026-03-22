@@ -293,14 +293,14 @@
     {
       "slug": "20260322_stitch-claude-code",
       "title": "Google Stitch 2.0 × Claude Code 工作流：AI网页设计的革命性整合",
-      "score": 0,
-      "summary": "",
+      "score": 9.0,
+      "summary": "Google Stitch 2.0 是一款免费的AI设计工具，基于Gemini 3.1，专注于前端原型设计。它与Claude Code的整合彻底改变了AI网页设计的工作流程，让AI生成的设计不再像「AI垃圾」。",
       "duration": 900,
       "date": "2026-03-22",
       "generated_at": "",
       "platform": "YouTube",
       "source_url": "https://www.youtube.com/watch?v=qqcpiDXPCvY",
-      "thumbnail": "data/videos/20260322_stitch-claude-code/thumbnail.jpg",
+      "thumbnail": "https://img.youtube.com/vi/qqcpiDXPCvY/maxresdefault.jpg",
       "report": "data/videos/20260322_stitch-claude-code/report.html",
       "type": "optimize"
     }
