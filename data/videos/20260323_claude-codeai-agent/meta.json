@@ -1,0 +1,20 @@
+{
+  "title": "零基础用Claude Code搭建专属AI秘书团 无代码打造个人多Agent效率工具",
+  "type": "learning",
+  "topic": "无代码使用Claude Code子代理功能搭建个人专属多角色AI秘书团，实现日常事务自动化处理",
+  "category": "AI工具",
+  "difficulty": "beginner",
+  "learning_rating": 8.5,
+  "summary": "本教程面向无编程基础用户，讲解如何利用Claude Code的子代理功能，搭建包含多角色的专属AI秘书团，实现新闻推送、穿搭建议、健康管理等日常事务自动处理，大幅提升效率。",
+  "speaker": "秋芝2046",
+  "tags": [
+    "Claude Code",
+    "AI Agent",
+    "多代理系统",
+    "AI秘书",
+    "效率工具"
+  ],
+  "source_url": "https://www.bilibili.com/video/BV1zqeMzfEiQ/",
+  "duration": 1257.175,
+  "generated_at": "2026-03-23T00:43:33.991982"
+}
