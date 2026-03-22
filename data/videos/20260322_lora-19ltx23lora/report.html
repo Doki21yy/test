@@ -169,9 +169,20 @@
         .resources-table td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #94a3b8; font-size: 14px; }
         .resources-table a { color: #a5b4fc; text-decoration: none; }
         .resources-table a:hover { text-decoration: underline; }
-        .section-content { color: #94a3b8; font-size: 15px; line-height: 1.8; margin: 15px 0; }
         .subsection { margin-top: 20px; padding-left: 20px; border-left: 2px solid rgba(99,102,241,0.3); }
         .subsection h4 { color: #a5b4fc; font-size: 1.1em; margin-bottom: 10px; }
+        .section-content { color: #94a3b8; font-size: 15px; line-height: 1.8; margin: 15px 0; }
+        .section-content p { margin: 8px 0; }
+        .section-content .content-h4 { color: #c4b5fd; font-size: 1.05em; font-weight: 600; margin-top: 15px; }
+        .section-content .content-h5 { color: #a5b4fc; font-size: 1em; font-weight: 500; margin-top: 12px; }
+        .section-content .content-list { margin: 10px 0; padding-left: 25px; }
+        .section-content .content-list li { color: #94a3b8; padding: 4px 0; line-height: 1.6; }
+        .section-content .inline-code { background: rgba(99,102,241,0.15); padding: 2px 6px; border-radius: 4px; font-family: monospace; color: #c4b5fd; }
+        .section-content .code-block { background: rgba(0,0,0,0.3); border-radius: 8px; padding: 15px; margin: 10px 0; overflow-x: auto; }
+        .section-content .code-block code { color: #86efac; font-family: monospace; font-size: 13px; }
+        .section-content strong { color: #e2e8f0; font-weight: 600; }
+        .section-content em { color: #cbd5e1; font-style: italic; }
+        .section-content a { color: #a5b4fc; }
         footer {
             text-align: center; padding: 40px; color: #64748b; font-size: 14px;
             border-top: 1px solid rgba(255,255,255,0.05); margin-top: 50px;
@@ -205,11 +216,11 @@
         <!-- 核心概述 -->
         <div class="section">
             <h2 class="section-title"><span class="section-icon">📌</span>核心概述</h2>
-            <p class="overview-text">当前LTX2.3官方开源版本仅提供单权重文件，暂未适配diffusers生态，无法直接接入主流训练工具链。本教程提供了基于LTX2.0预训练带声音特征的人物Lora、再迁移到LTX2.3使用的完整落地方案。教程涵盖从数据集准备（含视频剪辑规范、打标规则）、云端训练器参数配置、到最终Lora测试使用的全流程，还优化了自动计算音频对应帧数的ComfyUI工作流，解决了口型匹配和人物形象一致性的平衡问题。最终训练出的Lora可以生成口型准确、人物形象稳定的35秒以上数字人视频，相比纯图片训练的数字人，表情、微动作更自然，更符合人物真实特征。</p>
+            <p class="overview-text"><p>当前LTX2.3官方开源版本仅提供单权重文件，暂未适配diffusers生态，无法直接接入主流训练工具链。本教程提供了基于LTX2.0预训练带声音特征的人物Lora、再迁移到LTX2.3使用的完整落地方案。教程涵盖从数据集准备（含视频剪辑规范、打标规则）、云端训练器参数配置、到最终Lora测试使用的全流程，还优化了自动计算音频对应帧数的ComfyUI工作流，解决了口型匹配和人物形象一致性的平衡问题。最终训练出的Lora可以生成口型准确、人物形象稳定的35秒以上数字人视频，相比纯图片训练的数字人，表情、微动作更自然，更符合人物真实特征。</p></p>
 
             <div class="highlight-box">
                 <h3>💡 关键洞察</h3>
-                <p>本教程针对LTX2.3暂不支持训练的行业痛点，提供了基于LTX2.0训练带音频人物Lora、迁移到LTX2.3使用的完整落地方案。核心亮点是明确了带音频Lora的数据集准备全规范（剪辑规则、打标优先级、素材配比），优化了自动匹配音频帧数的生成工作流，给出了不同场景下的Lora权重调整标准。相比纯图片训练的数字人，本方案生成的数字人具备更自然的微动作、表情和准确的口型匹配，35秒长视频也能保持人物形象稳定，仅需30-40条5秒素材即可完成训练，门槛低、效果好，是当前LTX生态下训练带声音数字人Lora的最优实践。</p>
+                <p><p>本教程针对LTX2.3暂不支持训练的行业痛点，提供了基于LTX2.0训练带音频人物Lora、迁移到LTX2.3使用的完整落地方案。核心亮点是明确了带音频Lora的数据集准备全规范（剪辑规则、打标优先级、素材配比），优化了自动匹配音频帧数的生成工作流，给出了不同场景下的Lora权重调整标准。相比纯图片训练的数字人，本方案生成的数字人具备更自然的微动作、表情和准确的口型匹配，35秒长视频也能保持人物形象稳定，仅需30-40条5秒素材即可完成训练，门槛低、效果好，是当前LTX生态下训练带声音数字人Lora的最优实践。</p></p>
             </div>
 </div>
         <!-- 章节内容 -->
@@ -218,89 +229,106 @@
 
             <div style="margin-bottom: 30px;">
                 <h3 style="color: #a5b4fc; font-size: 1.3em; margin-bottom: 12px;">1. 方案背景与核心原理</h3>
-                <p class="section-content">### 为什么选择LTX2.0训练
-目前官方发布的LTX2.3版本未完成diffusers生态适配，无法直接在现有成熟的AI训练工具中使用，而基于LTX2.0训练的人物Lora可以同时兼容LTX2.0和2.3版本，既可以利用已经成熟的训练工具链，又能享受到LTX2.3更优的生成效果。
-
-### 带音频训练的优势
-对比仅用图片训练的数字人Lora，加入说话视频+音频的训练方案可以让模型学习到人物的说话习惯、面部微动作、发音对应的口型特征、常用表情等信息，生成的视频不仅口型和音频匹配度更高，长视频（35秒以上）也不会出现人物形象崩坏的问题，整体效果更接近真实人物。</p>
+                <p class="section-content"><h4 class="content-h4">为什么选择LTX2.0训练</h4>
+<p>目前官方发布的LTX2.3版本未完成diffusers生态适配，无法直接在现有成熟的AI训练工具中使用，而基于LTX2.0训练的人物Lora可以同时兼容LTX2.0和2.3版本，既可以利用已经成熟的训练工具链，又能享受到LTX2.3更优的生成效果。</p>
+<h4 class="content-h4">带音频训练的优势</h4>
+<p>对比仅用图片训练的数字人Lora，加入说话视频+音频的训练方案可以让模型学习到人物的说话习惯、面部微动作、发音对应的口型特征、常用表情等信息，生成的视频不仅口型和音频匹配度更高，长视频（35秒以上）也不会出现人物形象崩坏的问题，整体效果更接近真实人物。</p></p>
 </div>
             <div style="margin-bottom: 30px;">
                 <h3 style="color: #a5b4fc; font-size: 1.3em; margin-bottom: 12px;">2. 数字人生成工作流配置</h3>
-                <p class="section-content">本教程使用的是RunningHub平台的ComfyUI工作流，相比旧版工作流做了针对性优化：
-1. **自动帧数计算**：新增2个专用节点，可以根据导入的音频长度自动计算生成视频需要的总帧数，不需要手动设置视频时长，大幅降低操作门槛。
-2. **开关设置**：如果仅用文本+Lora生成数字人，不需要上传参考图，左侧图片节点留空或者上传任意图片都可以，图片不会参与工作流计算。
-3. **基础运行参数**：使用FP8精度的LTX基础模型，导入训练好的人物Lora即可运行，生成35秒长度的视频也能保持人物形象稳定不崩坏。</p>
+                <p class="section-content"><p>本教程使用的是RunningHub平台的ComfyUI工作流，相比旧版工作流做了针对性优化：</p>
+<ol class="content-list">
+<li><strong>自动帧数计算</strong>：新增2个专用节点，可以根据导入的音频长度自动计算生成视频需要的总帧数，不需要手动设置视频时长，大幅降低操作门槛。</li>
+<li><strong>开关设置</strong>：如果仅用文本+Lora生成数字人，不需要上传参考图，左侧图片节点留空或者上传任意图片都可以，图片不会参与工作流计算。</li>
+<li><strong>基础运行参数</strong>：使用FP8精度的LTX基础模型，导入训练好的人物Lora即可运行，生成35秒长度的视频也能保持人物形象稳定不崩坏。</li>
+</ol></p>
 
                 <div class="subsection">
                     <h4>Lora权重调整技巧</h4>
-                    <p class="section-content">Lora权重需要根据使用场景调整：
-- 如果需要做**口型匹配的数字人**，权重不能设置过高：权重为1时会出现口型和音频不匹配的问题，权重低于0.5时人物相似度会明显下降，建议平衡在0.6-0.8的区间。
-- 如果只是做普通文生视频，不需要口型匹配，可以把权重设为1，最大化提升人物形象的一致性。</p>
+                    <p class="section-content"><p>Lora权重需要根据使用场景调整：</p>
+<ul class="content-list">
+<li>如果需要做<strong>口型匹配的数字人</strong>，权重不能设置过高：权重为1时会出现口型和音频不匹配的问题，权重低于0.5时人物相似度会明显下降，建议平衡在0.6-0.8的区间。</li>
+<li>如果只是做普通文生视频，不需要口型匹配，可以把权重设为1，最大化提升人物形象的一致性。</li>
+</ul></p>
                 </div>
 </div>
             <div style="margin-bottom: 30px;">
                 <h3 style="color: #a5b4fc; font-size: 1.3em; margin-bottom: 12px;">3. 数据集准备规范</h3>
-                <p class="section-content">数据集质量是决定Lora训练效果的核心因素，参数调整的影响远低于数据集质量，必须严格遵循以下规范。</p>
+                <p class="section-content"><p>数据集质量是决定Lora训练效果的核心因素，参数调整的影响远低于数据集质量，必须严格遵循以下规范。</p></p>
 
                 <div class="subsection">
                     <h4>数据集构成要求</h4>
-                    <p class="section-content">优先使用人物说话的近景视频素材，理想情况收集30-40条5秒左右的视频即可完成训练。如果视频素材不足，可以用等数量的人物图片补充，**建议视频和图片数量保持1:1**，避免模型学习偏向某一类数据，导致最终效果出现偏差。</p>
+                    <p class="section-content"><p>优先使用人物说话的近景视频素材，理想情况收集30-40条5秒左右的视频即可完成训练。如果视频素材不足，可以用等数量的人物图片补充，<strong>建议视频和图片数量保持1:1</strong>，避免模型学习偏向某一类数据，导致最终效果出现偏差。</p></p>
                 </div>
 
                 <div class="subsection">
                     <h4>视频素材剪辑规范</h4>
-                    <p class="section-content">可以使用剪映、达芬奇等任意剪辑软件处理原始素材，遵循以下规则：
-1. 截取的片段必须包含完整的一句话，禁止在人物说话中途截断音频，否则会导致模型学习到错误的口型对应关系。
-2. 剪掉视频开头、结尾的空白无语音片段，仅保留完整的说话内容。
-3. 所有素材尽量统一长度，比如全部裁剪为5秒（对应121帧）或者10秒（对应241帧），禁止混合5秒、7秒、8秒等不同长度的素材，强制拉齐帧率会导致音频变调，即便开启“保持音高”功能也不建议这么操作。
-4. 处理画面内容：裁剪掉上下的字幕、多余UI元素，尽量保留人物近景，背景干净的素材优先。</p>
+                    <p class="section-content"><p>可以使用剪映、达芬奇等任意剪辑软件处理原始素材，遵循以下规则：</p>
+<ol class="content-list">
+<li>截取的片段必须包含完整的一句话，禁止在人物说话中途截断音频，否则会导致模型学习到错误的口型对应关系。</li>
+<li>剪掉视频开头、结尾的空白无语音片段，仅保留完整的说话内容。</li>
+<li>所有素材尽量统一长度，比如全部裁剪为5秒（对应121帧）或者10秒（对应241帧），禁止混合5秒、7秒、8秒等不同长度的素材，强制拉齐帧率会导致音频变调，即便开启“保持音高”功能也不建议这么操作。</li>
+<li>处理画面内容：裁剪掉上下的字幕、多余UI元素，尽量保留人物近景，背景干净的素材优先。</li>
+</ol></p>
                 </div>
 
                 <div class="subsection">
                     <h4>标注规则</h4>
-                    <p class="section-content">每条视频对应一个标注文本，格式为：
-```
-[自定义触发词], 穿着[服饰描述], 在[环境描述], 说话内容:[逐字转录的完整说话内容], [可选动作描述]
-```
-核心优先级：**说话内容 &gt; 服饰/环境描述 &gt; 动作描述**
-- 说话内容必须逐字100%准确转录，直接决定了音频和口型的训练效果。
-- 服饰、环境描述决定人物形象生成的准确性，需要尽可能准确。
-- 动作描述不重要，可以直接省略。</p>
+                    <p class="section-content"><p>每条视频对应一个标注文本，格式为：</p>
+<pre class="code-block"><code>[自定义触发词], 穿着[服饰描述], 在[环境描述], 说话内容:[逐字转录的完整说话内容], [可选动作描述]</code></pre>
+<p>核心优先级：<strong>说话内容 > 服饰/环境描述 > 动作描述</strong></p>
+<ul class="content-list">
+<li>说话内容必须逐字100%准确转录，直接决定了音频和口型的训练效果。</li>
+<li>服饰、环境描述决定人物形象生成的准确性，需要尽可能准确。</li>
+<li>动作描述不重要，可以直接省略。</li>
+</ul></p>
                 </div>
 </div>
             <div style="margin-bottom: 30px;">
                 <h3 style="color: #a5b4fc; font-size: 1.3em; margin-bottom: 12px;">4. 云端训练器参数配置</h3>
-                <p class="section-content">教程使用的汉化版训练器已经部署在优云智算、智算云两个平台，无需本地搭建环境，直接选择对应镜像即可启动。</p>
+                <p class="section-content"><p>教程使用的汉化版训练器已经部署在优云智算、智算云两个平台，无需本地搭建环境，直接选择对应镜像即可启动。</p></p>
 
                 <div class="subsection">
                     <h4>基础训练参数</h4>
-                    <p class="section-content">1. 基础模型选择**LTX2.0**（暂不支持LTX2.3直接训练）。
-2. 显存优化：如果使用32G显存的A5090显卡，开启低显存和层级卸载，文本编码器训练步数设为0，Transformer训练步数设为100，可以大幅节省显存占用。
-3. 量化选项：Transformer选择默认FLOAT8即可，文本编码器选择4bit量化，对最终训练效果影响极小，可以避免显存不足无法启动训练的问题。
-4. rank值保持默认32即可，开启嵌入缓存，其他参数保持默认。</p>
+                    <p class="section-content"><ol class="content-list">
+<li>基础模型选择<strong>LTX2.0</strong>（暂不支持LTX2.3直接训练）。</li>
+<li>显存优化：如果使用32G显存的A5090显卡，开启低显存和层级卸载，文本编码器训练步数设为0，Transformer训练步数设为100，可以大幅节省显存占用。</li>
+<li>量化选项：Transformer选择默认FLOAT8即可，文本编码器选择4bit量化，对最终训练效果影响极小，可以避免显存不足无法启动训练的问题。</li>
+<li>rank值保持默认32即可，开启嵌入缓存，其他参数保持默认。</li>
+</ol></p>
                 </div>
 
                 <div class="subsection">
                     <h4>数据集参数配置</h4>
-                    <p class="section-content">需要添加两个数据集，一个视频数据集、一个图片数据集，两类数据的数量必须相等：
-- **视频数据集设置**：开启缓存潜变量、启用音频、开启音频标准化（把所有视频的音量拉到同一水平，避免音量差异影响训练效果）；关闭保持音高选项，统一所有视频的总帧数为121帧（对应5秒）或者241帧（对应10秒），分辨率选择256，即便48G显存也无法支撑更高分辨率的视频训练。
-- **图片数据集设置**：开启缓存潜变量，不需要开启任何音频相关选项，分辨率选择比视频稍高的数值即可，作为低分辨率视频训练的形象补充，提升最终人物的相似度。</p>
+                    <p class="section-content"><p>需要添加两个数据集，一个视频数据集、一个图片数据集，两类数据的数量必须相等：</p>
+<ul class="content-list">
+<li><strong>视频数据集设置</strong>：开启缓存潜变量、启用音频、开启音频标准化（把所有视频的音量拉到同一水平，避免音量差异影响训练效果）；关闭保持音高选项，统一所有视频的总帧数为121帧（对应5秒）或者241帧（对应10秒），分辨率选择256，即便48G显存也无法支撑更高分辨率的视频训练。</li>
+<li><strong>图片数据集设置</strong>：开启缓存潜变量，不需要开启任何音频相关选项，分辨率选择比视频稍高的数值即可，作为低分辨率视频训练的形象补充，提升最终人物的相似度。</li>
+</ul></p>
                 </div>
 
                 <div class="subsection">
                     <h4>保存与采样配置</h4>
-                    <p class="section-content">1. 保存间隔：根据数据集总数量设置，比如总共有26条数据（13条视频+13张图片），训练一轮为26步，保存间隔建议设置为26的倍数，比如260步，方便按轮次管理版本。
-2. 采样功能：**建议完全关闭**，LTX2训练过程中的采样效果非常差，会占用大量显存、拖慢30%以上的训练速度，而且采样是基于LTX2.0生成的，和最终LTX2.3的运行效果差异很大，完全不具备参考价值。</p>
+                    <p class="section-content"><ol class="content-list">
+<li>保存间隔：根据数据集总数量设置，比如总共有26条数据（13条视频+13张图片），训练一轮为26步，保存间隔建议设置为26的倍数，比如260步，方便按轮次管理版本。</li>
+<li>采样功能：<strong>建议完全关闭</strong>，LTX2训练过程中的采样效果非常差，会占用大量显存、拖慢30%以上的训练速度，而且采样是基于LTX2.0生成的，和最终LTX2.3的运行效果差异很大，完全不具备参考价值。</li>
+</ol></p>
                 </div>
 </div>
             <div style="margin-bottom: 30px;">
                 <h3 style="color: #a5b4fc; font-size: 1.3em; margin-bottom: 12px;">5. 训练效果判断与验证</h3>
-                <p class="section-content">关闭采样功能后，不需要关注训练器内的输出，按照以下规则判断训练进度即可：
-1. 训练轮次计算：总步数 ÷ 数据集总条数 = 训练轮次，比如总步数5200，数据集共26条，对应轮次为200轮。
-2. 效果验证节点：
-   - 200轮左右：人物外形已经基本收敛，形象稳定，可以下载Lora到LTX2.3的工作流中测试人物相似度。
-   - 250-300轮左右：音频和口型特征收敛，测试口型匹配效果，达标后即可停止训练。
-3. 注意：不要参考训练器内的采样结果，采样使用的是LTX2.0，效果会比实际在LTX2.3上运行的效果差很多，没有参考意义。</p>
+                <p class="section-content"><p>关闭采样功能后，不需要关注训练器内的输出，按照以下规则判断训练进度即可：</p>
+<ol class="content-list">
+<li>训练轮次计算：总步数 ÷ 数据集总条数 = 训练轮次，比如总步数5200，数据集共26条，对应轮次为200轮。</li>
+<li>效果验证节点：</li>
+</ol>
+<ul class="content-list">
+<li>200轮左右：人物外形已经基本收敛，形象稳定，可以下载Lora到LTX2.3的工作流中测试人物相似度。</li>
+<li>250-300轮左右：音频和口型特征收敛，测试口型匹配效果，达标后即可停止训练。</li>
+</ul>
+<ol class="content-list">
+<li>注意：不要参考训练器内的采样结果，采样使用的是LTX2.0，效果会比实际在LTX2.3上运行的效果差很多，没有参考意义。</li>
+</ol></p>
 </div></div>
         <!-- 实用技巧 -->
         <div class="section">
