@@ -1,0 +1,20 @@
+{
+  "title": "test-video",
+  "type": "learning",
+  "topic": "教授零代码基础用户通过AI工具生成素材、自动写代码、免费部署，制作带有微动态英雄区的高质感网站，解决AI生成网站千篇一律的问题",
+  "category": "AI工具/前端开发",
+  "difficulty": "beginner",
+  "learning_rating": 9.0,
+  "summary": "本教程针对当前AI生成网站设计同质化严重的痛点，提供了一套普通人无需专业代码基础即可落地的高质感建站全流程。核心方案分为四大环节：首先使用Nano Banana Pro生成符合网站视觉定位的首帧静态图，可搭配参考图和结构化提示词大幅提升生成效果；其次将静态图导入支持首帧输入的AI视频工具，生成带有缓慢微动态的英雄区背景视频；再将素材导入Claude Code（克劳德代码），通过结构化提示词让AI自动生成适配桌面端（动态背景）和移动端（静态背景）的着陆页代码，还可搭配UIUX Pro Max技能、组件提示词库快速优化页面效果；最后将代码提交到GitHub，通过Vercel平台完成免费线上部署。教程全程低门槛，产出的网站视觉效果远超普通AI生成站点，大幅降低了高质感动态网站的制作成本。",
+  "speaker": "Chase AI",
+  "tags": [
+    "AI建站",
+    "Claude Code",
+    "动态英雄区",
+    "免费网站部署",
+    "AI生成视频"
+  ],
+  "source_url": "https://www.youtube.com/watch?v=jQxHo9PC19Q",
+  "duration": 710,
+  "generated_at": "2026-03-22T17:32:49.061449"
+}
