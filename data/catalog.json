@@ -1,7 +1,25 @@
 {
-  "last_updated": "2026-03-22T23:45:05.687907",
-  "total_videos": 19,
+  "last_updated": "2026-03-23T00:43:57.255106",
+  "total_videos": 20,
   "videos": [
+    {
+      "slug": "20260323_claude-codeai-agent",
+      "title": "零基础用Claude Code搭建专属AI秘书团 无代码打造个人多Agent效率工具",
+      "score": 8.5,
+      "summary": "本教程面向无编程基础用户，讲解如何利用Claude Code的子代理功能，搭建包含多角色的专属AI秘书团，实现新闻推送、穿搭建议、健康管理等日常事务自动处理，大幅提升效率。",
+      "duration": 1257.175,
+      "date": "2026-03-23",
+      "generated_at": "2026-03-23T00:43:33.991982",
+      "platform": "Bilibili",
+      "source_url": "https://www.bilibili.com/video/BV1zqeMzfEiQ/",
+      "thumbnail": "data/videos/20260323_claude-codeai-agent/thumbnail.jpg",
+      "report": "data/videos/20260323_claude-codeai-agent/report.html",
+      "type": "learning",
+      "topic": "无代码使用Claude Code子代理功能搭建个人专属多角色AI秘书团，实现日常事务自动化处理",
+      "category": "AI工具",
+      "difficulty": "beginner",
+      "learning_rating": 8.5
+    },
     {
       "slug": "20260322_10-cli-tools-that-make-claude-code-unstoppable",
       "title": "10 CLI Tools That Make Claude Code UNSTOPPABLE",
